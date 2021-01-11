@@ -9,8 +9,12 @@
   import { links } from "svelte-routing"
   import { loadData } from "../sanity.js"
 
+  // *** COMPONENTS
+  import MenuContent from "./MenuContent.svelte"
+  import ArrowDown from "./Graphics/ArrowDown.svelte"
+
   // *** STORES
-  import { menuActive, tableOfContentActive } from "../stores.js"
+  import { menuActive, menuItemActive, menuContent, tableOfContentActive } from "../stores.js"
 
   // *** CONSTANTS
   const queryNews = "*[_type == 'news']"
@@ -20,47 +24,128 @@
   const about = loadData(queryAbout)
   const colophon = loadData(queryColophon)
 
+  const data = {}
+
   // *** VARIABLES
-  let menuOpen = false
+  let menuOpen = true
 
   $: {
     menuActive.set(menuOpen)
   }
 
   news.then(news => {
-    console.log("news", news)
+    data.news = news
+    $menuContent = data.news
   })
 
   about.then(about => {
-    console.log("about", about)
+    data.about = about
   })
 
   colophon.then(colophon => {
-    console.log("colophon", colophon)
+    data.colophon = colophon
   })
+
+  // *** FUNCTIONS
+  const updateMenuItem = e => {
+    $menuItemActive = e.currentTarget.id
+    $menuContent = data[e.currentTarget.id]
+  }
+
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
 
+  .title {
+    font-size: $font-size_normal;
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+
   .bar {
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
-    width: 50px;
+    width: $menu-width;
+    transform: translateX((-1 * $menu-width) + $menu_button_width);
     line-height: $line-height;
-    height: 100vw;
+    height: 100vh;
     z-index: 1000;
     overflow: hidden;
     user-select: none;
-    background: yellow;
+    background: $green;
+    padding: $margin;
+    padding-right: $menu_button_width;
+    font-family: $sans-stack;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    .bar-menu {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      width: 100%;
+
+      .graphic {
+        width: 120px;
+        margin: 0 auto 12px;
+      }
+
+      .bar-menu-item {
+        margin: 0;
+        padding: 16px 0 12px;
+        border-top: 2px solid $black;
+        cursor: pointer;
+
+        &.active {
+          &:before {
+            content: '→';
+            margin-right: 10px;
+          }
+        }
+
+        &:last-child {
+          border-bottom: 2px solid $black;
+        }
+      }
+    }
+
+    .bar-button {
+      box-sizing: border-box;
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: $margin 0;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: $title_letter_spacing;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      cursor: pointer;
+      width: $menu_button_width;
+
+      .title {
+        display: inline-block;
+
+        &.bottom {
+          margin-bottom: -1 * $title_letter_spacing;
+        }
+      }
+    }
 
     &.open {
-      transition: height 0.2s ease-out;
-      height: $line-height * 13;
+      transition: transform 0.2s ease-out;
+      transform: translate(0,0);
+      // height: $line-height * 13;
 
       @include screen-size("small") {
-        height: $line-height * 16;
+        // height: $line-height * 16;
       }
     }
   }
@@ -89,60 +174,60 @@
     }
   }
 
-  .menu {
-    display: inline-block;
-    width: 100%;
-    padding-right: $margin;
-    padding-left: $margin;
-    font-size: 16px;
-    z-index: 100;
-    background: white;
-    overflow: hidden;
-    user-select: none;
-    padding-top: $line-height;
-    letter-spacing: 0.05em;
-    line-height: $line-height;
+  // .menu {
+  //   display: inline-block;
+  //   width: 100%;
+  //   padding-right: $margin;
+  //   padding-left: $margin;
+  //   font-size: 16px;
+  //   z-index: 100;
+  //   background: white;
+  //   overflow: hidden;
+  //   user-select: none;
+  //   padding-top: $line-height;
+  //   letter-spacing: 0.05em;
+  //   line-height: $line-height;
 
-    @include screen-size("small") {
-      padding-right: $phone-margin;
-      padding-left: $phone-margin;
-    }
+  //   @include screen-size("small") {
+  //     padding-right: $phone-margin;
+  //     padding-left: $phone-margin;
+  //   }
 
-    .column {
-      width: 100%;
-      float: right;
-      margin-bottom: $line-height;
-      overflow-y: auto;
-      position: relative;
-    }
+  //   .column {
+  //     width: 100%;
+  //     float: right;
+  //     margin-bottom: $line-height;
+  //     overflow-y: auto;
+  //     position: relative;
+  //   }
 
-    .menu-item {
-      font-family: $serif-stack;
-      font-weight: bold;
-      text-align: center;
-      color: black;
-      text-decoration: none;
-      display: block;
-      cursor: pointer;
+  //   .menu-item {
+  //     font-family: $serif-stack;
+  //     font-weight: bold;
+  //     text-align: center;
+  //     color: black;
+  //     text-decoration: none;
+  //     display: block;
+  //     cursor: pointer;
 
-      a,
-      span {
-        @include screen-size("small") {
-          display: inline-block;
-          padding-top: 4px;
-          padding-bottom: 4px;
-        }
+  //     a,
+  //     span {
+  //       @include screen-size("small") {
+  //         display: inline-block;
+  //         padding-top: 4px;
+  //         padding-bottom: 4px;
+  //       }
 
-        &:hover {
-          color: $grey;
-        }
+  //       &:hover {
+  //         color: $grey;
+  //       }
 
-        &:active {
-          color: $grey;
-        }
-      }
-    }
-  }
+  //       &:active {
+  //         color: $grey;
+  //       }
+  //     }
+  //   }
+  // }
 
   .overlay {
     position: fixed;
@@ -154,15 +239,31 @@
 </style>
 
 <div class="bar" use:links class:open={menuOpen}>
-  MENU
 
-  <!-- <div
-    class="hamburger"
-    on:click={e => {
-      menuOpen = !menuOpen
-      searchActive = false
-      searchInputValue = ''
-    }}>
-    {#if menuOpen}STÄNG{:else}MENY{/if}
-  </div> -->
+  <MenuContent name={$menuItemActive} content={$menuContent} />
+
+  <ul class="bar-menu">
+    <div class="graphic">
+      <ArrowDown />
+    </div>
+    <li class="bar-menu-item title" id="news" class:active={$menuItemActive === 'news'} on:click={updateMenuItem}>
+      På IBK
+    </li>
+    <li class="bar-menu-item title" id="about" class:active={$menuItemActive === 'about'} on:click={updateMenuItem}>
+      Om IBK
+    </li>
+    <li class="bar-menu-item title" id="colophon" class:active={$menuItemActive === 'colophon'} on:click={updateMenuItem}>
+      Kolofon
+    </li>
+  </ul>
+
+  <div class="bar-button" on:click={e => menuOpen = !menuOpen}>
+    <h1 class="title">
+      På IBK
+    </h1>
+
+    <h1 class="title bottom">
+      Info
+    </h1>
+  </div>
 </div>

@@ -20,26 +20,4 @@
   }
 </style>
 
-<svg
-  version="1.1"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  x="0px"
-  y="0px"
-  height="100%"
-  viewBox="0 0 34 34"
-  style="overflow:visible;enable-background:new 0 0 34 34;"
-  xml:space="preserve">
-  <rect
-    x="-3.1"
-    y="13"
-    transform="matrix(0.7071 -0.7071 0.7071 0.7071 -7.0509 17.0224)"
-    width="40.2"
-    height="8" />
-  <rect
-    x="-3.1"
-    y="13"
-    transform="matrix(0.7071 0.7071 -0.7071 0.7071 17.0224 -7.0509)"
-    width="40.2"
-    height="8" />
-</svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 33.24 64.33"><defs><style>.cls-1,.cls-3{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#231f20;stroke-width:1.5px;}</style><clipPath id="clip-path"><rect class="cls-1" width="33.24" height="64.33"/></clipPath></defs><title>faviconArtboard 4</title><g class="cls-2"><polyline class="cls-3" points="32.72 63.8 1.06 32.16 32.72 0.53"/></g></svg>

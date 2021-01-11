@@ -29,7 +29,7 @@
   <Menu />
 
   <!-- ToC -->
-  <ToC />
+  <!-- <ToC /> -->
 
   <Router>
     <!-- LANDING -->

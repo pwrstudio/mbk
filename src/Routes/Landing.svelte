@@ -27,7 +27,7 @@
   @import "../variables.scss";
 
   .landing {
-    background: red;
+    background: $grey;
     margin-left: 100px;
   }
 </style>
