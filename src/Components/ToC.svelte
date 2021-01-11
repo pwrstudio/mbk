@@ -35,9 +35,9 @@
     overflow: hidden;
     user-select: none;
     background: green;
+    transition: height 0.2s ease-out;
 
     &.open {
-      transition: height 0.2s ease-out;
       height: $line-height * 13;
 
       @include screen-size("small") {
@@ -62,11 +62,11 @@
     }
 
     &:hover {
-      color: $grey;
+      color: $grey_solid;
     }
 
     &:active {
-      color: $grey;
+      color: $grey_solid;
     }
   }
 
@@ -115,11 +115,11 @@
         }
 
         &:hover {
-          color: $grey;
+          color: $grey_solid;
         }
 
         &:active {
-          color: $grey;
+          color: $grey_solid;
         }
       }
     }

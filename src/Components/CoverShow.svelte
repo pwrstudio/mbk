@@ -1,7 +1,8 @@
+
 <script>
   // # # # # # # # # # # # # #
   //
-  //  COVERSHOW
+  //  COVERSLIDER
   //
   // # # # # # # # # # # # # #
 
@@ -16,6 +17,8 @@
   @import "../variables.scss";
 
   .covershow {
+    width: 100%;
+    height: 100%;
     @include screen-size("small") {
     }
   }

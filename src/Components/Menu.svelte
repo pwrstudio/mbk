@@ -27,7 +27,7 @@
   const data = {}
 
   // *** VARIABLES
-  let menuOpen = true
+  let menuOpen = false
 
   $: {
     menuActive.set(menuOpen)
@@ -180,11 +180,11 @@
     }
 
     &:hover {
-      color: $grey;
+      color: $grey_solid;
     }
 
     &:active {
-      color: $grey;
+      color: $grey_solid;
     }
   }
 
@@ -233,11 +233,11 @@
   //       }
 
   //       &:hover {
-  //         color: $grey;
+  //         color: $grey_solid;
   //       }
 
   //       &:active {
-  //         color: $grey;
+  //         color: $grey_solid;
   //       }
   //     }
   //   }

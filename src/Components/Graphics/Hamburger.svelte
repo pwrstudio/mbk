@@ -4,7 +4,7 @@
   svg {
     &:hover {
       rect {
-        fill: $grey;
+        fill: $grey_solid;
       }
       @include screen-size("small") {
         rect {
@@ -14,7 +14,7 @@
     }
     &:active {
       rect {
-        fill: $grey;
+        fill: $grey_solid;
       }
     }
   }

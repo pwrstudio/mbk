@@ -88,7 +88,7 @@
       width: $text_width_wider;
       padding-bottom: $line-height_large;
       margin-bottom: $line-height_large * 2;
-      border-bottom: 1px solid $grey;
+      border-bottom: 1px solid $grey_solid;
       line-height: $line-height_large;
 
       .authors {
@@ -106,7 +106,7 @@
       width: $text_width_wider;
       padding-bottom: $line-height_large;
       margin-bottom: $line-height_large * 2;
-      border-bottom: 1px solid $grey;
+      border-bottom: 1px solid $grey_solid;
       line-height: $line-height_large;
 
       .authors {

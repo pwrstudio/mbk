@@ -19,6 +19,17 @@
 
 <style lang="scss" global>
   @import "./variables.scss";
+
+  :global(body) {
+    background-color: $grey_solid;
+    min-height: 100vh;
+  }
+
+  :global(body),
+  :global(main) {
+    margin: 0;
+    padding: 0;
+  }
 </style>
 
 <main>
