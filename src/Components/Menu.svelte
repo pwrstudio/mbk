@@ -97,7 +97,7 @@
       .bar-menu-item {
         margin: 0;
         padding: 16px 0 12px;
-        border-top: 2px solid $black;
+        border-top: $border_black;
         cursor: pointer;
 
         &.active {
@@ -108,7 +108,7 @@
         }
 
         &:last-child {
-          border-bottom: 2px solid $black;
+          border-bottom: $border_black;
         }
       }
     }
