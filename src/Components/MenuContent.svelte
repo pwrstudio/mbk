@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+  import { afterUpdate } from 'svelte'
   import { renderBlockText, urlFor } from '../sanity.js'
   import { formattedDate } from '../global.js'
   import { isArray } from 'lodash' 
@@ -13,17 +14,35 @@
   // *** PROPS
   export let name, content
 
+  // *** VARIABLES
+  let el
+
   $: {
-    console.log(content)
+    // console.log(name, this)
   }
+
+  afterUpdate(() => {
+    console.log('afetr')
+    console.log()
+    el.parentElement.scrollTo(0,0)
+  })
 
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
+  @import "../sanity.scss";
 
   .menu-content {
-    padding-right: $margin / 2;
+    padding-bottom: $margin;
+
+    .paragraph {
+      // 
+    }
+
+    .logo {
+      max-height: 80vh;
+    }
 
     .image {
       width: 100%;
@@ -41,11 +60,12 @@
         padding-top: 4px;
         margin-bottom: $line-height;
       }
+
     }
   }
 </style>
 
-<div class="menu-content">
+<div class="menu-content" bind:this={el}>
   {#if name === 'news' && isArray(content)}
     {#each content as block}
       <div class="news-item">
@@ -61,13 +81,23 @@
           class="image"
           src={urlFor(block.mainImage.asset).width(400).quality(90).auto('format').url()}
         >
-        {@html renderBlockText(block.content.content)}
+        <div class="paragraph">
+          {@html renderBlockText(block.content.content)}
+        </div>
       </div>
     {/each}
   {:else if name === 'about'}
-    about
+    <div class="paragraph">
+      {@html renderBlockText(content.content.content)} <!-- content content content -->
+    </div>
   {:else if name === 'colophon'}
-    colo
+    <div class="paragraph">
+      {@html renderBlockText(content.wideColumn.content)}
+    </div>
+    <img
+      class="logo"
+      src={urlFor(content.logo.asset).width(400).quality(90).auto('format').url()}
+    >
   {/if}
   <!-- {content.content.content} -->
 </div>

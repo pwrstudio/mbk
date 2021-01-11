@@ -57,6 +57,15 @@
 <style lang="scss">
   @import "../variables.scss";
 
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   .title {
     font-size: $font-size_normal;
     text-transform: uppercase;
@@ -73,7 +82,7 @@
     line-height: $line-height;
     height: 100vh;
     z-index: 1000;
-    overflow: hidden;
+    overflow: auto;
     user-select: none;
     background: $green;
     padding: $margin;
@@ -83,6 +92,11 @@
     flex-flow: column nowrap;
     justify-content: space-between;
 
+    .bar-content {
+      flex-shrink: 1;
+      overflow-y: scroll;
+    }
+
     .bar-menu {
       padding: 0;
       margin: 0;
@@ -90,7 +104,7 @@
       width: 100%;
 
       .graphic {
-        width: 120px;
+        width: 80px;
         margin: 0 auto 12px;
       }
 
@@ -240,19 +254,39 @@
 
 <div class="bar" use:links class:open={menuOpen}>
 
-  <MenuContent name={$menuItemActive} content={$menuContent} />
+  <div class="bar-content">
+    <MenuContent
+      name={$menuItemActive}
+      content={$menuContent}
+    />
+  </div>
 
   <ul class="bar-menu">
     <div class="graphic">
       <ArrowDown />
     </div>
-    <li class="bar-menu-item title" id="news" class:active={$menuItemActive === 'news'} on:click={updateMenuItem}>
+    <li
+      class="bar-menu-item title"
+      id="news"
+      class:active={$menuItemActive === 'news'}
+      on:click={updateMenuItem}
+    >
       På IBK
     </li>
-    <li class="bar-menu-item title" id="about" class:active={$menuItemActive === 'about'} on:click={updateMenuItem}>
+    <li
+      class="bar-menu-item title"
+      id="about"
+      class:active={$menuItemActive === 'about'}
+      on:click={updateMenuItem}
+    >
       Om IBK
     </li>
-    <li class="bar-menu-item title" id="colophon" class:active={$menuItemActive === 'colophon'} on:click={updateMenuItem}>
+    <li
+      class="bar-menu-item title"
+      id="colophon"
+      class:active={$menuItemActive === 'colophon'}
+      on:click={updateMenuItem}
+    >
       Kolofon
     </li>
   </ul>
