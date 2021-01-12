@@ -22,6 +22,16 @@
   // STORES
   // import { currentPost } from "../stores.js"
 
+  // *** PROP
+  export let location
+
+  // *** VARIABLES
+  let pathname
+
+  $: {
+    pathname = location.pathname
+  }
+
   // ** CONSTANTS
   const query = "*[slug.current == $slug]{...}[0]"
   const params = { slug: slug }

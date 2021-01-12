@@ -9,11 +9,21 @@
   import { loadData } from "../sanity.js"
   import { links } from "svelte-routing"
 
-  // COMPONENTS
+  // *** COMPONENTS
   import CoverSlider from "../Components/CoverSlider.svelte"
 
-  // STORES
+  // *** STORES
   import { menuActive } from '../stores.js'
+
+  // *** PROP
+  export let location
+
+  // *** VARIABLES
+  let pathname
+
+  $: {
+    pathname = location.pathname
+  }
 
   // *** CONSTANTS
   const query = "*[_type == 'issue'] | order(publicationDate)"
@@ -46,7 +56,7 @@
     height: 100vh;
     position: relative;
     float: right;
-    transition: width 0.4s ease-out;
+    transition: width 0.2s ease-out;
 
     &.expanded {
       width: calc(100% - #{$menu_width});

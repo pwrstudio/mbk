@@ -7,7 +7,7 @@
 
   // IMPORTS
   import { Router, Route } from "svelte-routing"
-
+  import { beforeUpdate, afterUpdate } from "svelte"
   // COMPONENTS
   import MetaData from "./Components/MetaData.svelte"
   import Menu from "./Components/Menu.svelte"
@@ -15,18 +15,6 @@
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
-
-  let pathname
-
-  $: {
-    console.log(window)
-    pathname = location.pathname
-    handleRouteChange(pathname)
-  }
-
-  const handleRouteChange = e => {
-    console.log('route change')
-  }
 </script>
 
 <style lang="scss" global>
@@ -47,9 +35,7 @@
   <Menu />
 
   <!-- ToC -->
-  {#if pathname !== '/'}
-    <ToC />
-  {/if}
+  <ToC />
 
   <Router>
     <!-- LANDING -->
