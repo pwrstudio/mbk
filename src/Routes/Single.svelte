@@ -36,6 +36,10 @@
   @import "../../variables.scss";
 
   .single {
+    background-color: $white;
+  }
+
+  .single {
     font-size: $font_size_normal;
     font-family: $serif-stack;
     margin: 0;

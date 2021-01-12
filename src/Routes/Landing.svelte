@@ -33,6 +33,11 @@
 <style lang="scss">
   @import "../variables.scss";
 
+  :local(body) {
+    background-color: $grey_solid;
+    min-height: 100vh;
+  }
+
   :global(.title) {
     font-size: $font-size_normal;
     text-transform: uppercase;

@@ -15,15 +15,16 @@
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
+
+  let pathname
+
+  $: {
+    pathname = location.pathname
+  }
 </script>
 
 <style lang="scss" global>
   @import "./variables.scss";
-
-  :global(body) {
-    background-color: $grey_solid;
-    min-height: 100vh;
-  }
 
   :global(body),
   :global(main) {
@@ -40,7 +41,9 @@
   <Menu />
 
   <!-- ToC -->
-  <!-- <ToC /> -->
+  {#if pathname !== '/'}
+    <ToC />
+  {/if}
 
   <Router>
     <!-- LANDING -->

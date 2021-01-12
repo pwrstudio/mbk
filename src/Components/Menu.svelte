@@ -17,7 +17,7 @@
   import { menuActive, menuItemActive, menuContent, tableOfContentActive } from "../stores.js"
 
   // *** CONSTANTS
-  const queryNews = "*[_type == 'news']"
+  const queryNews = "*[_type == 'news'] | order(publicationDate desc)"
   const queryAbout = "*[_id == 'about']{...}[0]"
   const queryColophon = "*[_id == 'colophon']{...}[0]"
   const news = loadData(queryNews)
@@ -66,25 +66,50 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-  .bar {
+  /*
+    Shared with Table of Content
+  */
+  :global(.bar) {
     box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
     width: $menu-width;
-    transform: translateX((-1 * $menu-width) + $menu_button_width);
     line-height: $line-height;
     height: 100vh;
-    z-index: 1000;
     overflow: auto;
-    user-select: none;
-    background: $green;
     padding: $margin;
     padding-right: $menu_button_width;
     font-family: $sans-stack;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+    transition: transform 0.2s ease-out;
+    user-select: none;
+    transform: translateX((-1 * $menu-width) + $menu_button_width);
+  }
+
+  :global(.bar-button) {
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: $margin 0;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: $title_letter_spacing;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    width: $menu_button_width;
+  }
+
+  .bar {
+    z-index: 1000;
+    background: $green;
 
     .bar-content {
       flex-shrink: 1;
@@ -122,22 +147,6 @@
     }
 
     .bar-button {
-      box-sizing: border-box;
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: $margin 0;
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      letter-spacing: $title_letter_spacing;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-      height: 100%;
-      cursor: pointer;
-      width: $menu_button_width;
-
       .title {
         display: inline-block;
 
@@ -148,12 +157,9 @@
     }
 
     &.open {
-      transition: transform 0.2s ease-out;
       transform: translate(0,0);
-      // height: $line-height * 13;
 
       @include screen-size("small") {
-        // height: $line-height * 16;
       }
     }
   }
@@ -181,61 +187,6 @@
       color: $grey_solid;
     }
   }
-
-  // .menu {
-  //   display: inline-block;
-  //   width: 100%;
-  //   padding-right: $margin;
-  //   padding-left: $margin;
-  //   font-size: 16px;
-  //   z-index: 100;
-  //   background: white;
-  //   overflow: hidden;
-  //   user-select: none;
-  //   padding-top: $line-height;
-  //   letter-spacing: 0.05em;
-  //   line-height: $line-height;
-
-  //   @include screen-size("small") {
-  //     padding-right: $phone-margin;
-  //     padding-left: $phone-margin;
-  //   }
-
-  //   .column {
-  //     width: 100%;
-  //     float: right;
-  //     margin-bottom: $line-height;
-  //     overflow-y: auto;
-  //     position: relative;
-  //   }
-
-  //   .menu-item {
-  //     font-family: $serif-stack;
-  //     font-weight: bold;
-  //     text-align: center;
-  //     color: black;
-  //     text-decoration: none;
-  //     display: block;
-  //     cursor: pointer;
-
-  //     a,
-  //     span {
-  //       @include screen-size("small") {
-  //         display: inline-block;
-  //         padding-top: 4px;
-  //         padding-bottom: 4px;
-  //       }
-
-  //       &:hover {
-  //         color: $grey_solid;
-  //       }
-
-  //       &:active {
-  //         color: $grey_solid;
-  //       }
-  //     }
-  //   }
-  // }
 
   .overlay {
     position: fixed;
