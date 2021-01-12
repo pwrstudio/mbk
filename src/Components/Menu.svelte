@@ -66,12 +66,6 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-  .title {
-    font-size: $font-size_normal;
-    text-transform: uppercase;
-    font-weight: normal;
-  }
-
   .bar {
     box-sizing: border-box;
     position: fixed;

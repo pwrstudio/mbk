@@ -17,7 +17,11 @@
   @import "../variables.scss";
 
   .cover {
-    width: 100%;
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    display: block;
 
     .inner {
       width: 100%;
@@ -32,7 +36,7 @@
   }
 </style>
 
-<a class="cover" in:fade href="/">
+<a class="cover" in:fade href="/{issue.slug.current}">
   <div class="inner">
     <!-- IMAGE -->
     <img

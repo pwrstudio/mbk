@@ -16,18 +16,28 @@
   import { menuActive } from '../stores.js'
 
   // *** CONSTANTS
-  const query = "*[_type == 'issue']"
+  const query = "*[_type == 'issue'] | order(publicationDate)"
 
   // *** CONSTANTS
   const issues = loadData(query)
 
   issues.then(issues => {
+    console.log('I have issues')
     console.dir(issues)
+    issues.forEach((issue) => {
+      console.log(issue.publicationDate)
+    })
   })
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
+
+  :global(.title) {
+    font-size: $font-size_normal;
+    text-transform: uppercase;
+    font-weight: normal;
+  }
 
   .landing {
     background: $grey_solid;

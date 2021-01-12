@@ -6,7 +6,14 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { Swiper, SwiperSlide } from 'swiper/svelte';
+  import SwiperCore, { Navigation, Pagination } from 'swiper'
+  import ArrowLeft from "./Graphics/ArrowLeft.svelte"
+  import ArrowRight from "./Graphics/ArrowRight.svelte"
+  import { Swiper, SwiperSlide } from 'swiper/svelte'
+  import 'swiper/swiper-bundle.css'
+
+  // *** INSTALLATION
+  SwiperCore.use([Navigation, Pagination])
 
   // *** COMPONENTS
   import Cover from "./Cover.svelte"
@@ -17,21 +24,62 @@
 
 <style lang="scss">
   @import "../variables.scss";
-  @import 'swiper/swiper.scss';
 
   .covershow {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
+    padding: 0 $margin;
 
-    :global(.swiper-container) {
-      height: 100% !important;
-      background-color: red;
+    .title {
+      font-family: $sans-stack;
+      letter-spacing: $title_letter_spacing;
 
+      .line {
+        display: block;
+
+        &:first-child {
+          margin-bottom: 12px;
+        }
+      }
     }
 
-    :global(.swiper-wrapper) {
-      height: 100%;
-      background: yellow;
+    .top,
+    .bottom {
+      height: 15%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .middle {
+      height: 70%;
+    }
+
+    .edition {
+      text-align: center;
+      width: 100%;
+    }
+
+    .swiper-controls-unique {
+      position: absolute;
+      z-index: 10000000;
+      width: 60px;
+      height: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .swiper-prev-unique {
+      left: 0;
+      right: auto;
+    }
+
+    .swiper-next-unique {
+      right: 0;
+      left: auto;
     }
 
     @include screen-size("small") {
@@ -40,28 +88,40 @@
 </style>
 
 <div class="covershow">
-  <Swiper
-    spaceBetween={120}
-    slidesPerView={2}
-    on:slideChange={() => console.log('slide change')}
-    on:swiper={(e) => console.log(e.detail[0])}
-  >
-    <SwiperSlide>
-      One
-    </SwiperSlide>
-    <SwiperSlide>
-      One
-    </SwiperSlide>
-    <SwiperSlide>
-      One
-    </SwiperSlide>
-    <SwiperSlide>
-      One
-    </SwiperSlide>
-    <!-- {#each issues as issue}
-      <SwiperSlide>
-        <Cover {issue} />
-      </SwiperSlide>
-    {/each} -->
-  </Swiper>
+  <div class="top">
+    <h1 class="edition title">
+      <span class="line">
+        Seneste
+      </span>
+      <span class="line">
+        Nummer
+      </span>
+    </h1>
+  </div>
+  <div class="middle">
+    <Swiper
+      touchRatio={0}
+      spaceBetween={20}
+      slidesPerView={2}
+      navigation={{ prevEl: '.swiper-prev-unique', nextEl: '.swiper-next-unique' }}
+      pagination={{ clickable: true }}
+      on:slideChange={() => console.log('slide change')}
+      on:swiper={(e) => console.log(e.detail[0])}
+    >
+      {#each issues as issue}
+        <SwiperSlide>
+          <Cover {issue} />
+        </SwiperSlide>
+      {/each}
+    </Swiper>
+    <div class="swiper-controls-unique swiper-prev-unique">
+      <ArrowLeft />
+    </div>
+    <div class="swiper-controls-unique swiper-next-unique">
+      <ArrowRight />
+    </div>
+  </div>
+  <div class="bottom">
+    <!-- Bottom -->
+  </div>
 </div>
