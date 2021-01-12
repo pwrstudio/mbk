@@ -25,7 +25,7 @@
   let description = ""
   let image = ""
 
-  console.dir(post)
+  // console.dir(post)
 
   const stripHtml = html => {
     let tmp = document.createElement("DIV")

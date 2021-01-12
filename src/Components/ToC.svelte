@@ -9,13 +9,13 @@
   import { links } from "svelte-routing"
 
   // *** STORES
-  import { menuActive, tableOfContentActive } from "../stores.js"
+  import { menuActive, tableOfContentsActive, tableOfContents } from "../stores.js"
 
   // *** VARIABLES
   let tocOpen = false
 
   $: {
-    tableOfContentActive.set(tocOpen)
+    tableOfContentsActive.set(tocOpen)
   }
 </script>
 
@@ -24,7 +24,9 @@
 
   .toc {
     margin-left: $menu_button_width;
+    padding-left: $margin / 2;
     background: $grey_solid;
+    z-index: 999;
 
     &.open {
       transform: translateX(0);
@@ -41,17 +43,25 @@
   }
 </style>
 
-<div class="bar toc" use:links class:open={$tableOfContentActive} class:parentOpen={$menuActive}>
-  <div class="bar-content">
-    <h1 class="title">
-      Hej
-    </h1>
-    <p>
-      <a href="/">
-        HOME
-      </a>
-    </p>
-  </div>
+<div class="bar toc" use:links class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
+
+  {#if $tableOfContents}
+    <ul class="bar-menu">
+      {#each $tableOfContents as article}
+        <li
+          class="bar-menu-item title"
+        >
+          <a href={'#' + article.slug.current} on:click={e => { window.location.replace(e.target.href) }}>
+            {article.title}
+          </a>
+        </li>
+      {/each}
+    </ul>
+  {/if}
+
+  <a href="#no">
+    Test
+  </a>
 
   <div class="bar-button" on:click={e => tocOpen = !tocOpen}>
     <h1 class="title">

@@ -45,9 +45,6 @@
 
     .news-item {
       .header {
-        display: flex;
-        flex-flow: row;
-        justify-content: space-between;
         font-size: $font_size_small;
         border-top: $border_black;
         border-bottom: $border_black;

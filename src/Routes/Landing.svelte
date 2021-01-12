@@ -18,17 +18,8 @@
   // *** PROP
   export let location
 
-  // *** VARIABLES
-  let pathname
-
-  $: {
-    pathname = location.pathname
-  }
-
   // *** CONSTANTS
   const query = "*[_type == 'issue'] | order(publicationDate)"
-
-  // *** CONSTANTS
   const issues = loadData(query)
 
   issues.then(issues => {

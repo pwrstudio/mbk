@@ -14,7 +14,7 @@
   import ArrowDown from "./Graphics/ArrowDown.svelte"
 
   // *** STORES
-  import { menuActive, menuItemActive, menuContent, tableOfContentActive } from "../stores.js"
+  import { menuActive, menuItemActive, menuContent, tableOfContentsActive } from "../stores.js"
 
   // *** CONSTANTS
   const queryNews = "*[_type == 'news'] | order(publicationDate desc)"
@@ -70,6 +70,7 @@
     Shared with Table of Content
   */
   :global(.bar) {
+    z-index: 1000;
     box-sizing: border-box;
     position: fixed;
     top: 0;
@@ -107,43 +108,42 @@
     width: $menu_button_width;
   }
 
+  :global(.bar-menu) {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    width: 100%;
+
+    .graphic {
+      width: 80px;
+      margin: 0 auto 12px;
+    }
+  }
+
+  :global(.bar-menu-item) {
+    margin: 0;
+    padding: 16px 0 12px;
+    border-top: $border_black;
+    cursor: pointer;
+
+    &.active {
+      &:before {
+        content: '→';
+        margin-right: 10px;
+      }
+    }
+
+    &:last-child {
+      border-bottom: $border_black;
+    }
+  }
+
   .bar {
-    z-index: 1000;
     background: $green;
 
     .bar-content {
       flex-shrink: 1;
       overflow-y: scroll;
-    }
-
-    .bar-menu {
-      padding: 0;
-      margin: 0;
-      list-style-type: none;
-      width: 100%;
-
-      .graphic {
-        width: 80px;
-        margin: 0 auto 12px;
-      }
-
-      .bar-menu-item {
-        margin: 0;
-        padding: 16px 0 12px;
-        border-top: $border_black;
-        cursor: pointer;
-
-        &.active {
-          &:before {
-            content: '→';
-            margin-right: 10px;
-          }
-        }
-
-        &:last-child {
-          border-bottom: $border_black;
-        }
-      }
     }
 
     .bar-button {
