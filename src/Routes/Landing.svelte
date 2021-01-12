@@ -22,11 +22,7 @@
   const issues = loadData(query)
 
   issues.then(issues => {
-    console.log('I have issues')
-    console.dir(issues)
-    issues.forEach((issue) => {
-      console.log(issue.publicationDate)
-    })
+    // console.dir(issues)
   })
 </script>
 

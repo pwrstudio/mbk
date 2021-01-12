@@ -105,8 +105,6 @@
       slidesPerView={2}
       navigation={{ prevEl: '.swiper-prev-unique', nextEl: '.swiper-next-unique' }}
       pagination={{ clickable: true }}
-      on:slideChange={() => console.log('slide change')}
-      on:swiper={(e) => console.log(e.detail[0])}
     >
       {#each issues as issue}
         <SwiperSlide>

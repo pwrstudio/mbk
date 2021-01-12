@@ -17,13 +17,7 @@
   // *** VARIABLES
   let el
 
-  $: {
-    // console.log(name, this)
-  }
-
   afterUpdate(() => {
-    console.log('afetr')
-    console.log()
     el.parentElement.scrollTo(0,0)
   })
 

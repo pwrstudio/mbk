@@ -46,6 +46,11 @@
     <h1 class="title">
       Hej
     </h1>
+    <p>
+      <a href="/">
+        HOME
+      </a>
+    </p>
   </div>
 
   <div class="bar-button" on:click={e => tocOpen = !tocOpen}>

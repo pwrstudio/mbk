@@ -28,7 +28,7 @@
   const post = loadData(query, params)
 
   post.then(post => {
-    console.log("post", post)
+    // console.log("post", post)
   })
 </script>
 

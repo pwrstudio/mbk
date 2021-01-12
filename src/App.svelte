@@ -19,7 +19,13 @@
   let pathname
 
   $: {
+    console.log(window)
     pathname = location.pathname
+    handleRouteChange(pathname)
+  }
+
+  const handleRouteChange = e => {
+    console.log('route change')
   }
 </script>
 
