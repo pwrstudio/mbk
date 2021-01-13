@@ -105,7 +105,7 @@
   <div class="middle">
     <Swiper
       touchRatio={0}
-      spaceBetween={20}
+      spaceBetween={8}
       slidesPerView={2}
       navigation
       pagination={{ clickable: true }}
