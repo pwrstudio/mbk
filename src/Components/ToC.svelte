@@ -49,11 +49,10 @@
     <ul class="bar-menu">
       {#each $tableOfContents as article}
         <li
-          class="bar-menu-item title"
+          class="bar-menu-item title link"
+          on:click|preventDefault={e => { window.location.replace('#' + article.slug.current) }}
         >
-          <a href={'#' + article.slug.current} on:click={e => { window.location.replace(e.target.href) }}>
-            {article.title}
-          </a>
+          {article.title}
         </li>
       {/each}
     </ul>

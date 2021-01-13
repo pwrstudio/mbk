@@ -46,9 +46,11 @@
     text-rendering: optimizeLegibility;
   }
 
-  :global(a) {
+  :global(a),
+  :global(.link) {
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
   }
 
   :global(.header) {
