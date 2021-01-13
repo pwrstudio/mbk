@@ -7,7 +7,6 @@
 
   // IMPORTS
   import { Router, Route } from "svelte-routing"
-  import { beforeUpdate, afterUpdate } from "svelte"
   // COMPONENTS
   import MetaData from "./Components/MetaData.svelte"
   import Menu from "./Components/Menu.svelte"

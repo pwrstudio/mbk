@@ -29,6 +29,7 @@
     font-family: $sans-stack;
     display: flex;
     flex-flow: row nowrap;
+    scroll-snap-align: start;
 
     .header {
       padding-top: 8px;
@@ -50,6 +51,14 @@
       padding: $margin $margin / 4;
       height: 100%;
       overflow-y: scroll;
+
+      .block {
+        margin-bottom: $margin;
+
+        &.link {
+          text-align: center;
+        }
+      }
 
       &.slideshow {
         overflow-y: hidden;
@@ -85,7 +94,7 @@
 
       {#if index < $currentArticles.length - 1}
         <div
-          class="link"
+          class="block link"
           on:click|preventDefault={e => { window.location.replace('#' + $currentArticles[index + 1].slug.current) }}>
           <h2 class="title next">
             Næste: {$currentArticles[index + 1].title}

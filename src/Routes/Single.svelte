@@ -9,6 +9,7 @@
   import { loadData, renderBlockText } from "../sanity.js"
   import isArray from "lodash/isArray"
   import { fade } from "svelte/transition"
+  import { onMount } from "svelte"
 
 // STORES
   import { tableOfContents, currentPost, currentArticles } from "../stores.js"
@@ -30,7 +31,7 @@
   const postData = loadData(query, params)
   const articlesData = loadData(articlesQuery, params)
 
-  let ready = false
+  let el, isScrolling
 
   postData.then(post => {
     $currentPost = post
@@ -39,7 +40,19 @@
 
   articlesData.then(articles => {
     $currentArticles = articles.tableOfContents
-    console.log(articles)
+  })
+
+  const handleScroll = e => {
+    clearTimeout(isScrolling)
+
+    isScrolling = setTimeout(() => {
+      // Run the callback
+      console.log( 'Scrolling has stopped.' );
+	  }, 200)
+  }
+
+  onMount(() => {
+    el.addEventListener('scroll', handleScroll)
   })
 </script>
 
@@ -53,6 +66,9 @@
   .single {
     background-color: $white;
     padding-left: 2 * $menu_button_width;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory !important;
   }
 
   // .single {
@@ -149,7 +165,7 @@
 </style>
 
 {#await $currentPost then post}
-  <div class="single">
+  <div class="single" bind:this={el}>
     <Articles />
 
     <!-- MAIN CONTENT -->
