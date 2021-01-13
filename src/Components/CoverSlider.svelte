@@ -7,8 +7,8 @@
 
   // *** IMPORTS
   import SwiperCore, { Navigation, Pagination } from 'swiper'
-  import ArrowLeft from "./Graphics/ArrowLeft.svelte"
-  import ArrowRight from "./Graphics/ArrowRight.svelte"
+  // import ArrowLeft from "./Graphics/ArrowLeft.svelte"
+  // import ArrowRight from "./Graphics/ArrowRight.svelte"
   import { Swiper, SwiperSlide } from 'swiper/svelte'
   import 'swiper/swiper-bundle.css'
 
@@ -30,6 +30,10 @@
     width: 100%;
     height: 100%;
     padding: 0 $margin;
+
+    :global(.swiper-container) {
+      --swiper-theme-color: $black;
+    }
 
     .title {
       font-family: $sans-stack;
@@ -103,7 +107,7 @@
       touchRatio={0}
       spaceBetween={20}
       slidesPerView={2}
-      navigation={{ prevEl: '.swiper-prev-unique', nextEl: '.swiper-next-unique' }}
+      navigation
       pagination={{ clickable: true }}
     >
       {#each issues as issue}
@@ -112,12 +116,12 @@
         </SwiperSlide>
       {/each}
     </Swiper>
-    <div class="swiper-controls-unique swiper-prev-unique">
+    <!-- <div class="swiper-controls-unique swiper-prev-unique">
       <ArrowLeft />
     </div>
     <div class="swiper-controls-unique swiper-next-unique">
       <ArrowRight />
-    </div>
+    </div> -->
   </div>
   <div class="bottom">
     <!-- Bottom -->

@@ -6,12 +6,13 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { Swiper, SwiperSlide } from "swiper/svelte"
   import { fade } from "svelte/transition"
   import { renderBlockText, urlFor } from "../sanity.js"
+  import Slideshow from "../Components/Slideshow.svelte"
   import ArrowDown from "../Components/Graphics/ArrowDown.svelte"
 
   import "swiper/swiper-bundle.css"
+  // import "./swipers.css"
 
   // *** STORES
   import { currentPost, currentArticles } from '../stores.js'
@@ -32,8 +33,8 @@
     scroll-snap-align: start;
 
     .header {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: $margin_xs;
+      padding-bottom: $margin_xs;
       border-top: $border_black;
     }
 
@@ -42,7 +43,16 @@
       font-size: $font_size_larger;
       line-height: $line_height_larger;
       font-weight: normal;
-      margin: 0;
+      margin: 0 0 $margin_xs;
+    }
+
+    .byline {
+      border-bottom: $border_black;
+      margin-bottom: $margin_xs;
+
+      :global(p) {
+        margin: 0;
+      }
     }
 
     .col {
@@ -86,9 +96,11 @@
         <!-- TITLE -->
         <h1 class="article-title">{article.title}</h1>
         <!-- BYLINE -->
-        <div class="byline">
-          <!-- {@html renderBlockText(post.byline.content)} -->
-        </div>
+          <div class="byline">
+            {#if article.byline.content}
+              {@html renderBlockText(article.byline.content)}
+            {/if}
+          </div>
       </div>
 
       <div class="block main">
@@ -111,16 +123,7 @@
 
     <div class="col" class:slideshow={article.slideshow}>
       {#if article.slideshow}
-        <Swiper>
-          {#each article.slideshow as slide}
-            <SwiperSlide>
-              <img
-                src={urlFor(slide.asset).quality(80).height(window.innerHeight).url()}
-                alt={slide.asset.alt}
-              >
-            </SwiperSlide>
-          {/each}
-        </Swiper>
+        <Slideshow slides={article.slideshow} />
       {/if}
     </div>
   </div>

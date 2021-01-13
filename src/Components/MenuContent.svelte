@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+  import ArrowDown from "./Graphics/ArrowDown.svelte"
   import { afterUpdate } from 'svelte'
   import { renderBlockText, urlFor } from '../sanity.js'
   import { formattedDate } from '../global.js'
@@ -18,7 +19,7 @@
   let el
 
   afterUpdate(() => {
-    el.parentElement.scrollTo(0,0)
+    el.scrollTo(0,0)
   })
 
 </script>
@@ -28,11 +29,12 @@
   @import "../sanity.scss";
 
   .menu-content {
+    box-sizing: border-box;
     padding-bottom: $margin;
-
-    .paragraph {
-      // 
-    }
+    flex-shrink: 1;
+    overflow-y: scroll;
+    scroll-snap-type: y proximity;
+    font-size: $font_size_small;
 
     .logo {
       max-height: 80vh;
@@ -44,6 +46,9 @@
     }
 
     .news-item {
+      min-height: 100%;
+      scroll-snap-align: start;
+
       .header {
         font-size: $font_size_small;
         border-top: $border_black;
@@ -56,9 +61,9 @@
   }
 </style>
 
-<div class="menu-content" bind:this={el}>
+<div class="bar-content menu-content" bind:this={el}>
   {#if name === 'news' && isArray(content)}
-    {#each content as block}
+    {#each content as block, index}
       <div class="news-item">
         <div class="header">
           <span>
@@ -75,6 +80,11 @@
         <div class="paragraph">
           {@html renderBlockText(block.content.content)}
         </div>
+        {#if index < content.length - 1}
+          <div class="graphic">
+            <ArrowDown />
+          </div>
+        {/if}
       </div>
     {/each}
   {:else if name === 'about'}

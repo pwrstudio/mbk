@@ -13,7 +13,7 @@
   import CoverSlider from "../Components/CoverSlider.svelte"
 
   // *** STORES
-  import { menuActive } from '../stores.js'
+  import { currentPost } from '../stores.js'
 
   // *** PROP
   export let location
@@ -22,9 +22,7 @@
   const query = "*[_type == 'issue'] | order(publicationDate)"
   const issues = loadData(query)
 
-  issues.then(issues => {
-    // console.dir(issues)
-  })
+  $currentPost = false
 </script>
 
 <style lang="scss">
@@ -36,9 +34,9 @@
   }
 
   :global(.title) {
-    font-size: $font-size_normal;
     text-transform: uppercase;
     font-weight: normal;
+    font-size: inherit;
   }
 
   .landing {
@@ -48,18 +46,12 @@
     position: relative;
     float: right;
     transition: width 0.2s ease-out;
-
-    &.expanded {
-      width: calc(100% - #{$menu_width});
-      // background: $grey_solid;
-    }
   }
 </style>
 
 {#await issues then issues}
   <div
     class="landing"
-    class:expanded={$menuActive}
     use:links>
     <CoverSlider {issues} />
   </div>

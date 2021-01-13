@@ -72,7 +72,7 @@
     padding-left: 2 * $menu_button_width;
     height: 100vh;
     overflow-y: scroll;
-    scroll-snap-type: y mandatory !important;
+    scroll-snap-type: y mandatory;
   }
 
   // .single {

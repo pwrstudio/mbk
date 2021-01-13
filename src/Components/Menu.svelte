@@ -11,7 +11,6 @@
 
   // *** COMPONENTS
   import MenuContent from "./MenuContent.svelte"
-  import ArrowDown from "./Graphics/ArrowDown.svelte"
 
   // *** STORES
   import { menuActive, menuItemActive, menuContent, tableOfContentsActive } from "../stores.js"
@@ -82,6 +81,7 @@
     padding: $margin;
     padding-right: $menu_button_width;
     font-family: $sans-stack;
+    font-size: $font_size_small;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
@@ -141,9 +141,9 @@
   .bar {
     background: $green;
 
-    .bar-content {
-      flex-shrink: 1;
-      overflow-y: scroll;
+    :global(p.normal) {
+      font-size: $font_size_small;
+      line-height: $line-height_small;
     }
 
     .bar-button {
@@ -199,17 +199,12 @@
 
 <div class="bar" use:links class:open={menuOpen}>
 
-  <div class="bar-content">
-    <MenuContent
-      name={$menuItemActive}
-      content={$menuContent}
-    />
-  </div>
+  <MenuContent
+    name={$menuItemActive}
+    content={$menuContent}
+  />
 
   <ul class="bar-menu">
-    <div class="graphic">
-      <ArrowDown />
-    </div>
     <li
       class="bar-menu-item title"
       id="news"

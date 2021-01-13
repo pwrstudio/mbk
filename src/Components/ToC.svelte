@@ -61,16 +61,18 @@
 {#if $tableOfContents}
   <div class="bar toc" use:links class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
 
-      <ul class="bar-menu">
-        {#each $tableOfContents as article, index}
-          <li
-            class="bar-menu-item title link"
-            on:click={e => {goTo(article)}}
-          >
-            {index === 0 ? "" : `${index}. `} {article.title}
-          </li>
-        {/each}
-      </ul>
+    <ul class="bar-menu">
+      {#each $tableOfContents as article, index}
+        <li
+          class="bar-menu-item title link"
+          on:click={e => {goTo(article)}}
+        >
+          {index === 0 ? "" : `${index}. `} {article.title}
+        </li>
+      {/each}
+    </ul>
+
+    <a href="/" class="title">Hjem</a>
 
     <div class="bar-button" on:click={e => tocOpen = !tocOpen}>
       <h1 class="title">

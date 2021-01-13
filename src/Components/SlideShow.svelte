@@ -6,25 +6,37 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { renderBlockText, urlFor } from "../sanity.js"
+  import { urlFor } from "../sanity.js"
+  import { Swiper, SwiperSlide } from "swiper/svelte"
 
   // *** PROPS
-  export let images = []
+  export let slides = []
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
 
   .slideshow {
+    height: 100%;
+    overflow: hidden;
+
+    :global(.swiper-container) {
+      height: 100%;
+    }
     @include screen-size("small") {
     }
   }
 </style>
 
 <div class="slideshow">
-  {#each images as image}
-    <!-- IMAGE -->
-    <img
-      src={urlFor(image.asset).width(400).quality(90).auto('format').url()} />
-  {/each}
+  <Swiper>
+    {#each slides as slide}
+      <SwiperSlide>
+        <img
+          src={urlFor(slide.asset).quality(80).height(window.innerHeight - 42).url()}
+          alt={slide.asset.alt}
+        >
+      </SwiperSlide>
+    {/each}
+  </Swiper>
 </div>

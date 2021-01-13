@@ -15,8 +15,10 @@
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
 
-  import { menuActive, tableOfContentsActive } from "./stores.js"
+  // *** STORES
+  import { menuActive, tableOfContentsActive, currentPost } from "./stores.js"
 
+  // *** VARIABLES
   let lastPos, timeout, lastMoved, hideMenu
 
   hideMenu = false
@@ -26,7 +28,9 @@
     hideMenu = false
     clearTimeout(timeout)
 
-    if (lastPos > 100 && $menuActive === false && $tableOfContentsActive === false) {
+    const conditions = $currentPost !== false && lastPos > 100 && $menuActive === false && $tableOfContentsActive === false
+
+    if (conditions) {
       timeout = setTimeout(() => {
         hideMenu = true
         console.log('hide menu', hideMenu)
@@ -40,6 +44,8 @@
 
   :global(body),
   :global(main) {
+    font-size: font_size_normal;
+    line-height: line-height;
     margin: 0;
     padding: 0;
     text-rendering: optimizeLegibility;
@@ -50,6 +56,18 @@
     color: inherit;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  :global(p.normal) {
+    font-size: $font_size_normal;
+    line-height: $line-height;
+    margin-top: 0;
+  }
+
+  :global(p.h1) {
+    font-size: inherit;
+    text-transform: uppercase;
+    margin-top: 0;
   }
 
   :global(.header) {
@@ -63,6 +81,7 @@
     top: 0;
     transform: translateX(0);
     transition: transform 0.8s ease;
+    z-index: 10000000000;
 
     &.hide {
       transform: translateX(-2 * $menu_button_width);
