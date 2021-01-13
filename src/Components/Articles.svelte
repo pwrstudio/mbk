@@ -53,7 +53,9 @@
       overflow-y: scroll;
 
       .block {
-        margin-bottom: $margin;
+        &.main {
+          margin-bottom: $margin;
+        }
 
         &.link {
           text-align: center;
@@ -73,6 +75,7 @@
 
 {#each $currentArticles as article, index}
   <div class="article" id={article.slug.current}>
+
     <div class="col">
       <!-- META -->
       <div class="meta" in:fade>
@@ -88,7 +91,7 @@
         </div>
       </div>
 
-      <div class="block">
+      <div class="block main">
         {@html renderBlockText(article.content.content) }
       </div>
 
@@ -99,7 +102,9 @@
           <h2 class="title next">
             Næste: {$currentArticles[index + 1].title}
           </h2>
-          <ArrowDown />
+          <div class="graphic">
+            <ArrowDown />
+          </div>
         </div>
       {/if}
     </div>

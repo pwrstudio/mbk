@@ -46,7 +46,11 @@
     clearTimeout(isScrolling)
 
     isScrolling = setTimeout(() => {
-      // Run the callback
+      //
+      //
+      // TODO: Add something to update the hash
+      //
+      //
       console.log( 'Scrolling has stopped.' );
 	  }, 200)
   }

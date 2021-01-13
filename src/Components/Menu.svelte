@@ -113,11 +113,11 @@
     margin: 0;
     list-style-type: none;
     width: 100%;
+  }
 
-    .graphic {
-      width: 80px;
-      margin: 0 auto 12px;
-    }
+  :global(.graphic) {
+    width: 80px;
+    margin: 0 auto 12px;
   }
 
   :global(.bar-menu-item) {
