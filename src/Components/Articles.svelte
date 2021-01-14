@@ -6,17 +6,16 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { fade } from "svelte/transition"
-  import { renderBlockText, urlFor } from "../sanity.js"
-  import Slideshow from "../Components/Slideshow.svelte"
-  import ArrowDown from "../Components/Graphics/ArrowDown.svelte"
+  import { fade } from "svelte/transition";
+  import { renderBlockText, urlFor } from "../sanity.js";
+  import Slideshow from "./Slideshow.svelte";
+  import ArrowDown from "./Graphics/ArrowDown.svelte";
 
-  import "swiper/swiper-bundle.css"
+  import "swiper/swiper-bundle.css";
   // import "./swipers.css"
 
   // *** STORES
-  import { currentPost, currentArticles } from '../stores.js'
-
+  import { currentPost, currentArticles } from "../stores.js";
 </script>
 
 <style lang="scss">
@@ -85,7 +84,6 @@
 
 {#each $currentArticles as article, index}
   <div class="article" id={article.slug.current}>
-
     <div class="col">
       <!-- META -->
       <div class="meta" in:fade>
@@ -96,24 +94,24 @@
         <!-- TITLE -->
         <h1 class="article-title">{article.title}</h1>
         <!-- BYLINE -->
-          <div class="byline">
-            {#if article.byline.content}
-              {@html renderBlockText(article.byline.content)}
-            {/if}
-          </div>
+        <div class="byline">
+          {#if article.byline.content}
+            {@html renderBlockText(article.byline.content)}
+          {/if}
+        </div>
       </div>
 
       <div class="block main">
-        {@html renderBlockText(article.content.content) }
+        {@html renderBlockText(article.content.content)}
       </div>
 
       {#if index < $currentArticles.length - 1}
         <div
           class="block link"
-          on:click|preventDefault={e => { window.location.replace('#' + $currentArticles[index + 1].slug.current) }}>
-          <h2 class="title next">
-            Næste: {$currentArticles[index + 1].title}
-          </h2>
+          on:click|preventDefault={(e) => {
+            window.location.replace('#' + $currentArticles[index + 1].slug.current);
+          }}>
+          <h2 class="title next">Næste: {$currentArticles[index + 1].title}</h2>
           <div class="graphic">
             <ArrowDown />
           </div>
