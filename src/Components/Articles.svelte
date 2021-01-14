@@ -8,7 +8,7 @@
   // *** IMPORTS
   import { fade } from "svelte/transition";
   import { renderBlockText, urlFor } from "../sanity.js";
-  import Slideshow from "./Slideshow.svelte";
+  import Slideshow from "./SlideShow.svelte";
   import ArrowDown from "./Graphics/ArrowDown.svelte";
 
   import "swiper/swiper-bundle.css";
