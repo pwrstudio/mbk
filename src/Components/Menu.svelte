@@ -149,6 +149,7 @@
     .bar-button {
       .title {
         display: inline-block;
+        justify-self: flex-start;
 
         &.bottom {
           margin-bottom: -1 * $title_letter_spacing;

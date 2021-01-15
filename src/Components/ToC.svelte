@@ -7,19 +7,33 @@
 
   // *** IMPORTS
   import { links } from "svelte-routing"
+  import isArray from "lodash/isArray"
 
   // *** STORES
-  import { menuActive, tableOfContentsActive, tableOfContents } from "../stores.js"
+  import {
+      menuActive,
+      tableOfContentsActive,
+      hash,
+      tableOfContentsActiveHash, // derived from hash
+      tableOfContents
+    } from "../stores.js"
 
   // *** VARIABLES
   let tocOpen = false
 
   $: {
     tableOfContentsActive.set(tocOpen)
+
+    if (isArray($tableOfContents) && $hash === false) {
+      goTo($tableOfContents[0])
+    }
   }
 
-  let goTo = article => {
-    window.location.replace('#' + article.slug.current)
+  const goTo = article => {
+    $menuActive = false
+    $tableOfContentsActive = false
+    $hash = article.slug.current
+    window.location.replace($tableOfContentsActiveHash)
   }
 </script>
 
@@ -31,6 +45,14 @@
     padding-left: $margin / 2;
     background: $grey_solid;
     z-index: 999;
+
+    .bar-button {
+      justify-content: start;
+
+      .title {
+        margin-bottom: $title_letter_spacing;
+      }
+    }
 
     &.open {
       transform: translateX(0);
@@ -62,31 +84,37 @@
   <div class="bar toc" use:links class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
 
     <ul class="bar-menu">
+      <li
+        class="bar-menu-item title link"
+        on:click={e => {window.location.replace('/')}}
+      >
+        TILBAGE TIL FORSIDE
+      </li>
       {#each $tableOfContents as article, index}
         <li
           class="bar-menu-item title link"
           on:click={e => {goTo(article)}}
         >
-          {index === 0 ? "" : `${index}. `} {article.title}
+          {`${index + 1}. `} {article.title}
         </li>
       {/each}
     </ul>
 
-    <a href="/" class="title">Hjem</a>
-
-    <div class="bar-button" on:click={e => tocOpen = !tocOpen}>
+    <div class="bar-button" on:click|self={e => tocOpen = !tocOpen}>
       <h1 class="title">
-        INDHOLD
+        <span on:click={e => tocOpen = !tocOpen}>
+          INDHOLD
+        </span>
+      </h1>
+      <h1 class="title">
         {#each $tableOfContents as article, index}
-          {#if index > 0}
-            <span
-              class="articleNumber"
-              class:active={window.location.href.includes(article.slug.current)}
-              on:click={e => {goTo(article)}}
-            >
-              {index}
-            </span>
-          {/if}
+          <span
+            class="articleNumber"
+            class:active={$hash === article.slug.current}
+            on:click={e => {goTo(article)}}
+          >
+            {index + 1}
+          </span>
         {/each}
       </h1>
     </div>

@@ -31,9 +31,9 @@
     height: 100%;
     padding: 0 $margin;
 
-    :global(.swiper-container) {
-      --swiper-theme-color: $black;
-    }
+    // :global(.swiper-container) {
+    //   --swiper-theme-color: $black;
+    // }
 
     .title {
       font-family: $sans-stack;

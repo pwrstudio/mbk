@@ -7,9 +7,6 @@
 
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
-  import isArray from "lodash/isArray"
-  import { fade } from "svelte/transition"
-  import { onMount } from "svelte"
 
 // STORES
   import { tableOfContents, currentPost, currentArticles } from "../stores.js"
@@ -31,8 +28,6 @@
   const postData = loadData(query, params)
   const articlesData = loadData(articlesQuery, params)
 
-  let el, isScrolling
-
   postData.then(post => {
     $currentPost = post
     $tableOfContents = post.tableOfContents
@@ -40,23 +35,6 @@
 
   articlesData.then(articles => {
     $currentArticles = articles.tableOfContents
-  })
-
-  const handleScroll = e => {
-    clearTimeout(isScrolling)
-
-    isScrolling = setTimeout(() => {
-      //
-      //
-      // TODO: Add something to update the hash
-      //
-      //
-      console.log( 'Scrolling has stopped.' );
-	  }, 200)
-  }
-
-  onMount(() => {
-    el.addEventListener('scroll', handleScroll)
   })
 </script>
 
@@ -71,7 +49,7 @@
     background-color: $white;
     padding-left: 2 * $menu_button_width;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: hidden;
     scroll-snap-type: y mandatory;
   }
 
@@ -169,31 +147,7 @@
 </style>
 
 {#await $currentPost then post}
-  <div class="single" bind:this={el}>
+  <div class="single">
     <Articles />
-
-    <!-- MAIN CONTENT -->
-    <!-- SOME MAIN CONTENT -->
-    <!-- {#if post.content && post.content.content && isArray(post.content.content)}
-      <div class="content" in:fade={{ delay: 300 }}>
-        {#each post.content.content as block}
-          {#if block._type === 'block'}
-            {@html renderBlockText(block)}
-          {/if}
-          {#if block._type === 'image'}
-            <ImageBlock {block} />
-          {/if}
-          {#if block._type === 'videoBlock'}
-            <VideoBlock {block} />
-          {/if}
-          {#if block._type === 'audioBlock'}
-            <AudioBlock {block} />
-          {/if}
-          {#if block._type === 'embedBlock'}
-            <EmbedBlock {block} />
-          {/if}
-        {/each}
-      </div>
-    {/if} -->
   </div>
 {/await}

@@ -10,6 +10,7 @@
   import { renderBlockText, urlFor } from "../sanity.js"
   import Slideshow from "../Components/Slideshow.svelte"
   import ArrowDown from "../Components/Graphics/ArrowDown.svelte"
+  import { menuActive, tableOfContentsActive, hash, tableOfContentsActiveHash } from "../stores.js"
 
   import "swiper/swiper-bundle.css"
   // import "./swipers.css"
@@ -17,6 +18,12 @@
   // *** STORES
   import { currentPost, currentArticles } from '../stores.js'
 
+  const goTo = article => {
+    $menuActive = false
+    $tableOfContentsActive = false
+    $hash = article.slug.current
+    window.location.replace($tableOfContentsActiveHash)
+  }
 </script>
 
 <style lang="scss">
@@ -36,6 +43,10 @@
       padding-top: $margin_xs;
       padding-bottom: $margin_xs;
       border-top: $border_black;
+
+      .right {
+        text-align: right;
+      }
     }
 
     .article-title {
@@ -62,6 +73,32 @@
       height: 100%;
       overflow-y: scroll;
 
+      &.zoomableSlideshowLayout {
+        padding: $margin 0;
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+
+        .block {
+          padding: 0 $margin / 4;
+          width: 50%;
+          box-sizing: border-box;
+
+          &.full {
+            width: 100%;
+          }
+
+          &.main {
+            padding-left: $margin_xs;
+
+            .content {
+              padding-top: 6px;
+              border-top: $border_black;
+            }
+          }
+        }
+      }
+
       .block {
         &.main {
           margin-bottom: $margin;
@@ -84,33 +121,56 @@
 </style>
 
 {#each $currentArticles as article, index}
-  <div class="article" id={article.slug.current}>
+  <div
+    class="article"
+    id={article.slug.current}
+  >
 
-    <div class="col">
+    <div
+      class="col"
+      class:zoomableSlideshowLayout={article.zoomableSlideshowLayout === true}>
+
       <!-- META -->
-      <div class="meta" in:fade>
+      <div class="block meta" in:fade>
         <div class="header">
-          <span>Magasin for Bygningskunst og Kultur</span>
-          <span>{$currentPost.title}</span>
+          <span>
+            Magasin for Bygningskunst og Kultur
+          </span>
+          <span class="right">
+            {$currentPost.title}
+          </span>
         </div>
-        <!-- TITLE -->
-        <h1 class="article-title">{article.title}</h1>
-        <!-- BYLINE -->
-          <div class="byline">
-            {#if article.byline.content}
-              {@html renderBlockText(article.byline.content)}
-            {/if}
-          </div>
+
+        <h1 class="article-title">
+          {article.title}
+        </h1>
+
+        <div class="byline">
+          {#if article.byline.content}
+            {@html renderBlockText(article.byline.content)}
+          {/if}
+        </div>
       </div>
 
       <div class="block main">
-        {@html renderBlockText(article.content.content) }
+        <div class="content">
+          {@html renderBlockText(article.content.content) }
+        </div>
       </div>
+
+      {#if article.zoomableSlideshowLayout === true}
+        <div class="block full">
+          <Slideshow
+            zoomable
+            slides={article.slideshow} />
+        </div>
+      {/if}
 
       {#if index < $currentArticles.length - 1}
         <div
           class="block link"
-          on:click|preventDefault={e => { window.location.replace('#' + $currentArticles[index + 1].slug.current) }}>
+          class:full={article.zoomableSlideshowLayout === true}
+          on:click|preventDefault={e => { goTo($currentArticles[index + 1]) }}>
           <h2 class="title next">
             Næste: {$currentArticles[index + 1].title}
           </h2>
@@ -121,10 +181,15 @@
       {/if}
     </div>
 
-    <div class="col" class:slideshow={article.slideshow}>
-      {#if article.slideshow}
-        <Slideshow slides={article.slideshow} />
-      {/if}
-    </div>
+    {#if !article.zoomableSlideshowLayout}
+      <div
+        class="col"
+        class:slideshow={article.slideshow}
+      >
+        {#if article.slideshow}
+          <Slideshow slides={article.slideshow} />
+        {/if}
+      </div>
+    {/if}
   </div>
 {/each}

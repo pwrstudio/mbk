@@ -1,4 +1,5 @@
 import { format, getYear } from "date-fns";
+import { menuActive, tableOfContentsActive, hash, tableOfContentsActiveHash } from "./stores.js"
 
 export const formattedDate = (start, end) => {
     if (!start) {

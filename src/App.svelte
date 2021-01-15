@@ -15,28 +15,8 @@
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
 
-  // *** STORES
-  import { menuActive, tableOfContentsActive, currentPost } from "./stores.js"
-
   // *** VARIABLES
-  let lastPos, timeout, lastMoved, hideMenu
-
-  hideMenu = false
-
-  const pollActivity = e => {
-    lastPos = e.screenX
-    hideMenu = false
-    clearTimeout(timeout)
-
-    const conditions = $currentPost !== false && lastPos > 100 && $menuActive === false && $tableOfContentsActive === false
-
-    if (conditions) {
-      timeout = setTimeout(() => {
-        hideMenu = true
-        console.log('hide menu', hideMenu)
-      }, 5000)
-    }
-  }
+  let hideMenu
 </script>
 
 <style lang="scss" global>
@@ -89,7 +69,7 @@
   }
 </style>
 
-<main on:mousemove={pollActivity}>
+<main>
   <!-- METADATA -->
   <MetaData />
 
