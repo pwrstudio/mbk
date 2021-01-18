@@ -6,16 +6,24 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+<<<<<<< HEAD
   import { fade } from "svelte/transition"
   import { renderBlockText, urlFor } from "../sanity.js"
   import Slideshow from "../Components/Slideshow.svelte"
   import ArrowDown from "../Components/Graphics/ArrowDown.svelte"
   import { menuActive, tableOfContentsActive, hash, tableOfContentsActiveHash } from "../stores.js"
+=======
+  import { fade } from "svelte/transition";
+  import { renderBlockText, urlFor } from "../sanity.js";
+  import Slideshow from "./SlideShow.svelte";
+  import ArrowDown from "./Graphics/ArrowDown.svelte";
+>>>>>>> 13bdb15743fb2d3447ef4bc08df0c14bcc3e38ed
 
-  import "swiper/swiper-bundle.css"
+  import "swiper/swiper-bundle.css";
   // import "./swipers.css"
 
   // *** STORES
+<<<<<<< HEAD
   import { currentPost, currentArticles } from '../stores.js'
 
   const goTo = article => {
@@ -24,6 +32,9 @@
     $hash = article.slug.current
     window.location.replace($tableOfContentsActiveHash)
   }
+=======
+  import { currentPost, currentArticles } from "../stores.js";
+>>>>>>> 13bdb15743fb2d3447ef4bc08df0c14bcc3e38ed
 </script>
 
 <style lang="scss">
@@ -121,15 +132,8 @@
 </style>
 
 {#each $currentArticles as article, index}
-  <div
-    class="article"
-    id={article.slug.current}
-  >
-
-    <div
-      class="col"
-      class:zoomableSlideshowLayout={article.zoomableSlideshowLayout === true}>
-
+  <div class="article" id={article.slug.current}>
+    <div class="col">
       <!-- META -->
       <div class="block meta" in:fade>
         <div class="header">
@@ -150,12 +154,18 @@
             {@html renderBlockText(article.byline.content)}
           {/if}
         </div>
+        <!-- TITLE -->
+        <h1 class="article-title">{article.title}</h1>
+        <!-- BYLINE -->
+        <div class="byline">
+          {#if article.byline.content}
+            {@html renderBlockText(article.byline.content)}
+          {/if}
+        </div>
       </div>
 
       <div class="block main">
-        <div class="content">
-          {@html renderBlockText(article.content.content) }
-        </div>
+        {@html renderBlockText(article.content.content)}
       </div>
 
       {#if article.zoomableSlideshowLayout === true}
@@ -169,11 +179,10 @@
       {#if index < $currentArticles.length - 1}
         <div
           class="block link"
-          class:full={article.zoomableSlideshowLayout === true}
-          on:click|preventDefault={e => { goTo($currentArticles[index + 1]) }}>
-          <h2 class="title next">
-            Næste: {$currentArticles[index + 1].title}
-          </h2>
+          on:click|preventDefault={(e) => {
+            window.location.replace('#' + $currentArticles[index + 1].slug.current);
+          }}>
+          <h2 class="title next">Næste: {$currentArticles[index + 1].title}</h2>
           <div class="graphic">
             <ArrowDown />
           </div>
