@@ -116,12 +116,6 @@
         </SwiperSlide>
       {/each}
     </Swiper>
-    <!-- <div class="swiper-controls-unique swiper-prev-unique">
-      <ArrowLeft />
-    </div>
-    <div class="swiper-controls-unique swiper-next-unique">
-      <ArrowRight />
-    </div> -->
   </div>
   <div class="bottom">
     <!-- Bottom -->

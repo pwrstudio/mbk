@@ -7,6 +7,7 @@
 
   // *** IMPORTS
   import { links } from "svelte-routing"
+  import get from "lodash/get"
   import isArray from "lodash/isArray"
 
   // *** STORES
@@ -32,7 +33,7 @@
   const goTo = article => {
     $menuActive = false
     $tableOfContentsActive = false
-    $hash = article.slug.current
+    $hash = get(article, 'slug.current', '')
     window.location.replace($tableOfContentsActiveHash)
   }
 </script>
@@ -95,7 +96,7 @@
           class="bar-menu-item title link"
           on:click={e => {goTo(article)}}
         >
-          {`${index + 1}. `} {article.title}
+          {`${index + 1}. `} {get(article, 'title', '')}
         </li>
       {/each}
     </ul>
@@ -110,7 +111,7 @@
         {#each $tableOfContents as article, index}
           <span
             class="articleNumber"
-            class:active={$hash === article.slug.current}
+            class:active={$hash === get(article, 'slug.current', '')}
             on:click={e => {goTo(article)}}
           >
             {index + 1}
