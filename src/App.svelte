@@ -29,6 +29,7 @@
     margin: 0;
     padding: 0;
     text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
   }
 
   :global(a),

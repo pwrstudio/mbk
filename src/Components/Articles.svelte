@@ -114,7 +114,7 @@
 
 {#each $currentArticles as article, index}
   <div class="article" id={article.slug.current}>
-    <div class="col">
+    <div class="col" class:zoomableSlideshowLayout={article.zoomableSlideshowLayout === true}>
       <!-- META -->
       <div class="block meta" in:fade>
         <div class="header">
