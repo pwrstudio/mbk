@@ -10,6 +10,7 @@
   import { renderBlockText, urlFor } from "../sanity.js";
   import Slideshow from "./SlideShow.svelte";
   import ArrowDown from "./Graphics/ArrowDown.svelte";
+  import get from "lodash/get"
 
   import "swiper/swiper-bundle.css";
   // import "./swipers.css"
@@ -114,7 +115,9 @@
 
 {#each $currentArticles as article, index}
   <div class="article" id={article.slug.current}>
-    <div class="col" class:zoomableSlideshowLayout={article.zoomableSlideshowLayout === true}>
+      <div
+        class="col"
+        class:zoomableSlideshowLayout={get(article, 'zoomableSlideshowLayout', false)}>
       <!-- META -->
       <div class="block meta" in:fade>
         <div class="header">
@@ -135,21 +138,13 @@
             {@html renderBlockText(article.byline.content)}
           {/if}
         </div>
-        <!-- TITLE -->
-        <h1 class="article-title">{article.title}</h1>
-        <!-- BYLINE -->
-        <div class="byline">
-          {#if article.byline.content}
-            {@html renderBlockText(article.byline.content)}
-          {/if}
-        </div>
       </div>
 
       <div class="block main">
         {@html renderBlockText(article.content.content)}
       </div>
 
-      {#if article.zoomableSlideshowLayout === true}
+      {#if get(article, 'zoomableSlideshowLayout', false)}
         <div class="block full">
           <Slideshow
             zoomable
@@ -160,6 +155,7 @@
       {#if index < $currentArticles.length - 1}
         <div
           class="block link"
+          class:full={get(article, 'zoomableSlideshowLayout', false)}
           on:click|preventDefault={(e) => {
             window.location.replace('#' + $currentArticles[index + 1].slug.current);
           }}>
@@ -171,7 +167,7 @@
       {/if}
     </div>
 
-    {#if !article.zoomableSlideshowLayout}
+    {#if !get(article, 'zoomableSlideshowLayout', false)}
       <div
         class="col"
         class:slideshow={article.slideshow}
