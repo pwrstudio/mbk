@@ -7,10 +7,15 @@
 
   // *** IMPORTS
   import { fade } from "svelte/transition"
-  import { renderBlockText, urlFor } from "../sanity.js"
+  import { urlFor } from "../sanity.js"
+  import Logo from "../Components/Graphics/Logo.svelte"
+  import get from "lodash/get"
 
   // *** PROPS
   export let issue = {}
+
+  // ratio of the photo is 460 / 370
+  const ratio = 460 / 370
 </script>
 
 <style lang="scss">
@@ -18,16 +23,44 @@
 
   .cover {
     width: 400px;
-    height: auto;
-    margin: 0 auto;
+    height: 586px;
+    padding: $margin / 4;
+    box-sizing: border-box;
     position: relative;
-    display: block;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    background-color: $white;
+    position: relative;
 
     .inner {
+      box-sizing: border-box;
       width: 100%;
+      height: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: flex-end;
+      position: relative;
+
+      .logo {
+        width: 100%;
+      }
+
+      .logo-title {
+        position: absolute;
+        font-family: $sans-stack;
+        width: 100%;
+        display: block;
+        text-align: right;
+        font-weight: normal;
+        font-size: 26px;
+        top: -1px;
+      }
 
       .image {
+        box-sizing: border-box;
         width: 100%;
+        height: auto;
       }
     }
 
@@ -38,11 +71,17 @@
 
 <a class="cover" in:fade href="/{issue.slug.current}">
   <div class="inner">
-    <!-- IMAGE -->
+    <div class="logo">
+      <Logo />
+    </div>
+    <h1 class="logo-title">
+      {get(issue, 'title', '')}
+    </h1>
     <img
       class="image"
       src={urlFor(issue.mainImage.asset)
-        .width(400)
+        .width(600)
+        .height(Math.floor((ratio) * 600))
         .quality(90)
         .auto('format')
         .url()}
