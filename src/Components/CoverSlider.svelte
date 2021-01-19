@@ -11,15 +11,23 @@
   // import ArrowRight from "./Graphics/ArrowRight.svelte"
   import { Swiper, SwiperSlide } from 'swiper/svelte'
   import 'swiper/swiper-bundle.css'
+  import 'swiper/components/navigation/navigation.css';
+  import 'swiper/components/pagination/pagination.css';
 
   // *** INSTALLATION
   SwiperCore.use([Navigation, Pagination])
 
   // *** COMPONENTS
   import Cover from "./Cover.svelte"
+  import ArrowRight from "./Graphics/ArrowRight.svelte"
+  import ArrowLeft from "./Graphics/ArrowLeft.svelte"
 
   // *** PROPS
   export let issues = []
+
+  const onSwiper = swiper => {
+    console.log(swiper.detail[0])
+  }
 </script>
 
 <style lang="scss">
@@ -31,9 +39,13 @@
     height: 100%;
     padding: 0 $margin;
 
-    // :global(.swiper-container) {
-    //   --swiper-theme-color: $black;
-    // }
+    :global(.swiper-container) {
+      width: 808px !important;
+    }
+
+    :global(.swiper-slide) {
+      width: 400px !important;
+    }
 
     .title {
       font-family: $sans-stack;
@@ -55,15 +67,43 @@
       flex-flow: row nowrap;
       justify-content: center;
       align-items: center;
+
+      :global(.swiper-pagination-bullet) {
+        background: $black;
+        opacity: 1;
+        margin: 0 $margin / 6;
+      }
+
+      :global(.swiper-pagination-bullet.swiper-pagination-bullet-active) {
+        background: $green;
+      }
     }
 
     .middle {
       height: 70%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+
+      .custom-controls-prev,
+      .custom-controls-next {
+        width: 40px;
+        margin: 0 $margin / 2;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      :global(.custom-controls-prev.swiper-button-disabled),
+      :global(.custom-controls-next.swiper-button-disabled) {
+        opacity: 0.2;
+      }
     }
 
     .edition {
       text-align: center;
       width: 100%;
+      padding-left: 20px;
     }
 
     .swiper-controls-unique {
@@ -103,21 +143,34 @@
     </h1>
   </div>
   <div class="middle">
-    <Swiper
-      touchRatio={0}
-      spaceBetween={8}
-      slidesPerView={2}
-      navigation
-      pagination={{ clickable: true }}
-    >
-      {#each issues as issue}
-        <SwiperSlide>
-          <Cover {issue} />
-        </SwiperSlide>
-      {/each}
-    </Swiper>
+    <div class="custom-controls-prev">
+      <ArrowLeft />
+    </div>
+    <div>
+      <Swiper
+        touchRatio={0}
+        spaceBetween={10.5}
+        slidesPerView={2}
+        navigation={{
+          prevEl: '.custom-controls-prev',
+          nextEl: '.custom-controls-next'
+        }}
+        pagination={{ el: '.custom-pagination'}}
+        on:swiper={onSwiper}
+      >
+        {#each issues as issue}
+          <SwiperSlide>
+            <Cover {issue} />
+          </SwiperSlide>
+        {/each}
+      </Swiper>
+    </div>
+    <div class="custom-controls-next">
+      <ArrowRight />
+    </div>
   </div>
   <div class="bottom">
-    <!-- Bottom -->
+    <div class="custom-pagination">
+    </div>
   </div>
 </div>
