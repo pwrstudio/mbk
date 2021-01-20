@@ -45,6 +45,7 @@
             src={urlFor(block.mainImage.asset)
               .width(400)
               .quality(90)
+              .saturation(-100)
               .auto("format")
               .url()}
           />
