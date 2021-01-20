@@ -7,10 +7,10 @@
 
   // *** IMPORTS
   import ArrowDown from "./Graphics/ArrowDown.svelte"
-  import { afterUpdate } from 'svelte'
-  import { renderBlockText, urlFor } from '../sanity.js'
-  import { formattedDate } from '../global.js'
-  import { isArray } from 'lodash' 
+  import { afterUpdate } from "svelte"
+  import { renderBlockText, urlFor } from "../sanity.js"
+  import { formattedDate } from "../global.js"
+  import { isArray, has } from "lodash"
 
   // *** PROPS
   export let name, content
@@ -19,10 +19,69 @@
   let el
 
   afterUpdate(() => {
-    el.scrollTo(0,0)
+    el.scrollTo(0, 0)
   })
-
 </script>
+
+<div class="bar-content menu-content" bind:this={el}>
+  {#if name === "news" && isArray(content)}
+    {#each content as block, index}
+      <div class="news-item">
+        <div class="header">
+          <span>
+            {@html formattedDate(block.publicationDate)}
+          </span>
+          <span>
+            {block.location}
+          </span>
+        </div>
+        {#if has(block, "mainImage.asset")}
+          <img
+            class="image"
+            src={urlFor(block.mainImage.asset)
+              .width(400)
+              .quality(90)
+              .auto("format")
+              .url()}
+          />
+        {/if}
+        {#if has(block, "content.content") && isArray(block.content.content)}
+          <div class="paragraph">
+            {@html renderBlockText(block.content.content)}
+          </div>
+        {/if}
+        {#if index < content.length - 1}
+          <div class="graphic">
+            <ArrowDown />
+          </div>
+        {/if}
+      </div>
+    {/each}
+  {:else if name === "about"}
+    {#if has(content, "content.content") && isArray(content.content.content)}
+      <div class="paragraph">
+        {@html renderBlockText(content.content.content)}
+        <!-- content content content -->
+      </div>
+    {/if}
+  {:else if name === "colophon"}
+    {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
+      <div class="paragraph">
+        {@html renderBlockText(content.wideColumn.content)}
+      </div>
+    {/if}
+    {#if has(content, "logo.asset")}
+      <img
+        class="logo"
+        src={urlFor(content.logo.asset)
+          .width(400)
+          .quality(90)
+          .auto("format")
+          .url()}
+      />
+    {/if}
+  {/if}
+</div>
 
 <style lang="scss">
   @import "../variables.scss";
@@ -56,49 +115,6 @@
         padding-top: 4px;
         margin-bottom: $line-height;
       }
-
     }
   }
 </style>
-
-<div class="bar-content menu-content" bind:this={el}>
-  {#if name === 'news' && isArray(content)}
-    {#each content as block, index}
-      <div class="news-item">
-        <div class="header">
-          <span>
-            {@html formattedDate(block.publicationDate)}
-          </span>
-          <span>
-            {block.location}
-          </span>
-        </div>
-        <img
-          class="image"
-          src={urlFor(block.mainImage.asset).width(400).quality(90).auto('format').url()}
-        >
-        <div class="paragraph">
-          {@html renderBlockText(block.content.content)}
-        </div>
-        {#if index < content.length - 1}
-          <div class="graphic">
-            <ArrowDown />
-          </div>
-        {/if}
-      </div>
-    {/each}
-  {:else if name === 'about'}
-    <div class="paragraph">
-      {@html renderBlockText(content.content.content)} <!-- content content content -->
-    </div>
-  {:else if name === 'colophon'}
-    <div class="paragraph">
-      {@html renderBlockText(content.wideColumn.content)}
-    </div>
-    <img
-      class="logo"
-      src={urlFor(content.logo.asset).width(400).quality(90).auto('format').url()}
-    >
-  {/if}
-  <!-- {content.content.content} -->
-</div>
