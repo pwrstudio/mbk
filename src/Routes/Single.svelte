@@ -8,7 +8,7 @@
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
 
-// STORES
+  // STORES
   import { tableOfContents, currentPost, currentArticles } from "../stores.js"
 
   // *** PROPS
@@ -21,7 +21,8 @@
   export let location
 
   // ** CONSTANTS
-  const query = "*[slug.current == $slug]{..., tableOfContents[]->{title, slug}}[0]" // add article info for ToC
+  const query =
+    "*[slug.current == $slug]{..., tableOfContents[]->{title, slug}}[0]" // add article info for ToC
   const articlesQuery = "*[slug.current == $slug]{tableOfContents[]->{...}}[0]"
   const params = { slug }
   // const post = loadData(query, params)
@@ -37,6 +38,12 @@
     $currentArticles = articles.tableOfContents
   })
 </script>
+
+{#await $currentPost then post}
+  <div class="single">
+    <Articles />
+  </div>
+{/await}
 
 <style lang="scss">
   @import "../../variables.scss";
@@ -145,9 +152,3 @@
   //   font-style: italic;
   // }
 </style>
-
-{#await $currentPost then post}
-  <div class="single">
-    <Articles />
-  </div>
-{/await}

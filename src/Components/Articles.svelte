@@ -6,18 +6,86 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { fade } from "svelte/transition";
-  import { renderBlockText, urlFor } from "../sanity.js";
-  import Slideshow from "./SlideShow.svelte";
-  import ArrowDown from "./Graphics/ArrowDown.svelte";
+  import { fade } from "svelte/transition"
+  import { renderBlockText, urlFor } from "../sanity.js"
+  import Slideshow from "./SlideShow.svelte"
+  import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
 
-  import "swiper/swiper-bundle.css";
+  import "swiper/swiper-bundle.css"
   // import "./swipers.css"
 
   // *** STORES
-  import { currentPost, currentArticles } from "../stores.js";
+  import { currentPost, currentArticles } from "../stores.js"
 </script>
+
+{#each $currentArticles as article, index}
+  <div class="article" id={article.slug.current}>
+    <div
+      class="col"
+      class:zoomableSlideshowLayout={get(
+        article,
+        "zoomableSlideshowLayout",
+        false
+      )}
+    >
+      <!-- META -->
+      <div class="block meta" in:fade>
+        <div class="header">
+          <span> Magasin for Bygningskunst og Kultur </span>
+          <span class="right">
+            {get($currentPost, "title", "")}
+          </span>
+        </div>
+
+        <h1 class="article-title">
+          {get(article, "title", "")}
+        </h1>
+
+        <div class="byline">
+          {@html renderBlockText(get(article, "byline.content", []))}
+        </div>
+      </div>
+
+      <div class="block main">
+        {@html renderBlockText(get(article, "content.content", []))}
+      </div>
+
+      {#if get(article, "zoomableSlideshowLayout", false)}
+        <div class="block full">
+          <Slideshow zoomable slides={get(article, "slideshow", [])} />
+        </div>
+      {/if}
+
+      {#if index < $currentArticles.length - 1}
+        <div
+          class="block link"
+          class:full={get(article, "zoomableSlideshowLayout", false)}
+          on:click|preventDefault={e => {
+            window.location.replace(
+              "#" + get($currentArticles[index + 1], "slug.current", null)
+            )
+          }}
+        >
+          <h2 class="title next">
+            Næste: {get($currentArticles[index + 1], "title", "")}
+          </h2>
+          <div class="graphic">
+            <ArrowDown />
+          </div>
+        </div>
+      {/if}
+    </div>
+
+    {#if !get(article, "zoomableSlideshowLayout", false)}
+      <div class="col" class:slideshow={get(article, "slideshow", [])}>
+        {#if get(article, "slideshow", [])}
+          <Slideshow slides={get(article, "slideshow", [])} />
+        {/if}
+      </div>
+    {/if}
+  </div>
+{/each}
 
 <style lang="scss">
   @import "../variables.scss";
@@ -112,72 +180,3 @@
     }
   }
 </style>
-
-{#each $currentArticles as article, index}
-  <div class="article" id={article.slug.current}>
-      <div
-        class="col"
-        class:zoomableSlideshowLayout={get(article, 'zoomableSlideshowLayout', false)}>
-      <!-- META -->
-      <div class="block meta" in:fade>
-        <div class="header">
-          <span>
-            Magasin for Bygningskunst og Kultur
-          </span>
-          <span class="right">
-            {get($currentPost, 'title', '')}
-          </span>
-        </div>
-
-        <h1 class="article-title">
-          {get(article, 'title', '')}
-        </h1>
-
-        <div class="byline">
-          {@html
-            renderBlockText(get(article, 'byline.content', ''))
-          }
-        </div>
-      </div>
-
-      <div class="block main">
-        {@html
-          renderBlockText(get(article, 'content.content', ''))
-        }
-      </div>
-
-      {#if get(article, 'zoomableSlideshowLayout', false)}
-        <div class="block full">
-          <Slideshow
-            zoomable
-            slides={get(article, 'slideshow', [])} />
-        </div>
-      {/if}
-
-      {#if index < $currentArticles.length - 1}
-        <div
-          class="block link"
-          class:full={get(article, 'zoomableSlideshowLayout', false)}
-          on:click|preventDefault={(e) => {
-            window.location.replace('#' + get($currentArticles[index + 1], 'slug.current', null));
-          }}>
-          <h2 class="title next">Næste: {get($currentArticles[index + 1], 'title', '')}</h2>
-          <div class="graphic">
-            <ArrowDown />
-          </div>
-        </div>
-      {/if}
-    </div>
-
-    {#if !get(article, 'zoomableSlideshowLayout', false)}
-      <div
-        class="col"
-        class:slideshow={get(article, 'slideshow', [])}
-      >
-        {#if get(article, 'slideshow', [])}
-          <Slideshow slides={get(article, 'slideshow', [])} />
-        {/if}
-      </div>
-    {/if}
-  </div>
-{/each}
