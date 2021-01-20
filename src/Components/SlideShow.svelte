@@ -6,9 +6,10 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { urlFor } from "../sanity.js"
+  import { urlFor, renderBlockText } from "../sanity.js"
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import { tick } from "svelte"
+  import { isArray, get } from "lodash"
   // import has from "lodash/has"
 
   // *** PROPS
@@ -22,7 +23,7 @@
   // *** ZOOM VARS
   let zoomed = false
   let zoomLevel = 1
-  let maxHeight = 'auto'
+  let maxHeight = "auto"
 
   $: {
     swiperInstance = swiper
@@ -30,7 +31,7 @@
 
   const toggleZoom = e => {
     const rect = swiperInstance.clickedSlide.getBoundingClientRect()
-    maxHeight = rect.height + 'px'
+    maxHeight = rect.height + "px"
 
     zoomed = !zoomed
     zoomLevel = zoomLevel === 1 ? 2 : 1
@@ -47,8 +48,8 @@
     const scrollW = e.currentTarget.scrollWidth
     const scrollH = e.currentTarget.scrollHeight
 
-    const fracX = (x / rect.width)
-    const fracY = (y / rect.height)
+    const fracX = x / rect.width
+    const fracY = y / rect.height
 
     const toX = fracX * (scrollW - rect.width)
     const toY = fracY * (scrollH - rect.height)
@@ -56,7 +57,64 @@
     e.currentTarget.scrollLeft = toX
     e.currentTarget.scrollTop = toY
   }
+
+  console.dir(slides)
 </script>
+
+<div class="slideshow" class:zoomable>
+  <Swiper
+    spaceBetween={8}
+    autoHeight={true}
+    on:click={toggleZoom}
+    on:swiper={e => (swiper = e.detail[0])}
+  >
+    {#each slides as slide}
+      <SwiperSlide>
+        {#if zoomable}
+          <div
+            ref={slide._key}
+            class="zoom-container"
+            class:zoomed
+            style="max-height: {maxHeight};"
+            on:mousemove={scrollThrough}
+          >
+            <img
+              class="slide-img"
+              class:zoomed
+              src={urlFor(slide.asset)
+                .quality(80)
+                .width(window.innerWidth * 2)
+                .url()}
+              alt={slide.asset.alt}
+            />
+          </div>
+        {:else}
+          <img
+            class="slide-img"
+            src={urlFor(slide.asset)
+              .quality(80)
+              .height(window.innerHeight - 42)
+              .url()}
+            alt={slide.asset.alt}
+          />
+          {#if slide.caption}
+            <div class="caption">
+              {@html renderBlockText(get(slide, "caption.content", []))}
+            </div>
+          {/if}
+        {/if}
+      </SwiperSlide>
+    {/each}
+  </Swiper>
+
+  {#if zoomable}
+    <div class="zoomLevel">
+      <span class="button" on:click={toggleZoom}>
+        {`${zoomLevel * 100}%`}[±]
+      </span>
+    </div>
+  {/if}
+</div>
 
 <style lang="scss">
   @import "../variables.scss";
@@ -100,47 +158,3 @@
     }
   }
 </style>
-
-<div class="slideshow" class:zoomable={zoomable}>
-  <Swiper
-    spaceBetween={8}
-    autoHeight={true}
-    on:click={toggleZoom}
-    on:swiper={(e) => swiper = e.detail[0]}
-  >
-    {#each slides as slide}
-      <SwiperSlide>
-        {#if zoomable}
-          <div
-            ref={slide._key}
-            class="zoom-container"
-            class:zoomed={zoomed}
-            style="max-height: {maxHeight};"
-            on:mousemove={scrollThrough}
-          >
-            <img
-              class="slide-img"
-              class:zoomed={zoomed}
-              src={urlFor(slide.asset).quality(80).width((window.innerWidth) * 2).url()}
-              alt={slide.asset.alt}
-            >
-          </div>
-        {:else}
-            <img
-              class="slide-img"
-              src={urlFor(slide.asset).quality(80).height(window.innerHeight - 42).url()}
-              alt={slide.asset.alt}
-            >
-        {/if}
-      </SwiperSlide>
-    {/each}
-  </Swiper>
-
-  {#if zoomable}
-    <div class="zoomLevel">
-      <span class="button" on:click={toggleZoom}>
-        {`${zoomLevel * 100}%` }[±]
-      </span>
-    </div>
-  {/if}
-</div>
