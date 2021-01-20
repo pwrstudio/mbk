@@ -29,10 +29,14 @@
       <div class="news-item">
         <div class="header">
           <span>
-            {@html formattedDate(block.publicationDate)}
+            {#if block.publicationDate}
+              {@html formattedDate(block.publicationDate)}
+            {/if}
           </span>
           <span>
-            {block.location}
+            {#if block.location}
+              {block.location}
+            {/if}
           </span>
         </div>
         {#if has(block, "mainImage.asset")}
