@@ -13,7 +13,12 @@
   import MenuContent from "./MenuContent.svelte"
 
   // *** STORES
-  import { menuActive, menuItemActive, menuContent, tableOfContentsActive } from "../stores.js"
+  import {
+    menuActive,
+    menuItemActive,
+    menuContent,
+    tableOfContentsActive,
+  } from "../stores.js"
 
   // *** CONSTANTS
   const queryNews = "*[_type == 'news'] | order(publicationDate desc)"
@@ -22,11 +27,13 @@
   const news = loadData(queryNews)
   const about = loadData(queryAbout)
   const colophon = loadData(queryColophon)
-
   const data = {}
 
+  // *** PROPS
+  export let landing = false
+
   // *** VARIABLES
-  let menuOpen = false
+  let menuOpen = landing
 
   $: {
     menuActive.set(menuOpen)
@@ -50,8 +57,45 @@
     $menuItemActive = e.currentTarget.id
     $menuContent = data[e.currentTarget.id]
   }
-
 </script>
+
+<div class="bar" use:links class:open={menuOpen}>
+  <MenuContent name={$menuItemActive} content={$menuContent} />
+
+  <ul class="bar-menu">
+    <li
+      class="bar-menu-item title"
+      id="news"
+      class:active={$menuItemActive === "news"}
+      on:click={updateMenuItem}
+    >På IBK</li>
+    <li
+      class="bar-menu-item title"
+      id="about"
+      class:active={$menuItemActive === "about"}
+      on:click={updateMenuItem}
+    >Om IBK</li>
+    <li
+      class="bar-menu-item title"
+      id="colophon"
+      class:active={$menuItemActive === "colophon"}
+      on:click={updateMenuItem}
+    >Kolofon</li>
+  </ul>
+
+  <div
+    class="bar-button"
+    class:disabled={landing}
+    on:click={e => {
+      if (!landing) {
+        menuOpen = !menuOpen
+      }
+    }}
+  >
+    <h1 class="title">På IBK</h1>
+    <h1 class="title bottom">Info</h1>
+  </div>
+</div>
 
 <style lang="scss">
   @import "../variables.scss";
@@ -61,8 +105,8 @@
   }
 
   * {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   /*
@@ -128,7 +172,7 @@
 
     &.active {
       &:before {
-        content: '→';
+        content: "→";
         margin-right: 10px;
       }
     }
@@ -158,7 +202,7 @@
     }
 
     &.open {
-      transform: translate(0,0);
+      transform: translate(0, 0);
 
       @include screen-size("small") {
       }
@@ -197,48 +241,3 @@
     width: 100vw;
   }
 </style>
-
-<div class="bar" use:links class:open={menuOpen}>
-
-  <MenuContent
-    name={$menuItemActive}
-    content={$menuContent}
-  />
-
-  <ul class="bar-menu">
-    <li
-      class="bar-menu-item title"
-      id="news"
-      class:active={$menuItemActive === 'news'}
-      on:click={updateMenuItem}
-    >
-      På IBK
-    </li>
-    <li
-      class="bar-menu-item title"
-      id="about"
-      class:active={$menuItemActive === 'about'}
-      on:click={updateMenuItem}
-    >
-      Om IBK
-    </li>
-    <li
-      class="bar-menu-item title"
-      id="colophon"
-      class:active={$menuItemActive === 'colophon'}
-      on:click={updateMenuItem}
-    >
-      Kolofon
-    </li>
-  </ul>
-
-  <div class="bar-button" on:click={e => menuOpen = !menuOpen}>
-    <h1 class="title">
-      På IBK
-    </h1>
-
-    <h1 class="title bottom">
-      Info
-    </h1>
-  </div>
-</div>

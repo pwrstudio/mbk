@@ -16,6 +16,8 @@
 
   // COMPONENTS
   import Articles from "../Components/Articles.svelte"
+  import Menu from "../Components/Menu.svelte"
+  import ToC from "../Components/ToC.svelte"
 
   // *** PROP
   export let location
@@ -40,6 +42,10 @@
 </script>
 
 {#await $currentPost then post}
+  <div class="menus">
+    <Menu />
+    <ToC />
+  </div>
   <div class="single">
     <Articles />
   </div>

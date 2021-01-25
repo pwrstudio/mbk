@@ -9,15 +9,27 @@
   import { Router, Route } from "svelte-routing"
   // COMPONENTS
   import MetaData from "./Components/MetaData.svelte"
-  import Menu from "./Components/Menu.svelte"
-  import ToC from "./Components/ToC.svelte"
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
 
-  // *** VARIABLES
-  let hideMenu
+  // // *** VARIABLES
+  // let hideMenu
 </script>
+
+<main>
+  <!-- METADATA -->
+  <MetaData />
+
+  <Router>
+    <!-- LANDING -->
+    <Route path="/" component={Landing} />
+    <!-- SINGLE -->
+    <Route path="/:slug" component={Single} />
+    <!-- 404 -->
+    <Route component={Error404} />
+  </Router>
+</main>
 
 <style lang="scss" global>
   @import "./variables.scss";
@@ -56,35 +68,4 @@
     flex-flow: row;
     justify-content: space-between;
   }
-
-  .menus {
-    position: fixed;
-    top: 0;
-    transform: translateX(0);
-    transition: transform 0.8s ease;
-    z-index: 10000000000;
-
-    &.hide {
-      transform: translateX(-2 * $menu_button_width);
-    }
-  }
 </style>
-
-<main>
-  <!-- METADATA -->
-  <MetaData />
-
-  <div class="menus" class:hide={hideMenu}>
-    <Menu />
-    <ToC />
-  </div>
-
-  <Router>
-    <!-- LANDING -->
-    <Route path="/" component={Landing} />
-    <!-- SINGLE -->
-    <Route path="/:slug" component={Single} />
-    <!-- 404 -->
-    <Route component={Error404} />
-  </Router>
-</main>

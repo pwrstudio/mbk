@@ -100,6 +100,8 @@
     scroll-snap-type: y proximity;
     font-size: $font_size_small;
 
+    @include hide-scroll;
+
     .logo {
       max-height: 80vh;
     }
