@@ -82,7 +82,7 @@
               class="slide-img"
               class:zoomed
               src={urlFor(slide.asset)
-                .quality(80)
+                .quality(90)
                 .width(window.innerWidth * 2)
                 .url()}
               alt={slide.asset.alt}
@@ -91,10 +91,7 @@
         {:else}
           <img
             class="slide-img"
-            src={urlFor(slide.asset)
-              .quality(80)
-              .height(window.innerHeight - 42)
-              .url()}
+            src={urlFor(slide.asset).quality(90).width(1200).url()}
             alt={slide.asset.alt}
           />
           {#if slide.caption}
@@ -120,7 +117,7 @@
   @import "../variables.scss";
 
   .slideshow {
-    height: auto;
+    height: 100%;
     overflow: hidden;
 
     .zoomLevel {
@@ -133,6 +130,10 @@
       height: 100%;
     }
 
+    :global(.swiper-slide) {
+      height: 100%;
+    }
+
     :global(.zoom-container) {
       overflow: scroll;
       cursor: zoom-in;
@@ -140,7 +141,8 @@
     }
 
     :global(.slide-img) {
-      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
     }
 
     :global(.slide-img.zoomed) {
@@ -152,6 +154,17 @@
       max-width: none;
       max-height: none;
       cursor: zoom-out;
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      :global(p) {
+        font-size: $font_size_small;
+      }
+      :global(p a) {
+        text-decoration: underline;
+      }
     }
 
     @include screen-size("small") {
