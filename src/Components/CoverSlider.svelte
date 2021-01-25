@@ -6,13 +6,13 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import SwiperCore, { Navigation, Pagination } from 'swiper'
+  import SwiperCore, { Navigation, Pagination } from "swiper"
   // import ArrowLeft from "./Graphics/ArrowLeft.svelte"
   // import ArrowRight from "./Graphics/ArrowRight.svelte"
-  import { Swiper, SwiperSlide } from 'swiper/svelte'
-  import 'swiper/swiper-bundle.css'
-  import 'swiper/components/navigation/navigation.css';
-  import 'swiper/components/pagination/pagination.css';
+  import { Swiper, SwiperSlide } from "swiper/svelte"
+  import "swiper/swiper-bundle.css"
+  import "swiper/components/navigation/navigation.css"
+  import "swiper/components/pagination/pagination.css"
 
   // *** INSTALLATION
   SwiperCore.use([Navigation, Pagination])
@@ -30,6 +30,45 @@
   }
 </script>
 
+<div class="covershow">
+  <div class="top">
+    <h1 class="edition title">
+      <span class="line">Seneste</span>
+      <span class="line">Nummer</span>
+    </h1>
+  </div>
+  <div class="middle">
+    <div class="custom-controls-prev">
+      <ArrowLeft />
+    </div>
+    <div>
+      <Swiper
+        touchRatio={0}
+        spaceBetween={10.5}
+        slidesPerView={2}
+        navigation={{
+          prevEl: ".custom-controls-prev",
+          nextEl: ".custom-controls-next",
+        }}
+        pagination={{ el: ".custom-pagination" }}
+        on:swiper={onSwiper}
+      >
+        {#each issues as issue}
+          <SwiperSlide>
+            <Cover {issue} />
+          </SwiperSlide>
+        {/each}
+      </Swiper>
+    </div>
+    <div class="custom-controls-next">
+      <ArrowRight />
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="custom-pagination" />
+  </div>
+</div>
+
 <style lang="scss">
   @import "../variables.scss";
 
@@ -38,6 +77,7 @@
     width: 100%;
     height: 100%;
     padding: 0 $margin;
+    user-select: none;
 
     :global(.swiper-container) {
       width: 808px !important;
@@ -130,47 +170,3 @@
     }
   }
 </style>
-
-<div class="covershow">
-  <div class="top">
-    <h1 class="edition title">
-      <span class="line">
-        Seneste
-      </span>
-      <span class="line">
-        Nummer
-      </span>
-    </h1>
-  </div>
-  <div class="middle">
-    <div class="custom-controls-prev">
-      <ArrowLeft />
-    </div>
-    <div>
-      <Swiper
-        touchRatio={0}
-        spaceBetween={10.5}
-        slidesPerView={2}
-        navigation={{
-          prevEl: '.custom-controls-prev',
-          nextEl: '.custom-controls-next'
-        }}
-        pagination={{ el: '.custom-pagination'}}
-        on:swiper={onSwiper}
-      >
-        {#each issues as issue}
-          <SwiperSlide>
-            <Cover {issue} />
-          </SwiperSlide>
-        {/each}
-      </Swiper>
-    </div>
-    <div class="custom-controls-next">
-      <ArrowRight />
-    </div>
-  </div>
-  <div class="bottom">
-    <div class="custom-pagination">
-    </div>
-  </div>
-</div>

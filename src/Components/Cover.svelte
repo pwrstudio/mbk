@@ -18,6 +18,27 @@
   const ratio = 460 / 370
 </script>
 
+<a class="cover" in:fade href="/{issue.slug.current}">
+  <div class="inner">
+    <div class="logo">
+      <Logo />
+    </div>
+    <h1 class="logo-title">
+      {get(issue, "title", "")}
+    </h1>
+    <img
+      class="image"
+      src={urlFor(issue.mainImage.asset)
+        .width(600)
+        .height(Math.floor(ratio * 600))
+        .quality(90)
+        .auto("format")
+        .url()}
+      alt={issue.mainImage.alt}
+    />
+  </div>
+</a>
+
 <style lang="scss">
   @import "../variables.scss";
 
@@ -68,24 +89,3 @@
     }
   }
 </style>
-
-<a class="cover" in:fade href="/{issue.slug.current}">
-  <div class="inner">
-    <div class="logo">
-      <Logo />
-    </div>
-    <h1 class="logo-title">
-      {get(issue, 'title', '')}
-    </h1>
-    <img
-      class="image"
-      src={urlFor(issue.mainImage.asset)
-        .width(600)
-        .height(Math.floor((ratio) * 600))
-        .quality(90)
-        .auto('format')
-        .url()}
-      alt={issue.mainImage.alt}
-      />
-  </div>
-</a>

@@ -64,7 +64,6 @@
 <div class="slideshow" class:zoomable>
   <Swiper
     spaceBetween={8}
-    autoHeight={true}
     on:click={toggleZoom}
     on:swiper={e => (swiper = e.detail[0])}
   >
@@ -81,10 +80,7 @@
             <img
               class="slide-img"
               class:zoomed
-              src={urlFor(slide.asset)
-                .quality(90)
-                .width(window.innerWidth * 2)
-                .url()}
+              src={urlFor(slide.asset).quality(90).url()}
               alt={slide.asset.alt}
             />
           </div>
