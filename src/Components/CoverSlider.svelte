@@ -93,16 +93,17 @@
 
       .line {
         display: block;
+        font-size: $font_size_small;
 
         &:first-child {
-          margin-bottom: 12px;
+          margin-bottom: 6px;
         }
       }
     }
 
     .top,
     .bottom {
-      height: 15%;
+      height: 10%;
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;
@@ -120,7 +121,7 @@
     }
 
     .middle {
-      height: 70%;
+      height: 80%;
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;
