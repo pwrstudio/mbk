@@ -7,10 +7,14 @@
 
   // *** IMPORTS
   import { urlFor, renderBlockText } from "../sanity.js"
+  import SwiperCore, { Autoplay } from "swiper"
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import { tick } from "svelte"
   import { isArray, get } from "lodash"
   // import has from "lodash/has"
+
+  // *** SETUP
+  SwiperCore.use([Autoplay])
 
   // *** PROPS
   export let slides = []
@@ -64,6 +68,9 @@
 <div class="slideshow" class:zoomable>
   <Swiper
     spaceBetween={8}
+    autoplay={{
+      delay: 4000
+    }}
     on:click={toggleZoom}
     on:swiper={e => (swiper = e.detail[0])}
   >
