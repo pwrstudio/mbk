@@ -9,6 +9,9 @@
   import { links } from "svelte-routing"
   import { loadData } from "../sanity.js"
 
+  import { getContext } from "svelte"
+  import { ROUTER } from "svelte-routing/src/contexts"
+
   // *** COMPONENTS
   import MenuContent from "./MenuContent.svelte"
 
@@ -27,6 +30,7 @@
   const news = loadData(queryNews)
   const about = loadData(queryAbout)
   const colophon = loadData(queryColophon)
+  const { activeRoute } = getContext(ROUTER)
   const data = {}
 
   // *** PROPS
@@ -34,9 +38,34 @@
 
   // *** VARIABLES
   let menuOpen = landing
+  let pvw = 0
+  let vw = 0
 
   $: {
-    menuActive.set(menuOpen)
+    // $activeRoute will change on navigation
+    // 
+    // 
+    if ($activeRoute.uri === '/') {
+      if (vw < 768) {
+        menuOpen = false
+      }
+    }
+
+    // Switch the menu to off if the vw is mobile size
+    // 
+    // 
+    if (landing) {
+      if (pvw >= 768 && vw < 768) {
+        menuOpen = false
+      } else if (pvw < 768 && vw >= 768) {
+        menuOpen = true
+      }
+    }
+
+    // Set previous vw to current vw
+    // 
+    // 
+    pvw = vw
   }
 
   news.then(news => {
@@ -59,8 +88,16 @@
   }
 </script>
 
+<svelte:window bind:innerWidth={vw}/>
+
+<!--              -->
+<!-- DESKTOP MENU -->
+<!--              -->
+
 <div class="bar" use:links class:open={menuOpen}>
-  <MenuContent name={$menuItemActive} content={$menuContent} />
+  {#if vw > 768}
+    <MenuContent name={$menuItemActive} content={$menuContent} />
+  {/if}
 
   <ul class="bar-menu">
     <li
@@ -85,22 +122,34 @@
 
   <div
     class="bar-button"
-    class:disabled={landing}
+    class:disabled={landing && vw > 768}
     on:click={e => {
-      if (!landing) {
+      if (!landing || vw < 768) {
         menuOpen = !menuOpen
       }
     }}
   >
     <h1 class="title">På IBK</h1>
     <h1 class="title bottom">Info</h1>
+    <h1 class="title hamburger">
+      <div class="hamburger-cross-icon" class:open={menuOpen}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </h1>
   </div>
 </div>
+<!--                  -->
+<!-- END DESKTOP MENU -->
+<!--                  -->
 
-<div class="bar-mobile">
-  <MenuContent name={$menuItemActive} content={$menuContent} />
-  <!--  -->
-</div>
+
+      <!-- 
+  ***   🐸   ***
+  *** styles ***
+  ***   🐸   ***
+      !-->
 
 <style lang="scss">
   @import "../variables.scss";
@@ -112,25 +161,6 @@
   * {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-  }
-
-  /**
-    Shared with mobile ToC
-  */
-  :global(.bar-mobile) {
-    /* First, hide for everything else */
-    display: none;
-
-    @include screen-size("phone") {
-      display: block;
-      position: fixed;
-      z-index: 100000000;
-      box-sizing: border-box;
-      bottom: 0;
-      left: 0;
-      width: 100vw;
-      background-color: $green;
-    }
   }
 
   /*
@@ -156,6 +186,12 @@
     transition: transform 0.2s ease-out;
     user-select: none;
     transform: translateX((-1 * $menu-width) + $menu_button_width);
+
+    @include screen-size("phone") {
+      transform: translateY(calc(100% - #{$menu_button_width}));
+      bottom: 0;
+      width: 100vw;
+    }
   }
 
   :global(.bar-button) {
@@ -174,6 +210,15 @@
     height: 100%;
     cursor: pointer;
     width: $menu_button_width;
+
+    @include screen-size("phone") {
+      padding: 0 $margin;
+      width: 100%;
+      height: $menu_button_width;
+      writing-mode: horizontal-tb;
+      text-orientation: upright;
+      align-items: flex-start;
+    }
   }
 
   :global(.bar-menu) {
@@ -207,10 +252,6 @@
   }
 
   .bar {
-    @include screen-size("phone") {
-      display: none;
-    }
-
     background: $green;
 
     :global(p.normal) {
@@ -219,9 +260,13 @@
     }
 
     .bar-button {
-      .title {
+      .title:not(.title.hamburger) {
         display: inline-block;
         justify-self: flex-start;
+
+        @include screen-size("phone") {
+          display: none;
+        }
 
         &.bottom {
           margin-bottom: -1 * $title_letter_spacing;
@@ -232,40 +277,90 @@
     &.open {
       transform: translate(0, 0);
 
-      @include screen-size("small") {
+      @include screen-size("phone") {
+        transform: translate(0, 0);
       }
     }
   }
 
   .hamburger {
-    cursor: pointer;
-    float: right;
-    margin-right: $margin;
-    padding-top: $line-height;
-    font-family: $display-stack;
-    color: inherit;
-    text-decoration: none;
-    font-weight: 900;
-    letter-spacing: 0.05em;
+    display: none;
+    
+    @include screen-size("phone") {
+      width: 100%;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-align: right;
+      display: inline-block;
 
-    @include screen-size("small") {
-      display: none;
+      &:hover {
+        color: $grey_solid;
+      }
+
+      &:active {
+        color: $grey_solid;
+      }
     }
 
-    &:hover {
-      color: $grey_solid;
+    .hamburger-cross-icon {
+      width: 32px;
+      margin-top: 2px;
+      margin-right: -8px;
+      position: relative;
+      float: right;
+      // margin: 50px auto;
+      transform: rotate(0deg);
+      transition: .5s ease-in-out;
+
+      span {
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background: $black;
+        // border-radius: 9px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
+
+        &:nth-child(1) {
+          top: 0px;
+          transform-origin: left center;
+        }
+
+        &:nth-child(2) {
+          top: 9px;
+          transform-origin: left center;
+        }
+
+        &:nth-child(3) {
+          top: 18px;
+          transform-origin: left center;
+        }
+      }
+
+      &.open {
+        span:nth-child(1) {
+          transform: rotate(45deg);
+          // top: 0;
+          // left: 0;
+        }
+
+        span:nth-child(2) {
+          width: 0%;
+          opacity: 0;
+        }
+
+        span:nth-child(3) {
+          transform: rotate(-45deg);
+          top: 22px;
+          left: 0;
+        }
+      } 
     }
 
-    &:active {
-      color: $grey_solid;
-    }
-  }
-
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
   }
 </style>

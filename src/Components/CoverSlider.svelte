@@ -68,6 +68,8 @@
       <Swiper
         touchRatio={0}
         navigation={{
+          type: 'bullets',
+          clickable: true,
           prevEl: ".custom-controls-prev",
           nextEl: ".custom-controls-next",
         }}
@@ -97,6 +99,8 @@
       <Swiper
         touchRatio={1}
         navigation={{
+          type: 'bullets',
+          clickable: true,
           prevEl: ".custom-controls-prev-mobile",
           nextEl: ".custom-controls-next-mobile",
         }}

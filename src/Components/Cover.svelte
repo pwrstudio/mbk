@@ -8,6 +8,7 @@
   // *** IMPORTS
   import { fade } from "svelte/transition"
   import { urlFor } from "../sanity.js"
+  import { links } from "svelte-routing"
   import Logo from "../Components/Graphics/Logo.svelte"
   import get from "lodash/get"
 
@@ -18,7 +19,7 @@
   const ratio = 460 / 370
 </script>
 
-<a class="cover" in:fade href="/{issue.slug.current}">
+<a class="cover" in:fade use:links href="/{issue.slug.current}">
   <div class="inner">
     <div class="logo">
       <Logo />

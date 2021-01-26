@@ -59,6 +59,7 @@
     transition: width 0.2s ease-out;
 
     @include screen-size("phone") {
+      height: calc(100vh - #{$menu_button_width});
       width: 100vw;
       overflow: hidden;
     }

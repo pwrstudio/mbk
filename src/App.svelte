@@ -6,12 +6,17 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { Router, Route } from "svelte-routing"
+  import { Router, Route, Link } from "svelte-routing"
   // COMPONENTS
   import MetaData from "./Components/MetaData.svelte"
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
+
+  $: {
+    console.log(Object.keys(Link))
+  }
+
 
   // // *** VARIABLES
   // let hideMenu
