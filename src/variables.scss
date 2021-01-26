@@ -30,19 +30,28 @@ $phone-margin: 14px;
 
 $font_size_large_phone: $font_size_normal;
 
+// PROJECT SIZES
 $menu_bar_height: $line-height * 3;
 $menu_width: 420px;
 $menu_button_width: 42px;
+$coverslider_2: 808px;
+$coverslider_1: 400px;
 
 $text_width: 600px;
 $text_width_wider: 800px;
 
 $breakpoints: (
+  "phone-small": (
+    max-width: 400px,
+  ),
+  "phone": (
+    max-width: 768px,
+  ),
   "small": (
     max-width: 900px,
   ),
   "medium": (
-    max-width: 1000px,
+    max-width: $coverslider_2 + $menu_width + $menu_button_width + $menu_button_width + $menu_button_width,
   ),
   "large": (
     max-width: 1600px,

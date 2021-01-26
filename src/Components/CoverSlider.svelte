@@ -31,26 +31,49 @@
 </script>
 
 <div class="covershow">
+  <!--       -->
+  <!-- TITLE -->
+  <!--       -->
   <div class="top">
     <h1 class="edition title">
       <span class="line">Seneste</span>
       <span class="line">Nummer</span>
     </h1>
   </div>
+  <!--           -->
+  <!-- END TITLE -->
+  <!--           -->
+
   <div class="middle">
+
+    <!--          -->
+    <!-- CONTROLS -->
+    <!--          -->
     <div class="custom-controls-prev">
       <ArrowLeft />
     </div>
-    <div>
+    <div class="custom-controls-prev-mobile">
+      <ArrowLeft />
+    </div>
+    <!--              -->
+    <!-- END CONTROLS -->
+    <!--              -->
+
+
+
+    <!--         -->
+    <!-- DESKTOP -->
+    <!--         -->
+    <div class="swiper-desktop">
       <Swiper
         touchRatio={0}
-        spaceBetween={10.5}
-        slidesPerView={2}
         navigation={{
           prevEl: ".custom-controls-prev",
           nextEl: ".custom-controls-next",
         }}
         pagination={{ el: ".custom-pagination" }}
+        slidesPerView={2}
+        spaceBetween={10.5}
         on:swiper={onSwiper}
       >
         {#each issues as issue}
@@ -60,31 +83,118 @@
         {/each}
       </Swiper>
     </div>
+    <!--             -->
+    <!-- END DESKTOP -->
+    <!--             -->
+
+
+
+    <!--        -->
+    <!-- MOBILE -->
+    <!--        -->
+    <div class="swiper-mobile">
+      <!-- Yes touching -->
+      <Swiper
+        touchRatio={1}
+        navigation={{
+          prevEl: ".custom-controls-prev-mobile",
+          nextEl: ".custom-controls-next-mobile",
+        }}
+        pagination={{ el: ".custom-pagination-mobile" }}
+        slidesPerView={1}
+        spaceBetween={10.5}
+        on:swiper={onSwiper}
+      >
+        {#each issues as issue}
+          <SwiperSlide>
+            <Cover {issue} />
+          </SwiperSlide>
+        {/each}
+      </Swiper>
+    </div>
+    <!--            -->
+    <!-- END MOBILE -->
+    <!--            -->
+
+
+
+    <!--          -->
+    <!-- CONTROLS -->
+    <!--          -->
     <div class="custom-controls-next">
       <ArrowRight />
     </div>
+    <div class="custom-controls-next-mobile">
+      <ArrowRight />
+    </div>
+    <!--              -->
+    <!-- END CONTROLS -->
+    <!--              -->
+
   </div>
+
+  <!--            -->
+  <!-- PAGINATION -->
+  <!--            -->
   <div class="bottom">
     <div class="custom-pagination" />
+    <div class="custom-pagination-mobile" />
   </div>
+  <!--                -->
+  <!-- END PAGINATION -->
+  <!--                -->
 </div>
 
 <style lang="scss">
   @import "../variables.scss";
 
+  /** Swiper Desktop */
+  .custom-controls-prev,
+  .custom-controls-next,
+  .custom-pagination,
+  .swiper-desktop {
+    @include screen-size("medium") {
+      display: none;
+    }
+
+    display: block;
+  }
+
+  /** Swiper Mobile */
+  .custom-controls-prev-mobile,
+  .custom-controls-next-mobile,
+  .custom-pagination-mobile,
+  .swiper-mobile {
+    display: none;
+
+    @include screen-size("medium") {
+      display: block;
+    }
+  }
+
+  /** Covershow */
   .covershow {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding: 0 $margin;
     user-select: none;
+    padding: 0;
+    overflow: hidden;
 
     :global(.swiper-container) {
-      width: 808px !important;
+      width: $coverslider_2;
     }
 
     :global(.swiper-slide) {
       width: 400px !important;
+    }
+
+    /** Smaller screens */
+    @include screen-size("medium") {
+      :global(.swiper-container) {
+        width: $coverslider_1;
+        overflow: hidden;
+      }
     }
 
     .title {
@@ -127,16 +237,23 @@
       justify-content: center;
       align-items: center;
 
+      .swiper-desktop {
+        min-width: 808px;
+      }
+
       .custom-controls-prev,
-      .custom-controls-next {
+      .custom-controls-next,
+      .custom-controls-prev-mobile,
+      .custom-controls-next-mobile {
         width: 40px;
         margin: 0 $margin / 2;
         cursor: pointer;
-        transition: all 0.2s ease;
       }
 
       :global(.custom-controls-prev.swiper-button-disabled),
-      :global(.custom-controls-next.swiper-button-disabled) {
+      :global(.custom-controls-next.swiper-button-disabled),
+      :global(.custom-controls-prev-mobile.swiper-button-disabled),
+      :global(.custom-controls-next-mobile.swiper-button-disabled) {
         opacity: 0.2;
       }
     }
@@ -145,29 +262,6 @@
       text-align: center;
       width: 100%;
       padding-left: 20px;
-    }
-
-    .swiper-controls-unique {
-      position: absolute;
-      z-index: 10000000;
-      width: 60px;
-      height: auto;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-    }
-
-    .swiper-prev-unique {
-      left: 0;
-      right: auto;
-    }
-
-    .swiper-next-unique {
-      right: 0;
-      left: auto;
-    }
-
-    @include screen-size("small") {
     }
   }
 </style>

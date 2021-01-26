@@ -97,6 +97,11 @@
   </div>
 </div>
 
+<div class="bar-mobile">
+  <MenuContent name={$menuItemActive} content={$menuContent} />
+  <!--  -->
+</div>
+
 <style lang="scss">
   @import "../variables.scss";
 
@@ -107,6 +112,25 @@
   * {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  /**
+    Shared with mobile ToC
+  */
+  :global(.bar-mobile) {
+    /* First, hide for everything else */
+    display: none;
+
+    @include screen-size("phone") {
+      display: block;
+      position: fixed;
+      z-index: 100000000;
+      box-sizing: border-box;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      background-color: $green;
+    }
   }
 
   /*
@@ -183,6 +207,10 @@
   }
 
   .bar {
+    @include screen-size("phone") {
+      display: none;
+    }
+
     background: $green;
 
     :global(p.normal) {

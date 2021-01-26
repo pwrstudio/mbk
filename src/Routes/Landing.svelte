@@ -57,6 +57,11 @@
     position: relative;
     float: right;
     transition: width 0.2s ease-out;
+
+    @include screen-size("phone") {
+      width: 100vw;
+      overflow: hidden;
+    }
   }
 
   .menus {

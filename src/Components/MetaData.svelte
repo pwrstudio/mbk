@@ -70,4 +70,6 @@
   <meta property="image" content={image} />
   <meta property="og:image" content={image} />
   <meta property="twitter:image" content={image} />
+  <!-- VIEWPORT -->
+  <meta property="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 </svelte:head>
