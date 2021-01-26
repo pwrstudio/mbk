@@ -39,6 +39,10 @@
 <style lang="scss" global>
   @import "./variables.scss";
 
+  :global(*) {
+    @include hide-scroll;
+  }
+
   :global(body),
   :global(main) {
     font-size: font_size_normal;
