@@ -59,7 +59,7 @@
 
       {#if index < $currentArticles.length - 1}
         <div
-          class="block link"
+          class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
             window.location.replace(
@@ -100,6 +100,13 @@
     flex-flow: row nowrap;
     scroll-snap-align: start;
 
+    @include screen-size ("phone") {
+      height: calc(100vh - #{$menu_button_width});
+      flex-flow: column nowrap;
+      height: auto;
+      overflow-y: auto;
+    }
+
     .header {
       padding-top: $margin_xs;
       padding-bottom: $margin_xs;
@@ -134,6 +141,10 @@
       height: 100%;
       overflow-y: scroll;
 
+      @include screen-size("phone") {
+        width: 100%;
+      }
+
       &.zoomableSlideshowLayout {
         padding: $margin 0;
         width: 100%;
@@ -167,6 +178,14 @@
 
         &.link {
           text-align: center;
+        }
+
+        &.next {
+          display: block;
+
+          @include screen-size("phone") {
+            display: none;
+          }
         }
       }
 

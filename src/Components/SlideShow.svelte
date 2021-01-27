@@ -11,7 +11,6 @@
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import { tick } from "svelte"
   import { isArray, get } from "lodash"
-  // import has from "lodash/has"
 
   // *** SETUP
   SwiperCore.use([Autoplay])
@@ -28,9 +27,18 @@
   let zoomed = false
   let zoomLevel = 1
   let maxHeight = "auto"
+  let vw = window.innerWidth
 
   $: {
     swiperInstance = swiper
+  }
+
+  const toggleZoomButton = e => {
+    const rect = swiperInstance.slides[swiperInstance.activeIndex].getBoundingClientRect()
+    maxHeight = rect.height + "px"
+
+    zoomed = !zoomed
+    zoomLevel = zoomLevel === 1 ? 2 : 1
   }
 
   const toggleZoom = e => {
@@ -39,9 +47,6 @@
 
     zoomed = !zoomed
     zoomLevel = zoomLevel === 1 ? 2 : 1
-
-    swiperInstance.clickedSlide.scrollLeft = 200
-    swiperInstance.clickedSlide.scrollTop = 200
   }
 
   const scrollThrough = e => {
@@ -62,15 +67,39 @@
     e.currentTarget.scrollTop = toY
   }
 
-  console.dir(slides)
+  // Checks in zoom containers if the original file is big enough, else falls back to a double vw image
+  const zoomImgUrl = asset => {
+    // Setup regex for original
+    const original = urlFor(asset).quality(90).url()
+    const originalDims = /-(\d+)x(\d+)/
+
+    // Setup regex for Double
+    const double = urlFor(asset).width(vw * 2).quality(90).url()
+    const doubleDims = /w=(\d+)/
+
+    const originalDimensions = original.match(originalDims)
+    const doubleDimensions = double.match(doubleDims)
+    
+    const originalW = originalDimensions[1]
+    const doubleW = doubleDimensions[1]
+
+    // Compare sizes...
+    if (Number(originalW) > Number(doubleW)) {
+      return original
+    } else {
+      return double
+    }
+  }
 </script>
+
+<svelte:window bind:innerWidth={vw} />
 
 <div class="slideshow" class:zoomable>
   <Swiper
     spaceBetween={8}
-    autoplay={{
-      delay: 4000
-    }}
+    autoplay={
+      zoomable ? false : { delay: 4000 }
+    }
     on:click={toggleZoom}
     on:swiper={e => (swiper = e.detail[0])}
   >
@@ -87,21 +116,23 @@
             <img
               class="slide-img"
               class:zoomed
-              src={urlFor(slide.asset).quality(90).url()}
+              src={zoomImgUrl(slide.asset)}
               alt={slide.asset.alt}
             />
           </div>
         {:else}
-          <img
-            class="slide-img"
-            src={urlFor(slide.asset).quality(90).width(1200).url()}
-            alt={slide.asset.alt}
-          />
-          {#if slide.caption}
-            <div class="caption">
-              {@html renderBlockText(get(slide, "caption.content", []))}
-            </div>
-          {/if}
+          <div class="img-container">
+            <img
+              class="slide-img"
+              src={urlFor(slide.asset).quality(90).width(1200).url()}
+              alt={slide.asset.alt}
+            />
+            {#if slide.caption}
+              <div class="caption">
+                {@html renderBlockText(get(slide, "caption.content", []))}
+              </div>
+            {/if}
+          </div>
         {/if}
       </SwiperSlide>
     {/each}
@@ -109,7 +140,7 @@
 
   {#if zoomable}
     <div class="zoomLevel">
-      <span class="button" on:click={toggleZoom}>
+      <span class="button" on:click={toggleZoomButton}>
         {`${zoomLevel * 100}%`}[±]
       </span>
     </div>
@@ -120,21 +151,29 @@
   @import "../variables.scss";
 
   .slideshow {
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
 
     .zoomLevel {
+      padding-top: $margin_xs;
+
       .button {
         cursor: pointer;
       }
     }
 
-    :global(.swiper-container) {
-      height: 100%;
+    :global(.swiper-wrapper) {
+      height: calc(100vh - #{$margin * 2});
     }
 
     :global(.swiper-slide) {
+      height: auto;
+    }
+
+    :global(.img-container) {
       height: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-between;
     }
 
     :global(.zoom-container) {
@@ -143,9 +182,14 @@
       scroll-behavior: unset;
     }
 
+    :global(.img-container) {
+      width: 100%;
+      height: 100%;
+    }
+
     :global(.slide-img) {
       max-width: 100%;
-      max-height: 100%;
+      // max-height: 100%;
     }
 
     :global(.slide-img.zoomed) {
@@ -160,7 +204,7 @@
     }
 
     .caption {
-      position: absolute;
+      // position: absolute;
       bottom: 0;
       :global(p) {
         font-size: $font_size_small;

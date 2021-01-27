@@ -59,102 +59,17 @@
   }
 
   .single {
+    scroll-snap-type: y mandatory;
     background-color: $white;
     padding-left: 2 * $menu_button_width;
     height: 100vh;
     overflow-y: hidden;
-    scroll-snap-type: y mandatory;
+
+    @include screen-size("phone") {
+      scroll-snap-type: unset;
+      padding-left: 0;
+      overflow-y: auto;
+      padding-bottom: $menu_button_width;
+    }
   }
-
-  // .single {
-  //   font-size: $font_size_normal;
-  //   font-family: $serif-stack;
-  //   margin: 0;
-  //   padding-bottom: $line-height * 2;
-  //   width: 100vw;
-  //   overflow-x: hidden;
-  //   padding-top: calc(#{$menu_bar_height} + #{$line-height / 2});
-  //   min-height: calc(100vh - #{$menu_bar_height});
-
-  //   @include screen-size("small") {
-  //     width: calc(100% - #{$phone-margin * 2});
-  //     // margin-left: $phone-margin;
-  //     // margin-right: $phone-margin;
-  //   }
-
-  //   h1 {
-  //     font-size: $font_size_normal;
-  //     line-height: $line-height;
-  //     margin: 0;
-  //     padding: 0;
-
-  //     @include screen-size("small") {
-  //       font-size: $font_size_large_phone;
-  //     }
-  //   }
-  // }
-
-  // .meta {
-  //   margin-bottom: $line-height * 2;
-  //   margin-left: auto;
-  //   margin-right: auto;
-  //   width: $text_width;
-  //   max-width: 100%;
-
-  //   .date {
-  //     font-size: $font_size_small;
-  //     font-family: $sans-stack;
-  //     margin-bottom: $line-height / 2;
-  //     padding-left: 2px;
-  //     letter-spacing: 0.1em;
-  //   }
-
-  //   .authors {
-  //     font-size: $font_size_normal;
-  //     line-height: $line-height;
-  //     font-style: italic;
-  //   }
-
-  //   &.intervju {
-  //     width: $text_width_wider;
-  //     padding-bottom: $line-height_large;
-  //     margin-bottom: $line-height_large * 2;
-  //     border-bottom: 1px solid $grey_solid;
-  //     line-height: $line-height_large;
-
-  //     .authors {
-  //       font-size: $font_size_large;
-  //       margin-bottom: $line-height_large / 2;
-  //     }
-
-  //     .title {
-  //       font-size: $font_size_large;
-  //       line-height: $line-height_large;
-  //     }
-  //   }
-
-  //   &.manifest {
-  //     width: $text_width_wider;
-  //     padding-bottom: $line-height_large;
-  //     margin-bottom: $line-height_large * 2;
-  //     border-bottom: 1px solid $grey_solid;
-  //     line-height: $line-height_large;
-
-  //     .authors {
-  //       font-size: $font_size_larger;
-  //       margin-bottom: $line-height_large / 2;
-  //     }
-
-  //     .title {
-  //       font-size: $font_size_larger;
-  //       font-family: $sans-stack;
-  //       font-weight: 900;
-  //       line-height: $line-height_large;
-  //     }
-  //   }
-  // }
-
-  // .ingress {
-  //   font-style: italic;
-  // }
 </style>

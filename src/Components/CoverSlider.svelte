@@ -1,7 +1,7 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  COVERSHOW
+  //  Coverslider
   //
   // # # # # # # # # # # # # #
 
@@ -30,7 +30,7 @@
   }
 </script>
 
-<div class="covershow">
+<div class="coverslider">
   <!--       -->
   <!-- TITLE -->
   <!--       -->
@@ -176,8 +176,8 @@
     }
   }
 
-  /** Covershow */
-  .covershow {
+  /** coverslider */
+  .coverslider {
     box-sizing: border-box;
     width: 100%;
     height: 100%;

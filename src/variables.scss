@@ -42,22 +42,22 @@ $text_width_wider: 800px;
 
 $breakpoints: (
   "phone-small": (
-    max-width: 400px,
+    max-width: 400px
   ),
   "phone": (
-    max-width: 768px,
+    max-width: 768px
   ),
   "small": (
-    max-width: 900px,
+    max-width: 900px
   ),
   "medium": (
-    max-width: $coverslider_2 + $menu_width + $menu_button_width + $menu_button_width + $menu_button_width,
+    max-width: $coverslider_2 + $menu_width + $menu_button_width + $menu_button_width + $menu_button_width
   ),
   "large": (
-    max-width: 1600px,
+    max-width: 1600px
   ),
   "short": (
-    max-height: 700px,
+    max-height: 700px
   ),
 );
 
