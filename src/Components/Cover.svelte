@@ -14,7 +14,7 @@
 
   // *** PROPS
   export let issue = {}
-  export let scaleOriginal = false
+  export let scaleOriginal
 
   // ratio of the photo is 460 / 370
   const ratio = 460 / 370
@@ -63,7 +63,7 @@
     position: relative;
 
     &.scalable {
-      transform: scale(0.75);
+      transform: scale(0.66);
     }
 
     .inner {
