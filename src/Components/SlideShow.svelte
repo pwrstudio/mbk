@@ -9,8 +9,10 @@
   import { urlFor, renderBlockText } from "../sanity.js"
   import SwiperCore, { Autoplay } from "swiper"
   import { Swiper, SwiperSlide } from "swiper/svelte"
-  import { tick } from "svelte"
-  import { isArray, get } from "lodash"
+  import { get } from "lodash"
+
+  // *** CSS
+  import "swiper/components/pagination/pagination.css"
 
   // *** SETUP
   SwiperCore.use([Autoplay])
@@ -31,6 +33,8 @@
 
   $: {
     swiperInstance = swiper
+
+    console.log(swiperInstance)
   }
 
   const toggleZoomButton = e => {
@@ -100,8 +104,8 @@
     autoplay={
       zoomable ? false : { delay: 4000 }
     }
+    pagination={{ el: ".custom-pagination" }}
     on:click={toggleZoom}
-    on:swiper={e => (swiper = e.detail[0])}
   >
     {#each slides as slide}
       <SwiperSlide>
@@ -138,13 +142,18 @@
     {/each}
   </Swiper>
 
-  {#if zoomable}
-    <div class="zoomLevel">
-      <span class="button" on:click={toggleZoomButton}>
-        {`${zoomLevel * 100}%`}[±]
-      </span>
-    </div>
-  {/if}
+  <div class="bottom">
+    <div class="custom-pagination" />
+
+    {#if zoomable}
+      <div class="zoomLevel">
+        <span class="button" on:click={toggleZoomButton}>
+          {`${zoomLevel * 100}%`}[±]
+        </span>
+      </div>
+    {/if}
+  </div>
+
 </div>
 
 <style lang="scss">

@@ -23,6 +23,8 @@
   let tocOpen = false
 
   $: {
+    console.log($menuActive)
+
     tableOfContentsActive.set(tocOpen)
 
     if (isArray($tableOfContents) && $hash === false) {
@@ -63,7 +65,7 @@
       transform: translateX(0);
 
       &.open {
-        transform: translateX($menu_width - $menu_button_width);        
+        transform: translateX($menu_width - $menu_button_width);
       }
     }
 
@@ -82,9 +84,9 @@
 </style>
 
 {#if $tableOfContents}
-  <div class="bar toc" use:links class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
+  <div class="bar toc" class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
 
-    <ul class="bar-menu">
+    <ul class="bar-menu" use:links>
       <li
         class="bar-menu-item title link"
         on:click={e => {window.location.replace('/')}}

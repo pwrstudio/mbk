@@ -42,6 +42,7 @@
   let vw = 0
 
   $: {
+    menuActive.set(menuOpen)
     // $activeRoute will change on navigation
     // 
     // 
