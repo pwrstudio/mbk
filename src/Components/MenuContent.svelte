@@ -24,6 +24,9 @@
 </script>
 
 <div class="bar-content menu-content" bind:this={el}>
+  <!--      -->
+  <!-- NEWS -->
+  <!--      -->
   {#if name === "news" && isArray(content)}
     {#each content as block, index}
       <div class="news-item">
@@ -62,13 +65,18 @@
         {/if}
       </div>
     {/each}
+  <!--       -->
+  <!-- ABOUT -->
+  <!--       -->
   {:else if name === "about"}
     {#if has(content, "content.content") && isArray(content.content.content)}
       <div class="paragraph">
         {@html renderBlockText(content.content.content)}
-        <!-- content content content -->
       </div>
     {/if}
+  <!--          -->
+  <!-- COLOPHON -->
+  <!--          -->
   {:else if name === "colophon"}
     {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
       <div class="paragraph">

@@ -54,6 +54,12 @@
 
       .title {
         margin-bottom: $title_letter_spacing;
+
+        &:not(.indhold) {
+          @include screen-size("phone") {
+            display: none;
+          }
+        }
       }
     }
 
@@ -104,7 +110,7 @@
     </ul>
 
     <div class="bar-button" on:click|self={e => tocOpen = !tocOpen}>
-      <h1 class="title">
+      <h1 class="title indhold">
         <span on:click={e => tocOpen = !tocOpen}>
           INDHOLD
         </span>

@@ -192,6 +192,7 @@
       transform: translateY(calc(100% - #{$menu_button_width}));
       bottom: 0;
       width: 100vw;
+      padding: $menu_button_width $margin / 4 0;
     }
   }
 
@@ -213,7 +214,7 @@
     width: $menu_button_width;
 
     @include screen-size("phone") {
-      padding: 0 $margin;
+      padding: 0 $margin / 4;
       width: 100%;
       height: $menu_button_width;
       writing-mode: horizontal-tb;
@@ -308,10 +309,8 @@
     .hamburger-cross-icon {
       width: 32px;
       margin-top: 2px;
-      margin-right: -8px;
       position: relative;
       float: right;
-      // margin: 50px auto;
       transform: rotate(0deg);
       transition: .5s ease-in-out;
 
@@ -321,7 +320,6 @@
         height: 2px;
         width: 100%;
         background: $black;
-        // border-radius: 9px;
         opacity: 1;
         left: 0;
         transform: rotate(0deg);
@@ -344,10 +342,10 @@
       }
 
       &.open {
+        transform: translateX(8px);
+
         span:nth-child(1) {
           transform: rotate(45deg);
-          // top: 0;
-          // left: 0;
         }
 
         span:nth-child(2) {
