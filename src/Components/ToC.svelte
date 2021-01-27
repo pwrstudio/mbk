@@ -21,10 +21,9 @@
 
   // *** VARIABLES
   let tocOpen = false
+  let vw = window.innerWidth
 
   $: {
-    console.log($menuActive)
-
     tableOfContentsActive.set(tocOpen)
 
     if (isArray($tableOfContents) && $hash === false) {
@@ -33,66 +32,27 @@
   }
 
   const goTo = article => {
-    $menuActive = false
+    menuActive.set(false)
     $tableOfContentsActive = false
     $hash = get(article, 'slug.current', '')
     window.location.replace($tableOfContentsActiveHash)
   }
 </script>
 
-<style lang="scss">
-  @import "../variables.scss";
+<!--                 -->
+<!-- WINDOW BINDINGS -->
+<!--                 -->
 
-  .toc {
-    margin-left: $menu_button_width;
-    padding-left: $margin / 2;
-    background: $grey_solid;
-    z-index: 999;
-
-    .bar-button {
-      justify-content: start;
-
-      .title {
-        margin-bottom: $title_letter_spacing;
-
-        &:not(.indhold) {
-          @include screen-size("phone") {
-            display: none;
-          }
-        }
-      }
-    }
-
-    &.open {
-      transform: translateX(0);
-    }
-
-    &.parentOpen {
-      transform: translateX(0);
-
-      &.open {
-        transform: translateX($menu_width - $menu_button_width);
-      }
-    }
-
-    .articleNumber {
-      display: inline-block;
-      height: $font_size_normal;
-      width: auto;
-      margin-bottom: $title_letter_spacing;
-
-      &.active {
-        border-bottom: $border_black;
-      }
-    }
-
-  }
-</style>
+<svelte:window bind:innerWidth={vw}/>
 
 {#if $tableOfContents}
+  <!-- <div class="bar toc open"> -->
   <div class="bar toc" class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
 
-    <ul class="bar-menu" use:links>
+    <ul
+      class="bar-menu"
+      use:links
+    >
       <li
         class="bar-menu-item title link"
         on:click={e => {window.location.replace('/')}}
@@ -102,6 +62,7 @@
       {#each $tableOfContents as article, index}
         <li
           class="bar-menu-item title link"
+          class:active={$hash === get(article, 'slug.current', '')}
           on:click={e => {goTo(article)}}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
@@ -129,3 +90,72 @@
     </div>
   </div>
 {/if}
+
+<style lang="scss">
+  @import "../variables.scss";
+
+  .toc {
+    margin-left: $menu_button_width;
+    padding-left: $margin / 2;
+    background: $grey_solid;
+    z-index: 999;
+
+    @include screen-size("phone") {
+      margin-left: unset;
+      padding-left: unset;
+      width: 100%;
+      transform: translateY(100vh) translateY(-2 * $menu_button_width);
+      height: auto;
+      padding: $margin $margin / 4 0;
+    }
+
+    .bar-button {
+      justify-content: start;
+
+      .title {
+        margin-bottom: $title_letter_spacing;
+
+        &:not(.indhold) {
+          @include screen-size("phone") {
+            display: none;
+          }
+        }
+
+        &.indhold {
+          @include screen-size("phone") {
+            text-align: center;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    &.open {
+      transform: translateX(0);
+
+      @include screen-size("phone") {
+        transform: translateY(0);
+      }
+    }
+
+    &.parentOpen {
+      transform: translateX(0);
+
+      &.open {
+        transform: translateX($menu_width - $menu_button_width);
+      }
+    }
+
+    .articleNumber {
+      display: inline-block;
+      height: $font_size_normal;
+      width: auto;
+      margin-bottom: $title_letter_spacing;
+
+      &.active {
+        border-bottom: $border_black;
+      }
+    }
+
+  }
+</style>

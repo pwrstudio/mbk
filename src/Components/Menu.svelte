@@ -89,6 +89,10 @@
   }
 </script>
 
+<!--                 -->
+<!-- WINDOW BINDINGS -->
+<!--                 -->
+
 <svelte:window bind:innerWidth={vw}/>
 
 <!--              -->

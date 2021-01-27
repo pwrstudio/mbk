@@ -94,6 +94,10 @@
   }
 </script>
 
+<!--                 -->
+<!-- WINDOW BINDINGS -->
+<!--                 -->
+
 <svelte:window bind:innerWidth={vw} />
 
 <div class="slideshow" class:zoomable>
