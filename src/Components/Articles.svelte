@@ -53,7 +53,7 @@
 
       {#if get(article, "zoomableSlideshowLayout", false)}
         <div class="block full">
-          <Slideshow zoomable slides={get(article, "slideshow", [])} />
+          <Slideshow id={index} zoomable slides={get(article, "slideshow", [])} />
         </div>
       {/if}
 
@@ -80,7 +80,7 @@
     {#if !get(article, "zoomableSlideshowLayout", false)}
       <div class="col" class:slideshow={get(article, "slideshow", [])}>
         {#if get(article, "slideshow", [])}
-          <Slideshow slides={get(article, "slideshow", [])} />
+          <Slideshow id={index} slides={get(article, "slideshow", [])} />
         {/if}
       </div>
     {/if}
@@ -155,6 +155,10 @@
           padding: 0 $margin / 4;
           width: 50%;
           box-sizing: border-box;
+
+          @include screen-size("phone") {
+            width: 100%;
+          }
 
           &.full {
             width: 100%;

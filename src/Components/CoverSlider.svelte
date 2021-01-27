@@ -7,12 +7,10 @@
 
   // *** IMPORTS
   import SwiperCore, { Navigation, Pagination } from "swiper"
-  // import ArrowLeft from "./Graphics/ArrowLeft.svelte"
-  // import ArrowRight from "./Graphics/ArrowRight.svelte"
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import "swiper/swiper-bundle.css"
   import "swiper/components/navigation/navigation.css"
-  import "swiper/components/pagination/pagination.css"
+  import "swiper/components/pagination/pagination.min.css"
 
   // *** INSTALLATION
   SwiperCore.use([Navigation, Pagination])
@@ -25,10 +23,14 @@
   // *** PROPS
   export let issues = []
 
-  const onSwiper = swiper => {
-    console.log(swiper.detail[0])
+  let vw = window.innerWidth
+
+  const onSwiper = (swiper) => {
+    console.log(swiper)
   }
 </script>
+
+<svelte:window bind:innerWidth={vw} />
 
 <div class="coverslider">
   <!--       -->
@@ -111,7 +113,11 @@
       >
         {#each issues as issue}
           <SwiperSlide>
-            <Cover {issue} />
+            {#if vw > 400}
+              <Cover {issue} />
+            {:else}
+              Custom solution
+            {/if}
           </SwiperSlide>
         {/each}
       </Swiper>

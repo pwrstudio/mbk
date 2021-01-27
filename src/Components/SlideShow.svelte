@@ -7,19 +7,19 @@
 
   // *** IMPORTS
   import { urlFor, renderBlockText } from "../sanity.js"
-  import SwiperCore, { Autoplay } from "swiper"
-  import { Swiper, SwiperSlide } from "swiper/svelte"
   import { get } from "lodash"
-
-  // *** CSS
-  import "swiper/components/pagination/pagination.css"
-
+  import SwiperCore, { Autoplay, Pagination } from "swiper"
+  import { Swiper, SwiperSlide } from "swiper/svelte"
+  import "swiper/swiper-bundle.css"
+  import "swiper/components/pagination/pagination.min.css"
+  
   // *** SETUP
-  SwiperCore.use([Autoplay])
+  SwiperCore.use([Autoplay, Pagination])
 
   // *** PROPS
   export let slides = []
   export let zoomable = false
+  export let id = 0
 
   // *** SWIPER VARS
   let swiperInstance = null
@@ -33,8 +33,6 @@
 
   $: {
     swiperInstance = swiper
-
-    console.log(swiperInstance)
   }
 
   const toggleZoomButton = e => {
@@ -104,7 +102,9 @@
     autoplay={
       zoomable ? false : { delay: 4000 }
     }
-    pagination={{ el: ".custom-pagination" }}
+    pagination={{
+      el: "#custom-pagination-" + id
+    }}
     on:click={toggleZoom}
   >
     {#each slides as slide}
@@ -143,7 +143,7 @@
   </Swiper>
 
   <div class="bottom">
-    <div class="custom-pagination" />
+    <div id={"custom-pagination-" + id} class={"custom-pagination"} />
 
     {#if zoomable}
       <div class="zoomLevel">
@@ -160,7 +160,7 @@
   @import "../variables.scss";
 
   .slideshow {
-    min-height: 100%;
+    height: 100%;
 
     .zoomLevel {
       padding-top: $margin_xs;
@@ -168,6 +168,28 @@
       .button {
         cursor: pointer;
       }
+    }
+
+    .bottom {
+      height: $margin;
+    }
+
+    :global(.custom-pagination) {
+      height: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    :global(.swiper-pagination-bullet) {
+      background: $grey_solid;
+      opacity: 1;
+      margin: 0 $margin / 6;
+    }
+
+    :global(.swiper-pagination-bullet.swiper-pagination-bullet-active) {
+      background: $black;
     }
 
     :global(.swiper-wrapper) {
@@ -179,10 +201,15 @@
     }
 
     :global(.img-container) {
+      width: 100%;
       height: 100%;
       display: flex;
       flex-flow: column nowrap;
       justify-content: space-between;
+
+      @include screen-size("phone") {
+        justify-content: center;
+      }
     }
 
     :global(.zoom-container) {
@@ -191,14 +218,8 @@
       scroll-behavior: unset;
     }
 
-    :global(.img-container) {
-      width: 100%;
-      height: 100%;
-    }
-
     :global(.slide-img) {
       max-width: 100%;
-      // max-height: 100%;
     }
 
     :global(.slide-img.zoomed) {
