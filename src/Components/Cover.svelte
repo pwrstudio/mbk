@@ -63,7 +63,7 @@
     position: relative;
 
     &.scalable {
-      transform: scale(0.66);
+      transform: scale(0.5);
     }
 
     .inner {
