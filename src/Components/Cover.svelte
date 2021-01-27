@@ -14,12 +14,19 @@
 
   // *** PROPS
   export let issue = {}
+  export let scaleOriginal = false
 
   // ratio of the photo is 460 / 370
   const ratio = 460 / 370
 </script>
 
-<a class="cover" in:fade use:links href="/{issue.slug.current}">
+<a
+  class="cover"
+  class:scalable={scaleOriginal}
+  use:links
+  in:fade
+  href="/{issue.slug.current}"
+>
   <div class="inner">
     <div class="logo">
       <Logo />
@@ -54,6 +61,10 @@
     justify-content: flex-end;
     background-color: $white;
     position: relative;
+
+    &.scalable {
+      transform: scale(0.75);
+    }
 
     .inner {
       box-sizing: border-box;

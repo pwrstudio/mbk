@@ -116,7 +116,7 @@
             {#if vw > 400}
               <Cover {issue} />
             {:else}
-              Custom solution
+              <Cover {issue} scaleOriginal={true} />
             {/if}
           </SwiperSlide>
         {/each}
