@@ -118,7 +118,7 @@
         {#each issues as issue}
           <SwiperSlide>
             {#if vw > 400}
-              <Cover {issue} />
+              <Cover {issue} scaleOriginal={false} />
             {:else}
               <Cover {issue} scaleOriginal={true} />
             {/if}
