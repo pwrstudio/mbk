@@ -125,6 +125,10 @@
     >Kolofon</li>
   </ul>
 
+  {#if vw <= 768}
+    <MenuContent name={$menuItemActive} content={$menuContent} />
+  {/if}
+
   <div
     class="bar-button"
     class:disabled={landing && vw > 768}

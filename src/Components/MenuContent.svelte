@@ -78,11 +78,6 @@
   <!-- COLOPHON -->
   <!--          -->
   {:else if name === "colophon"}
-    {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
-      <div class="paragraph">
-        {@html renderBlockText(content.wideColumn.content)}
-      </div>
-    {/if}
     {#if has(content, "logo.asset")}
       <img
         class="logo"
@@ -93,6 +88,23 @@
           .url()}
       />
     {/if}
+    {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
+      <div class="paragraph">
+        {@html renderBlockText(content.wideColumn.content)}
+      </div>
+    {/if}
+    <div class="narrow-cols">
+      {#if has(content, "firstNarrowColumn.content") && isArray(content.firstNarrowColumn.content)}
+        <div class="narrow-col">
+          {@html renderBlockText(content.firstNarrowColumn.content)}
+        </div>
+      {/if}
+      {#if has(content, "secondNarrowColumn.content") && isArray(content.secondNarrowColumn.content)}
+        <div class="narrow-col">
+          {@html renderBlockText(content.secondNarrowColumn.content)}
+        </div>
+      {/if}
+    </div>
     
   {/if}
 </div>
@@ -109,7 +121,9 @@
     scroll-snap-type: y proximity;
     font-size: $font_size_small;
 
-    @include hide-scroll;
+    @include screen-size("phone") {
+      margin-top: $margin / 4;
+    }
 
     .logo {
       max-height: 80vh;
@@ -130,6 +144,33 @@
         border-bottom: $border_black;
         padding-top: 4px;
         margin-bottom: $line-height;
+      }
+    }
+
+    .narrow-cols {
+      border-top: $border-black;
+      margin-top: $margin_xs;
+      padding-top: $margin_xs;
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+
+      :global(p.normal) {
+        font-size: 10px;
+        line-height: 16px;
+      }
+
+      :global(.image) {
+        width: 100%;
+        margin: 0;
+      }
+
+      :global(.image img) {
+        height: 16px * 5;
+      }
+
+      .narrow-col {
+        width: 50%;
       }
     }
   }
