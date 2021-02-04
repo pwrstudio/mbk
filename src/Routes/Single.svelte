@@ -7,6 +7,9 @@
 
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
+  import { onMount } from "svelte"
+  import { goTo, elementReady } from '../global'
+  import get from "lodash/get"
 
   // STORES
   import { tableOfContents, currentPost, currentArticles } from "../stores.js"
@@ -39,6 +42,33 @@
   articlesData.then(articles => {
     $currentArticles = articles.tableOfContents
   })
+
+  let timer = null
+  let singleElement
+
+  const handleScroll = () => {
+    clearTimeout(timer)
+
+    if(!singleElement.classList.contains('pointer-none')) {
+      singleElement.classList.add('pointer-none')
+    }
+
+    timer = setTimeout(() => {
+      singleElement.classList.remove('pointer-none')
+      console.log('done scrolling')
+    }, 100)
+  }
+
+  onMount(() => {
+    const myHash = get(window.location, 'hash', false)
+
+    if (myHash) {
+      elementReady(myHash).then((el) => {
+        goTo(myHash)
+        singleElement.scrollTop = el.offsetTop
+      })
+    }
+  })
 </script>
 
 {#await $currentPost then post}
@@ -46,7 +76,7 @@
     <Menu />
     <ToC />
   </div>
-  <div class="single">
+  <div bind:this={singleElement} on:scroll={handleScroll} class="single">
     <Articles />
   </div>
 {/await}
@@ -64,6 +94,10 @@
     padding-left: 2 * $menu_button_width;
     height: 100vh;
     overflow-y: hidden;
+
+    &.pointer-none {
+      pointer-events: none;
+    }
 
     @include screen-size("phone") {
       scroll-snap-type: unset;

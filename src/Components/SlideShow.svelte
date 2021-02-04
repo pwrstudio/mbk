@@ -36,37 +36,43 @@
   }
 
   const toggleZoomButton = e => {
-    const rect = swiperInstance.slides[swiperInstance.activeIndex].getBoundingClientRect()
-    maxHeight = rect.height + "px"
-
-    zoomed = !zoomed
-    zoomLevel = zoomLevel === 1 ? 2 : 1
+    if (swiperInstance.slides[swiperInstance.activeIndex]) {
+      const rect = swiperInstance.slides[swiperInstance.activeIndex].getBoundingClientRect()
+      maxHeight = rect.height + "px"
+  
+      zoomed = !zoomed
+      zoomLevel = zoomLevel === 1 ? 2 : 1
+    }
   }
 
   const toggleZoom = e => {
-    const rect = swiperInstance.clickedSlide.getBoundingClientRect()
-    maxHeight = rect.height + "px"
-
-    zoomed = !zoomed
-    zoomLevel = zoomLevel === 1 ? 2 : 1
+    if (swiperInstance.clickedSlide) {
+      const rect = swiperInstance.clickedSlide.getBoundingClientRect()
+      maxHeight = rect.height + "px"
+  
+      zoomed = !zoomed
+      zoomLevel = zoomLevel === 1 ? 2 : 1
+    }
   }
 
   const scrollThrough = e => {
-    const rect = e.currentTarget.getBoundingClientRect()
-
-    const x = e.clientX - rect.left // x position within the element.
-    const y = e.clientY - rect.top // y position within the element.
-    const scrollW = e.currentTarget.scrollWidth
-    const scrollH = e.currentTarget.scrollHeight
-
-    const fracX = x / rect.width
-    const fracY = y / rect.height
-
-    const toX = fracX * (scrollW - rect.width)
-    const toY = fracY * (scrollH - rect.height)
-
-    e.currentTarget.scrollLeft = toX
-    e.currentTarget.scrollTop = toY
+    if (e.currentTarget) {
+      const rect = e.currentTarget.getBoundingClientRect()
+  
+      const x = e.clientX - rect.left // x position within the element.
+      const y = e.clientY - rect.top // y position within the element.
+      const scrollW = e.currentTarget.scrollWidth
+      const scrollH = e.currentTarget.scrollHeight
+  
+      const fracX = x / rect.width
+      const fracY = y / rect.height
+  
+      const toX = fracX * (scrollW - rect.width)
+      const toY = fracY * (scrollH - rect.height)
+  
+      e.currentTarget.scrollLeft = toX
+      e.currentTarget.scrollTop = toY
+    }
   }
 
   // Checks in zoom containers if the original file is big enough, else falls back to a double vw image

@@ -9,7 +9,7 @@
   import { links } from "svelte-routing"
   import get from "lodash/get"
   import isArray from "lodash/isArray"
-  import { tick, onMount } from "svelte"
+  import { goTo } from '../global'
 
   // *** STORES
   import {
@@ -23,44 +23,11 @@
   // *** VARIABLES
   let tocOpen = false
   let vw = window.innerWidth
-  let mounted = false
 
   $: {
     tableOfContentsActive.set(tocOpen)
-    if ($hash) {
-      console.log($hash, '!')
-      const element = document.getElementById($hash)
-      console.log(element)
-    }
   }
 
-  const goTo = newHash => {
-    menuActive.set(false)
-    $tableOfContentsActive = false
-    $hash = newHash
-    window.location.hash = newHash
-  }
-
-  const setHash = () => {
-    const hashOnLoad = get(window.location, 'hash', false)
-    if (hashOnLoad) {
-      $hash = hashOnLoad.replace('#', '')
-    }
-  }
-
-  const initialScroll = async () => {
-    await tick()
-
-    console.log(document.getElementById($hash))
-  }
-
-  onMount(async () => {
-    await tick()
-
-    setHash()
-
-    initialScroll()
-  })
 </script>
 
 <!--                 -->

@@ -101,7 +101,10 @@
 
 <div class="bar" use:links class:open={menuOpen}>
   {#if vw > 768}
-    <MenuContent name={$menuItemActive} content={$menuContent} />
+    <MenuContent
+      name={$menuItemActive}
+      content={$menuContent}
+    />
   {/if}
 
   <ul class="bar-menu">
