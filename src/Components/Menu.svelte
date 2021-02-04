@@ -231,6 +231,7 @@
     align-items: center;
     height: 100%;
     width: $menu_button_width;
+    cursor: pointer;
 
     @include screen-size("phone") {
       padding: 0 $margin / 4;

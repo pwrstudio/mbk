@@ -6,7 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { links } from "svelte-routing"
+  import { links, navigate } from "svelte-routing"
   import get from "lodash/get"
   import isArray from "lodash/isArray"
   import { goTo } from '../global'
@@ -46,7 +46,11 @@
     >
       <li
         class="bar-menu-item title link"
-        on:click={e => {window.location.replace('/')}}
+        on:click={e => {
+            navigate('/')
+            // window.location.replace('/')
+          }
+        }
         on:touchstart={e => {window.location.replace('/')}}
       >
         TILBAGE TIL FORSIDE
@@ -68,11 +72,10 @@
       on:click|self={e => tocOpen = !tocOpen}
       on:touchstart|self={e => tocOpen = !tocOpen}
     >
-      <h1 class="title indhold">
-        <span
-          on:click={e => tocOpen = !tocOpen}
-          on:touchstart={e => tocOpen = !tocOpen}
-        >
+      <h1 class="title indhold"
+        on:click={e => tocOpen = !tocOpen}
+        on:touchstart={e => tocOpen = !tocOpen}>
+        <span>
           INDHOLD
         </span>
       </h1>
