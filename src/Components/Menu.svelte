@@ -44,17 +44,17 @@
   $: {
     menuActive.set(menuOpen)
     // $activeRoute will change on navigation
-    // 
-    // 
-    if ($activeRoute.uri === '/') {
+    //
+    //
+    if ($activeRoute.uri === "/") {
       if (vw < 768) {
         menuOpen = false
       }
     }
 
     // Switch the menu to off if the vw is mobile size
-    // 
-    // 
+    //
+    //
     if (landing) {
       if (pvw >= 768 && vw < 768) {
         menuOpen = false
@@ -64,8 +64,8 @@
     }
 
     // Set previous vw to current vw
-    // 
-    // 
+    //
+    //
     pvw = vw
   }
 
@@ -93,7 +93,7 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw}/>
+<svelte:window bind:innerWidth={vw} />
 
 <!--              -->
 <!-- DESKTOP MENU -->
@@ -101,10 +101,7 @@
 
 <div class="bar" use:links class:open={menuOpen}>
   {#if vw > 768}
-    <MenuContent
-      name={$menuItemActive}
-      content={$menuContent}
-    />
+    <MenuContent name={$menuItemActive} content={$menuContent} />
   {/if}
 
   <ul class="bar-menu">
@@ -114,21 +111,27 @@
       class:active={$menuItemActive === "news"}
       on:click={updateMenuItem}
       on:touchstart={updateMenuItem}
-    >På IBK</li>
+    >
+      På IBK
+    </li>
     <li
       class="bar-menu-item title"
       id="about"
       class:active={$menuItemActive === "about"}
       on:click={updateMenuItem}
       on:touchstart={updateMenuItem}
-    >Om IBK</li>
+    >
+      Om IBK
+    </li>
     <li
       class="bar-menu-item title"
       id="colophon"
       class:active={$menuItemActive === "colophon"}
       on:click={updateMenuItem}
       on:touchstart={updateMenuItem}
-    >Kolofon</li>
+    >
+      Kolofon
+    </li>
   </ul>
 
   {#if vw <= 768}
@@ -153,9 +156,9 @@
     <h1 class="title bottom">Info</h1>
     <h1 class="title hamburger">
       <div class="hamburger-cross-icon" class:open={menuOpen}>
-        <span></span>
-        <span></span>
-        <span></span>
+        <span />
+        <span />
+        <span />
       </div>
     </h1>
   </div>
@@ -164,13 +167,11 @@
 <!-- END DESKTOP MENU -->
 <!--                  -->
 
-
-      <!-- 
+<!-- 
   ***   🐸   ***
   *** styles ***
   ***   🐸   ***
       !-->
-
 <style lang="scss">
   @import "../variables.scss";
 
@@ -309,7 +310,7 @@
 
   .hamburger {
     display: none;
-    
+
     @include screen-size("phone") {
       width: 100%;
       color: inherit;
@@ -334,7 +335,7 @@
       position: relative;
       float: right;
       transform: rotate(0deg);
-      transition: .5s ease-in-out;
+      // transition: 0.5s ease-in-out;
 
       span {
         display: block;
@@ -345,7 +346,7 @@
         opacity: 1;
         left: 0;
         transform: rotate(0deg);
-        transition: .25s ease-in-out;
+        // transition: 0.25s ease-in-out;
 
         &:nth-child(1) {
           top: 0px;
@@ -380,8 +381,7 @@
           top: 22px;
           left: 0;
         }
-      } 
+      }
     }
-
   }
 </style>
