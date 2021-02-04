@@ -226,7 +226,6 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    cursor: pointer;
     width: $menu_button_width;
 
     @include screen-size("phone") {
@@ -237,6 +236,10 @@
       text-orientation: upright;
       align-items: flex-start;
     }
+  }
+
+  :global(.bar-button .title) {
+    cursor: pointer;
   }
 
   :global(.bar-menu) {

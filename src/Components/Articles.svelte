@@ -13,7 +13,6 @@
   import get from "lodash/get"
 
   import "swiper/swiper-bundle.css"
-  // import "./swipers.css"
 
   // *** STORES
   import { currentPost, currentArticles } from "../stores.js"

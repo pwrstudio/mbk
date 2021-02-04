@@ -9,34 +9,58 @@
   import { links } from "svelte-routing"
   import get from "lodash/get"
   import isArray from "lodash/isArray"
+  import { tick, onMount } from "svelte"
 
   // *** STORES
   import {
-      menuActive,
-      tableOfContentsActive,
-      hash,
       tableOfContentsActiveHash, // derived from hash
-      tableOfContents
+      tableOfContentsActive,
+      tableOfContents,
+      menuActive,
+      hash
     } from "../stores.js"
 
   // *** VARIABLES
   let tocOpen = false
   let vw = window.innerWidth
+  let mounted = false
 
   $: {
     tableOfContentsActive.set(tocOpen)
-
-    if (isArray($tableOfContents) && $hash === false) {
-      goTo($tableOfContents[0])
+    if ($hash) {
+      console.log($hash, '!')
+      const element = document.getElementById($hash)
+      console.log(element)
     }
   }
 
-  const goTo = article => {
+  const goTo = newHash => {
     menuActive.set(false)
     $tableOfContentsActive = false
-    $hash = get(article, 'slug.current', '')
-    window.location.replace($tableOfContentsActiveHash)
+    $hash = newHash
+    window.location.hash = newHash
   }
+
+  const setHash = () => {
+    const hashOnLoad = get(window.location, 'hash', false)
+    if (hashOnLoad) {
+      $hash = hashOnLoad.replace('#', '')
+    }
+  }
+
+  const initialScroll = async () => {
+    await tick()
+
+    console.log(document.getElementById($hash))
+  }
+
+  onMount(async () => {
+    await tick()
+
+    setHash()
+
+    initialScroll()
+  })
 </script>
 
 <!--                 -->
@@ -64,8 +88,8 @@
         <li
           class="bar-menu-item title link"
           class:active={$hash === get(article, 'slug.current', '')}
-          on:click={e => {goTo(article)}}
-          on:touchstart={e => {goTo(article)}}
+          on:click={e => {goTo(get(article, 'slug.current', ''))}}
+          on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
@@ -90,8 +114,8 @@
           <span
             class="articleNumber"
             class:active={$hash === get(article, 'slug.current', '')}
-            on:click={e => {goTo(article)}}
-            on:touchstart={e => {goTo(article)}}
+            on:click={e => {goTo(get(article, 'slug.current', ''))}}
+            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
           >
             {index + 1}
           </span>
