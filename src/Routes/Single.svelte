@@ -50,13 +50,15 @@
     clearTimeout(timer)
 
     if(!singleElement.classList.contains('pointer-none')) {
+      document.body.classList.add('pointer-none')
       singleElement.classList.add('pointer-none')
     }
 
     timer = setTimeout(() => {
+      document.body.classList.remove('pointer-none')
       singleElement.classList.remove('pointer-none')
       console.log('done scrolling')
-    }, 100)
+    }, 200)
   }
 
   onMount(() => {
@@ -88,16 +90,16 @@
     scroll-behavior: smooth;
   }
 
+  :global(.pointer-none) {
+    pointer-events: none;
+  }
+
   .single {
     scroll-snap-type: y mandatory;
     background-color: $white;
     padding-left: 2 * $menu_button_width;
     height: 100vh;
     overflow-y: hidden;
-
-    &.pointer-none {
-      pointer-events: none;
-    }
 
     @include screen-size("phone") {
       scroll-snap-type: unset;
