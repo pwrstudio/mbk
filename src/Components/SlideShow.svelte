@@ -131,7 +131,9 @@
         {:else}
           <div class="img-container">
             <img
-              class="slide-img"
+              class="slide-img contain"
+              class:contain={!get(slide, 'fit')}
+              class:fit={get(slide, 'fit')}
               src={urlFor(slide.asset).quality(90).width(1200).url()}
               alt={slide.asset.alt}
             />
@@ -224,6 +226,15 @@
 
     :global(.slide-img) {
       max-width: 100%;
+      max-height: 100%;
+    }
+
+    :global(.slide-img.contain) {
+      object-fit: contain;
+    }
+
+    :global(.slide-img.cover) {
+      object-fit: cover;
     }
 
     :global(.slide-img.zoomed) {
