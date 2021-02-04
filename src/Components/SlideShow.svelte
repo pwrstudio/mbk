@@ -132,8 +132,8 @@
           <div class="img-container">
             <img
               class="slide-img contain"
-              class:contain={!get(slide, 'fit')}
-              class:fit={get(slide, 'fit')}
+              class:contain={!get(slide, 'cover')}
+              class:cover={get(slide, 'cover')}
               src={urlFor(slide.asset).quality(90).width(1200).url()}
               alt={slide.asset.alt}
             />
