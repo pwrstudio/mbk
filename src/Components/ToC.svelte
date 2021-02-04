@@ -56,6 +56,7 @@
       <li
         class="bar-menu-item title link"
         on:click={e => {window.location.replace('/')}}
+        on:touchstart={e => {window.location.replace('/')}}
       >
         TILBAGE TIL FORSIDE
       </li>
@@ -64,15 +65,23 @@
           class="bar-menu-item title link"
           class:active={$hash === get(article, 'slug.current', '')}
           on:click={e => {goTo(article)}}
+          on:touchstart={e => {goTo(article)}}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
       {/each}
     </ul>
 
-    <div class="bar-button" on:click|self={e => tocOpen = !tocOpen}>
+    <div
+      class="bar-button"
+      on:click|self={e => tocOpen = !tocOpen}
+      on:touchstart|self={e => tocOpen = !tocOpen}
+    >
       <h1 class="title indhold">
-        <span on:click={e => tocOpen = !tocOpen}>
+        <span
+          on:click={e => tocOpen = !tocOpen}
+          on:touchstart={e => tocOpen = !tocOpen}
+        >
           INDHOLD
         </span>
       </h1>
@@ -82,6 +91,7 @@
             class="articleNumber"
             class:active={$hash === get(article, 'slug.current', '')}
             on:click={e => {goTo(article)}}
+            on:touchstart={e => {goTo(article)}}
           >
             {index + 1}
           </span>

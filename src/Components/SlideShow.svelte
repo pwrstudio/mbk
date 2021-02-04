@@ -110,6 +110,7 @@
       el: "#custom-pagination-" + id
     }}
     on:click={toggleZoom}
+    on:touchstart={toggleZoom}
   >
     {#each slides as slide}
       <SwiperSlide>
@@ -153,7 +154,11 @@
 
     {#if zoomable}
       <div class="zoomLevel">
-        <span class="button" on:click={toggleZoomButton}>
+        <span
+          class="button"
+          on:click={toggleZoomButton}
+          on:touchstart={toggleZoomButton}
+        >
           {`${zoomLevel * 100}%`}[±]
         </span>
       </div>

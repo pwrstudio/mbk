@@ -110,18 +110,21 @@
       id="news"
       class:active={$menuItemActive === "news"}
       on:click={updateMenuItem}
+      on:touchstart={updateMenuItem}
     >På IBK</li>
     <li
       class="bar-menu-item title"
       id="about"
       class:active={$menuItemActive === "about"}
       on:click={updateMenuItem}
+      on:touchstart={updateMenuItem}
     >Om IBK</li>
     <li
       class="bar-menu-item title"
       id="colophon"
       class:active={$menuItemActive === "colophon"}
       on:click={updateMenuItem}
+      on:touchstart={updateMenuItem}
     >Kolofon</li>
   </ul>
 
@@ -132,6 +135,11 @@
   <div
     class="bar-button"
     class:disabled={landing && vw > 768}
+    on:touchstart={e => {
+      if (!landing || vw < 768) {
+        menuOpen = !menuOpen
+      }
+    }}
     on:click={e => {
       if (!landing || vw < 768) {
         menuOpen = !menuOpen

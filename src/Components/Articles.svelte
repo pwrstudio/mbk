@@ -66,6 +66,11 @@
               "#" + get($currentArticles[index + 1], "slug.current", null)
             )
           }}
+          on:touchstart|preventDefault={e => {
+            window.location.replace(
+              "#" + get($currentArticles[index + 1], "slug.current", null)
+            )
+          }}
         >
           <h2 class="title next">
             Næste: {get($currentArticles[index + 1], "title", "")}
