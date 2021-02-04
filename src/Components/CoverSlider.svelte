@@ -24,9 +24,28 @@
   export let issues = []
 
   let vw = window.innerWidth
+  let scale = 1
+  let coverScale = 1
 
   const onSwiper = (swiper) => {
     console.log(swiper)
+  }
+
+  /** Extend the number class to map values to a new range */ 
+  Number.prototype.map = function (inMin, inMax, outMin, outMax) {
+    return (this - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+  }
+
+  $: {
+    if (768 < vw && vw < 1350) {
+      scale = vw.map(769, 1349, 0.2, 0.9)
+    } else {
+      scale = 1
+    }
+
+    if (vw < 400) {
+      coverScale = vw.map(120, 400, 0, 1)
+    }
   }
 </script>
 
@@ -36,7 +55,8 @@
 
 <svelte:window bind:innerWidth={vw} />
 
-<div class="coverslider">
+<div
+  class="coverslider">
   <!--       -->
   <!-- TITLE -->
   <!--       -->
@@ -50,15 +70,19 @@
   <!-- END TITLE -->
   <!--           -->
 
-  <div class="middle">
+  <div
+    class="middle">
 
     <!--          -->
     <!-- CONTROLS -->
     <!--          -->
-    <div class="custom-controls-prev">
+    <div
+      class="custom-controls-prev"
+      class:absolutely={scale !== 1}>
       <ArrowLeft />
     </div>
-    <div class="custom-controls-prev-mobile">
+    <div
+      class="custom-controls-prev-mobile">
       <ArrowLeft />
     </div>
     <!--              -->
@@ -70,7 +94,10 @@
     <!--         -->
     <!-- DESKTOP -->
     <!--         -->
-    <div class="swiper-desktop">
+    <div
+      class="swiper-desktop"
+      class:scaled={scale !== 1}
+      style="transform: scale({scale})">
       <Swiper
         touchRatio={0}
         navigation={{
@@ -117,11 +144,11 @@
       >
         {#each issues as issue}
           <SwiperSlide>
-            {#if vw > 400}
-              <Cover {issue} scaleOriginal={false} />
-            {:else}
+            <!-- {#if vw > 400} -->
+            <Cover {issue} scale={coverScale} />
+            <!-- {:else}
               <Cover {issue} scaleOriginal={true} />
-            {/if}
+            {/if} -->
           </SwiperSlide>
         {/each}
       </Swiper>
@@ -135,7 +162,9 @@
     <!--          -->
     <!-- CONTROLS -->
     <!--          -->
-    <div class="custom-controls-next">
+    <div
+      class="custom-controls-next"
+      class:absolutely={scale !== 1}>
       <ArrowRight />
     </div>
     <div class="custom-controls-next-mobile">
@@ -167,7 +196,7 @@
   .custom-controls-next,
   .custom-pagination,
   .swiper-desktop {
-    @include screen-size("medium") {
+    @include screen-size("phone") {
       display: none;
     }
 
@@ -181,9 +210,21 @@
   .swiper-mobile {
     display: none;
 
-    @include screen-size("medium") {
+    @include screen-size("phone") {
       display: block;
     }
+  }
+
+  .custom-controls-prev.absolutely {
+    position: absolute;
+    z-index: 999;
+    left: 0;
+  }
+
+  .custom-controls-next.absolutely {
+    position: absolute;
+    z-index: 999;
+    right: 0;
   }
 
   /** coverslider */
@@ -204,7 +245,7 @@
     }
 
     /** Smaller screens */
-    @include screen-size("medium") {
+    @include screen-size("phone") {
       :global(.swiper-container) {
         width: $coverslider_1;
         overflow: hidden;
@@ -253,6 +294,12 @@
 
       .swiper-desktop {
         min-width: 808px;
+        position: relative;
+
+        &.scaled {
+          width: 100%;
+          position: absolute;
+        }
       }
 
       .custom-controls-prev,
@@ -262,6 +309,7 @@
         width: 40px;
         margin: 0 $margin / 2;
         cursor: pointer;
+        flex-shrink: 0;
       }
 
       :global(.custom-controls-prev.swiper-button-disabled),

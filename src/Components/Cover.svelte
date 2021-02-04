@@ -14,7 +14,8 @@
 
   // *** PROPS
   export let issue = {}
-  export let scaleOriginal
+  // export let scaleOriginal = false
+  export let scale = 1
 
   // ratio of the photo is 460 / 370
   const ratio = 460 / 370
@@ -22,7 +23,7 @@
 
 <a
   class="cover"
-  class:scalable={scaleOriginal}
+  style="transform: scale({scale});"
   use:links
   in:fade
   href="/{issue.slug.current}"
