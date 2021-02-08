@@ -9,7 +9,7 @@
   import { links } from "svelte-routing"
   import { loadData } from "../sanity.js"
 
-  import { getContext } from "svelte"
+  import { getContext, onMount } from "svelte"
   import { ROUTER } from "svelte-routing/src/contexts"
 
   // *** COMPONENTS
@@ -43,6 +43,28 @@
 
   $: {
     menuActive.set(menuOpen)
+  }
+
+  news.then(news => {
+    data.news = news
+    $menuContent = data.news
+  })
+
+  about.then(about => {
+    data.about = about
+  })
+
+  colophon.then(colophon => {
+    data.colophon = colophon
+  })
+
+  // *** FUNCTIONS
+  const updateMenuItem = e => {
+    $menuItemActive = e.currentTarget.id
+    $menuContent = data[e.currentTarget.id]
+  }
+
+  onMount(() => {
     // $activeRoute will change on navigation
     // 
     // 
@@ -67,26 +89,7 @@
     // 
     // 
     pvw = vw
-  }
-
-  news.then(news => {
-    data.news = news
-    $menuContent = data.news
   })
-
-  about.then(about => {
-    data.about = about
-  })
-
-  colophon.then(colophon => {
-    data.colophon = colophon
-  })
-
-  // *** FUNCTIONS
-  const updateMenuItem = e => {
-    $menuItemActive = e.currentTarget.id
-    $menuContent = data[e.currentTarget.id]
-  }
 </script>
 
 <!--                 -->
@@ -138,11 +141,6 @@
   <div
     class="bar-button"
     class:disabled={landing && vw > 768}
-    on:touchstart={e => {
-      if (!landing || vw < 768) {
-        menuOpen = !menuOpen
-      }
-    }}
     on:click={e => {
       if (!landing || vw < 768) {
         menuOpen = !menuOpen
@@ -151,7 +149,10 @@
   >
     <h1 class="title">På IBK</h1>
     <h1 class="title bottom">Info</h1>
-    <h1 class="title hamburger">
+    <h1 class="title hamburger" on:touchstart|preventDefault={e => {
+      console.log('click on me')
+      menuOpen = !menuOpen
+    }}>
       <div class="hamburger-cross-icon" class:open={menuOpen}>
         <span></span>
         <span></span>
