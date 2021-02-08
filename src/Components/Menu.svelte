@@ -238,7 +238,7 @@
 
     @include screen-size("phone") {
       bottom: 0;
-      transform: translateY(calc(100% - #{$menu_button_width}));
+      transform: translateY(calc(100vh - #{$menu_button_width}));
       width: 100vw;
       padding: $menu_button_width $margin / 4 0;
     }
