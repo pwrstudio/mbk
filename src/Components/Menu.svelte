@@ -39,8 +39,8 @@
   // *** VARIABLES
   let menuOpen = landing
   let pvw = 0
-  let vw = 0
-  let ih = 0
+  let vw = window.innerWidth
+  let ih = window.innerHeight
 
   $: {
     menuActive.set(menuOpen)
@@ -104,7 +104,10 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw} bind:innerHeight={ih} />
+<svelte:window
+  bind:innerWidth={vw}
+  bind:innerHeight={ih}
+/>
 
 <!--              -->
 <!-- DESKTOP MENU -->
@@ -113,7 +116,7 @@
 <div
   class="bar"
   class:open={menuOpen}
-  style="height: {vw < 768 ? ih + 'px' : 'auto'};"
+  style="height: {ih} + 'px';"
   use:links
   >
   {#if vw > 768}
@@ -154,31 +157,39 @@
     <MenuContent name={$menuItemActive} content={$menuContent} />
   {/if}
 
-  <div
-    class="bar-button"
-    class:disabled={landing && vw > 768}
-    on:click={e => {
-      if (!landing && vw > 768) {
-        menuOpen = !menuOpen
-      }
-    }}
-  >
-    <h1 class="title">På IBK</h1>
-    <h1 class="title bottom">Info</h1>
-    <h1 class="title hamburger" on:touchstart|preventDefault={e => {
-      if (e.cancelable) {
-        e.preventDefault()
-      }
+  {#if vw <= 768}
+    <div
+      class="bar-button"
+      on:touchstart|preventDefault={e => {
+        if (e.cancelable) {
+          e.preventDefault()
+        }
 
-      menuOpen = !menuOpen
-    }}>
-      <div class="hamburger-cross-icon" class:open={menuOpen}>
-        <span />
-        <span />
-        <span />
-      </div>
-    </h1>
-  </div>
+        menuOpen = !menuOpen
+      }}
+    >
+      <h1 class="title hamburger">
+        <div class="hamburger-cross-icon" class:open={menuOpen}>
+          <span />
+          <span />
+          <span />
+        </div>
+      </h1>
+    </div>
+  {:else}
+    <div
+      class="bar-button"
+      class:disabled={landing && vw > 768}
+      on:click={e => {
+        if (!landing && vw > 768) {
+          menuOpen = !menuOpen
+        }
+      }}
+    >
+      <h1 class="title">På IBK</h1>
+      <h1 class="title bottom">Info</h1>
+    </div>
+  {/if}
 </div>
 <!--                  -->
 <!-- END DESKTOP MENU -->

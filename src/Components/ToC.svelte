@@ -43,7 +43,7 @@
     class="bar toc"
     class:open={$tableOfContentsActive}
     class:parentOpen={$menuActive}
-    style="height: {vw < 768 ? ih + 'px' : 'auto'};"
+    style="height: {ih} + 'px';"
   >
 
     <ul
