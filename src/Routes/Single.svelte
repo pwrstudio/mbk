@@ -25,6 +25,8 @@
   // *** PROP
   export let location
 
+  let vw = window.innerWidth
+
   // ** CONSTANTS
   const query =
     "*[slug.current == $slug]{..., tableOfContents[]->{title, slug}}[0]" // add article info for ToC
@@ -47,18 +49,20 @@
   let singleElement
 
   const handleScroll = () => {
-    clearTimeout(timer)
+    if (vw > 768) {
+      clearTimeout(timer)
 
-    if(!singleElement.classList.contains('pointer-none')) {
-      document.body.classList.add('pointer-none')
-      singleElement.classList.add('pointer-none')
+      if(!singleElement.classList.contains('pointer-none')) {
+        document.body.classList.add('pointer-none')
+        singleElement.classList.add('pointer-none')
+      }
+
+      timer = setTimeout(() => {
+        document.body.classList.remove('pointer-none')
+        singleElement.classList.remove('pointer-none')
+        console.log('done scrolling')
+      }, 200)
     }
-
-    timer = setTimeout(() => {
-      document.body.classList.remove('pointer-none')
-      singleElement.classList.remove('pointer-none')
-      console.log('done scrolling')
-    }, 200)
   }
 
   onMount(() => {
@@ -72,6 +76,8 @@
     }
   })
 </script>
+
+<svelte:window bind:innerWidth={vw} />
 
 {#await $currentPost then post}
   <div class="menus">

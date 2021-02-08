@@ -21,12 +21,15 @@
     } from "../stores.js"
 
   // *** VARIABLES
-  let tocOpen = false
   let vw = window.innerWidth
   let ih = window.innerHeight
 
-  $: {
-    tableOfContentsActive.set(tocOpen)
+  const toggleToC = () => {
+    console.log('toggle')
+    tableOfContentsActive.set(!$tableOfContentsActive)
+    if (vw < 768 && $tableOfContentsActive && $menuActive) {
+      menuActive.set(false)
+    }
   }
 
 </script>
@@ -38,14 +41,12 @@
 <svelte:window bind:innerWidth={vw} bind:innerHeight={ih}/>
 
 {#if $tableOfContents}
-  <!-- <div class="bar toc open"> -->
   <div
     class="bar toc"
     class:open={$tableOfContentsActive}
     class:parentOpen={$menuActive}
-    style="height: {ih} + 'px';"
+    style="height: {ih + 'px'};"
   >
-
     <ul
       class="bar-menu"
       use:links
@@ -54,7 +55,6 @@
         class="bar-menu-item title link"
         on:click={e => {
             navigate('/')
-            // window.location.replace('/')
           }
         }
         on:touchstart={e => {window.location.replace('/')}}
@@ -73,31 +73,52 @@
       {/each}
     </ul>
 
-    <div
-      class="bar-button"
-      on:click|self={e => tocOpen = !tocOpen}
-      on:touchstart|self={e => tocOpen = !tocOpen}
-    >
-      <h1 class="title indhold"
-        on:click={e => tocOpen = !tocOpen}
-        on:touchstart={e => tocOpen = !tocOpen}>
-        <span>
-          INDHOLD
-        </span>
-      </h1>
-      <h1 class="title">
-        {#each $tableOfContents as article, index}
-          <span
-            class="articleNumber"
-            class:active={$hash === get(article, 'slug.current', '')}
-            on:click={e => {goTo(get(article, 'slug.current', ''))}}
-            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
-          >
-            {index + 1}
+    {#if vw < 768}
+      <div
+        class="bar-button"
+        on:touchstart={toggleToC}
+      >
+        <h1 class="title indhold">
+          <span>
+            INDHOLD
           </span>
-        {/each}
-      </h1>
-    </div>
+        </h1>
+        <h1 class="title">
+          {#each $tableOfContents as article, index}
+            <span
+              class="articleNumber"
+              class:active={$hash === get(article, 'slug.current', '')}
+              on:click={e => {goTo(get(article, 'slug.current', ''))}}
+              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+            >
+              {index + 1}
+            </span>
+          {/each}
+        </h1>
+      </div>
+    {:else}
+      <div
+        class="bar-button"
+      >
+        <h1 class="title indhold" on:click={toggleToC}>
+          <span>
+            INDHOLD
+          </span>
+        </h1>
+        <h1 class="title">
+          {#each $tableOfContents as article, index}
+            <span
+              class="articleNumber"
+              class:active={$hash === get(article, 'slug.current', '')}
+              on:click={e => {goTo(get(article, 'slug.current', ''))}}
+              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+            >
+              {index + 1}
+            </span>
+          {/each}
+        </h1>
+      </div>
+    {/if}
   </div>
 {/if}
 
@@ -153,6 +174,12 @@
 
       &.open {
         transform: translateX($menu_width - $menu_button_width);
+      }
+
+      @include screen-size('phone') {
+        &.open {
+          transform: translateX(0);
+        }
       }
     }
 

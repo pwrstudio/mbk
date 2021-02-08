@@ -37,13 +37,22 @@
   export let landing = false
 
   // *** VARIABLES
-  let menuOpen = landing
   let pvw = 0
   let vw = window.innerWidth
   let ih = window.innerHeight
 
   $: {
-    menuActive.set(menuOpen)
+    if (landing) {
+      menuActive.set(true)
+    }
+  }
+
+  const toggleMenu = () => {    
+    console.log('menuuuu')
+    menuActive.set(!$menuActive)
+    if (vw < 768 && $tableOfContentsActive && $menuActive) {
+      tableOfContentsActive.set(false)
+    }
   }
 
   news.then(news => {
@@ -67,7 +76,7 @@
 
   afterUpdate (() => {
     if (pvw < 768 && vw >= 768) {
-      menuOpen = true
+      menuActive.set(true)
     }
     pvw = vw
   })
@@ -78,7 +87,7 @@
     //
     if ($activeRoute.uri === "/") {
       if (vw < 768) {
-        menuOpen = false
+        menuActive.set(false)
       }
     }
 
@@ -87,9 +96,9 @@
     //
     if (landing) {
       if (pvw >= 768 && vw < 768) {
-        menuOpen = false
+        menuActive.set(false)
       } else if (pvw < 768 && vw >= 768) {
-        menuOpen = true
+        menuActive.set(true)
       }
     }
 
@@ -115,7 +124,8 @@
 
 <div
   class="bar"
-  class:open={menuOpen}
+  class:open={$menuActive}
+  class:single={!landing}
   style="height: {ih + 'px'};"
   use:links
   >
@@ -160,16 +170,10 @@
   {#if vw <= 768}
     <div
       class="bar-button"
-      on:touchstart|preventDefault={e => {
-        if (e.cancelable) {
-          e.preventDefault()
-        }
-
-        menuOpen = !menuOpen
-      }}
+      on:touchstart|preventDefault={toggleMenu}
     >
       <h1 class="title hamburger">
-        <div class="hamburger-cross-icon" class:open={menuOpen}>
+        <div class="hamburger-cross-icon" class:open={$menuActive}>
           <span />
           <span />
           <span />
@@ -181,8 +185,8 @@
       class="bar-button"
       class:disabled={landing && vw > 768}
       on:click={e => {
-        if (!landing && vw > 768) {
-          menuOpen = !menuOpen
+        if (landing === false && vw > 768) {
+          toggleMenu()
         }
       }}
     >
@@ -332,6 +336,12 @@
 
       @include screen-size("phone") {
         transform: translate(0, 0);
+      }
+
+      &.single {
+        @include screen-size("phone") {
+          transform: translate(0, $menu_button_width);
+        }
       }
     }
   }
