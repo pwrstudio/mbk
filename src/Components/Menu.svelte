@@ -9,7 +9,7 @@
   import { links } from "svelte-routing"
   import { loadData } from "../sanity.js"
 
-  import { getContext, onMount } from "svelte"
+  import { getContext, onMount, afterUpdate } from "svelte"
   import { ROUTER } from "svelte-routing/src/contexts"
 
   // *** COMPONENTS
@@ -63,6 +63,13 @@
     $menuItemActive = e.currentTarget.id
     $menuContent = data[e.currentTarget.id]
   }
+
+  afterUpdate (() => {
+    if (pvw < 768 && vw >= 768) {
+      menuOpen = true
+    }
+    pvw = vw
+  })
 
   onMount(() => {
     // $activeRoute will change on navigation
@@ -145,7 +152,7 @@
     class="bar-button"
     class:disabled={landing && vw > 768}
     on:click={e => {
-      if (!landing || vw < 768) {
+      if (!landing && vw > 768) {
         menuOpen = !menuOpen
       }
     }}
@@ -153,7 +160,10 @@
     <h1 class="title">På IBK</h1>
     <h1 class="title bottom">Info</h1>
     <h1 class="title hamburger" on:touchstart|preventDefault={e => {
-      console.log('click on me')
+      if (e.cancelable) {
+        e.preventDefault()
+      }
+
       menuOpen = !menuOpen
     }}>
       <div class="hamburger-cross-icon" class:open={menuOpen}>
