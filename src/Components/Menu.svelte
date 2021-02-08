@@ -116,7 +116,7 @@
 <div
   class="bar"
   class:open={menuOpen}
-  style="height: {ih} + 'px';"
+  style="height: {ih + 'px'};"
   use:links
   >
   {#if vw > 768}
@@ -223,7 +223,6 @@
     left: 0;
     width: $menu-width;
     line-height: $line-height;
-    height: 100vh;
     overflow: auto;
     padding: $margin;
     padding-right: $menu_button_width;
@@ -238,7 +237,7 @@
 
     @include screen-size("phone") {
       bottom: 0;
-      transform: translateY(calc(100vh - #{$menu_button_width}));
+      transform: translateY(calc(100% - #{$menu_button_width}));
       width: 100vw;
       padding: $menu_button_width $margin / 4 0;
     }
