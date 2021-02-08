@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+  import { onDestroy } from "svelte"
   import { loadData } from "../sanity.js"
   import { links } from "svelte-routing"
 
@@ -14,7 +15,7 @@
   import Menu from "../Components/Menu.svelte"
 
   // *** STORES
-  import { currentPost } from "../stores.js"
+  import { currentPost, menuActive, tableOfContentsActive } from "../stores.js"
 
   // *** PROP
   export let location
@@ -24,6 +25,11 @@
   const issues = loadData(query)
 
   currentPost.set(false)
+
+  onDestroy (() => {
+    menuActive.set(false)
+    tableOfContentsActive.set(false)
+  })
 </script>
 
 {#await issues then issues}
