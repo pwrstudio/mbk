@@ -48,7 +48,6 @@
   }
 
   const toggleMenu = () => {    
-    console.log('menuuuu')
     menuActive.set(!$menuActive)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       tableOfContentsActive.set(false)

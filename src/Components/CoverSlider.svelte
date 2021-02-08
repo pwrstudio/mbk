@@ -28,7 +28,7 @@
   let coverScale = 1
 
   const onSwiper = (swiper) => {
-    console.log(swiper)
+    // console.log(swiper)
   }
 
   /** Extend the number class to map values to a new range */ 

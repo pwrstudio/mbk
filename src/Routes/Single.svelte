@@ -60,7 +60,6 @@
       timer = setTimeout(() => {
         document.body.classList.remove('pointer-none')
         singleElement.classList.remove('pointer-none')
-        console.log('done scrolling')
       }, 200)
     }
   }
@@ -84,9 +83,13 @@
     <Menu />
     <ToC />
   </div>
-  <div bind:this={singleElement} on:scroll={handleScroll} class="single">
+  {#if vw > 786}
+    <div bind:this={singleElement} on:scroll={handleScroll} class="single">
+      <Articles />
+    </div>
+  {:else}
     <Articles />
-  </div>
+  {/if}
 {/await}
 
 <style lang="scss">

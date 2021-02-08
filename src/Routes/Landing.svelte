@@ -47,7 +47,6 @@
 
   :local(body) {
     background-color: $grey_solid;
-    min-height: 100%;
   }
 
   :global(.title) {

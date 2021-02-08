@@ -17,7 +17,6 @@
 
   $: {
     // Set the body to innerHeight, the visible part of the window height
-    console.log(ih)
     document.documentElement.style.height = ih + 'px'
     document.body.style.height = ih + 'px'
   }
@@ -25,40 +24,40 @@
 
 <svelte:window bind:innerHeight={ih} />
 
-<main>
-  <!-- METADATA -->
-  <MetaData />
+<!-- METADATA -->
+<MetaData />
 
-  <Router>
-    <!-- LANDING -->
-    <Route path="/" component={Landing} />
-    <!-- SINGLE -->
-    <Route path="/:slug" component={Single} />
-    <!-- 404 -->
-    <Route component={Error404} />
-  </Router>
-</main>
+<Router>
+  <!-- LANDING -->
+  <Route path="/" component={Landing} />
+  <!-- SINGLE -->
+  <Route path="/:slug" component={Single} />
+  <!-- 404 -->
+  <Route component={Error404} />
+</Router>
 
 <style lang="scss" global>
   @import "./variables.scss";
-
-  main {
-    height: 100%;
-  }
 
   :global(*) {
     @include hide-scroll;
   }
 
-  :global(body),
-  :global(main) {
+  :global(body) {
+    overflow-y: hidden;
+
+    @include screen-size("phone") {
+      overflow-y: scroll;
+    }
+  }
+
+  :global(body) {
     font-size: font_size_normal;
     line-height: line-height;
     margin: 0;
     padding: 0;
     text-rendering: optimizeLegibility;
     overscroll-behavior: none;
-    overflow: hidden;
   }
 
   :global(a),

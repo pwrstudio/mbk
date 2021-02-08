@@ -25,7 +25,6 @@
   let ih = window.innerHeight
 
   const toggleToC = () => {
-    console.log('toggle')
     tableOfContentsActive.set(!$tableOfContentsActive)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       menuActive.set(false)
