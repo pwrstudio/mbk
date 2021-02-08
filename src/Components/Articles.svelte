@@ -97,7 +97,7 @@
   .article {
     box-sizing: border-box;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     overflow-y: scroll;
     font-family: $sans-stack;
     display: flex;

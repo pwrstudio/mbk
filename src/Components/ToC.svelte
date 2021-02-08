@@ -23,6 +23,7 @@
   // *** VARIABLES
   let tocOpen = false
   let vw = window.innerWidth
+  let ih = window.innerHeight
 
   $: {
     tableOfContentsActive.set(tocOpen)
@@ -34,11 +35,16 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw}/>
+<svelte:window bind:innerWidth={vw} bind:innerHeight={ih}/>
 
 {#if $tableOfContents}
   <!-- <div class="bar toc open"> -->
-  <div class="bar toc" class:open={$tableOfContentsActive} class:parentOpen={$menuActive}>
+  <div
+    class="bar toc"
+    class:open={$tableOfContentsActive}
+    class:parentOpen={$menuActive}
+    style="height: {vw < 768 ? ih + 'px' : 'auto'};"
+  >
 
     <ul
       class="bar-menu"
@@ -108,7 +114,7 @@
       margin-left: unset;
       padding-left: unset;
       width: 100%;
-      transform: translateY(100vh) translateY(-2 * $menu_button_width);
+      transform: translateY(100%) translateY(-2 * $menu_button_width);
       height: auto;
       padding: $margin $margin / 4 0;
     }

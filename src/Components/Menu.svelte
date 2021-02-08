@@ -40,6 +40,7 @@
   let menuOpen = landing
   let pvw = 0
   let vw = 0
+  let ih = 0
 
   $: {
     menuActive.set(menuOpen)
@@ -103,13 +104,18 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw} />
+<svelte:window bind:innerWidth={vw} bind:innerHeight={ih} />
 
 <!--              -->
 <!-- DESKTOP MENU -->
 <!--              -->
 
-<div class="bar" use:links class:open={menuOpen}>
+<div
+  class="bar"
+  class:open={menuOpen}
+  style="height: {vw < 768 ? ih + 'px' : 'auto'};"
+  use:links
+  >
   {#if vw > 768}
     <MenuContent name={$menuItemActive} content={$menuContent} />
   {/if}
@@ -221,7 +227,7 @@
 
     @include screen-size("phone") {
       bottom: 0;
-      transform: translateY(calc(100vh - #{$menu_button_width}));
+      transform: translateY(calc(100% - #{$menu_button_width}));
       width: 100vw;
       padding: $menu_button_width $margin / 4 0;
     }

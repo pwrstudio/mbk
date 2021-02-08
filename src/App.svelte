@@ -18,7 +18,8 @@
   $: {
     // Set the body to innerHeight, the visible part of the window height
     console.log(ih)
-    document.body.height = ih
+    document.documentElement.style.height = ih + 'px'
+    document.body.style.height = ih + 'px'
   }
 </script>
 
@@ -41,6 +42,10 @@
 <style lang="scss" global>
   @import "./variables.scss";
 
+  main {
+    height: 100%;
+  }
+
   :global(*) {
     @include hide-scroll;
   }
@@ -53,6 +58,7 @@
     padding: 0;
     text-rendering: optimizeLegibility;
     overscroll-behavior: none;
+    overflow: hidden;
   }
 
   :global(a),

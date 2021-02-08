@@ -98,7 +98,7 @@
     scroll-snap-type: y mandatory;
     background-color: $white;
     padding-left: 2 * $menu_button_width;
-    height: 100vh;
+    height: 100%;
     overflow-y: hidden;
 
     @include screen-size("phone") {

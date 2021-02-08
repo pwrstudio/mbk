@@ -41,7 +41,7 @@
 
   :local(body) {
     background-color: $grey_solid;
-    min-height: 100vh;
+    min-height: 100%;
   }
 
   :global(.title) {
@@ -53,13 +53,13 @@
   .landing {
     background: $grey_solid;
     width: calc(100% - #{$menu_width});
-    height: 100vh;
+    height: 100%;
     position: relative;
     float: right;
     transition: width 0.2s ease-out;
 
     @include screen-size("phone") {
-      height: calc(100vh - #{$menu_button_width});
+      height: calc(100% - #{$menu_button_width});
       width: 100vw;
       overflow: hidden;
     }
