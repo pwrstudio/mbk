@@ -8,7 +8,6 @@
   // *** IMPORTS
   import { links, navigate } from "svelte-routing"
   import get from "lodash/get"
-  import isArray from "lodash/isArray"
   import { goTo } from '../global'
 
   // *** STORES
@@ -82,18 +81,16 @@
             INDHOLD
           </span>
         </h1>
-        <h1 class="title">
-          {#each $tableOfContents as article, index}
-            <span
-              class="articleNumber"
-              class:active={$hash === get(article, 'slug.current', '')}
-              on:click={e => {goTo(get(article, 'slug.current', ''))}}
-              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
-            >
-              {index + 1}
-            </span>
-          {/each}
-        </h1>
+        {#each $tableOfContents as article, index}
+          <h1
+            class="title articleNumber"
+            class:active={$hash === get(article, 'slug.current', '')}
+            on:click={e => {goTo(get(article, 'slug.current', ''))}}
+            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+          >
+            {index + 1}
+          </h1>
+        {/each}
       </div>
     {:else}
       <div
@@ -104,18 +101,16 @@
             INDHOLD
           </span>
         </h1>
-        <h1 class="title">
-          {#each $tableOfContents as article, index}
-            <span
-              class="articleNumber"
-              class:active={$hash === get(article, 'slug.current', '')}
-              on:click={e => {goTo(get(article, 'slug.current', ''))}}
-              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
-            >
-              {index + 1}
-            </span>
-          {/each}
-        </h1>
+        {#each $tableOfContents as article, index}
+          <h1
+            class="title articleNumber"
+            class:active={$hash === get(article, 'slug.current', '')}
+            on:click={e => {goTo(get(article, 'slug.current', ''))}}
+            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+          >
+            {index + 1}
+          </h1>
+        {/each}
       </div>
     {/if}
   </div>
@@ -184,12 +179,22 @@
 
     .articleNumber {
       display: inline-block;
-      height: $font_size_normal;
-      width: auto;
+      line-height: 0;
       margin-bottom: $title_letter_spacing;
+      text-align: center;
+      position: relative;
 
       &.active {
-        border-bottom: $border_black;
+        &:after {
+          top: 20px;
+          left: -5px;
+          height: 1.5px;
+          width: 10px;
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: $black;
+        }
       }
     }
 

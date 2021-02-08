@@ -70,6 +70,7 @@
     if (myHash) {
       elementReady(myHash).then((el) => {
         goTo(myHash)
+        console.log($currentArticles)
         singleElement.scrollTop = el.offsetTop
       })
     }

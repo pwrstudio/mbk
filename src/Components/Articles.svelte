@@ -9,6 +9,7 @@
   import { fade } from "svelte/transition"
   import { renderBlockText, urlFor } from "../sanity.js"
   import Slideshow from "./SlideShow.svelte"
+  import Meta from "./Meta.svelte"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
 
@@ -29,22 +30,11 @@
       )}
     >
       <!-- META -->
-      <div class="block meta" in:fade>
-        <div class="header">
-          <span> Magasin for Bygningskunst og Kultur </span>
-          <span class="right">
-            {get($currentPost, "title", "")}
-          </span>
-        </div>
-
-        <h1 class="article-title">
-          {get(article, "title", "")}
-        </h1>
-
-        <div class="byline">
-          {@html renderBlockText(get(article, "byline.content", []))}
-        </div>
-      </div>
+      <Meta
+        title={get($currentPost, "title", "")}
+        articleTitle={get(article, "title", "")}
+        byline={get(article, "byline.content", [])}
+      />
 
       <div class="block main">
         {@html renderBlockText(get(article, "content.content", []))}
@@ -111,33 +101,6 @@
       overflow-y: auto;
     }
 
-    .header {
-      padding-top: $margin_xs;
-      padding-bottom: $margin_xs;
-      border-top: $border_black;
-
-      .right {
-        text-align: right;
-      }
-    }
-
-    .article-title {
-      font-family: $display-stack;
-      font-size: $font_size_larger;
-      line-height: $line_height_larger;
-      font-weight: normal;
-      margin: 0 0 $margin_xs;
-    }
-
-    .byline {
-      border-bottom: $border_black;
-      margin-bottom: $margin_xs;
-
-      :global(p) {
-        margin: 0;
-      }
-    }
-
     .col {
       box-sizing: border-box;
       width: 50%;
@@ -155,8 +118,11 @@
         display: flex;
         flex-flow: row wrap;
 
-        .block {
+        :global(.block) {
           padding: 0 $margin / 4;
+        }
+
+        .block {
           width: 50%;
           box-sizing: border-box;
 

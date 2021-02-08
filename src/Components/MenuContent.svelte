@@ -157,7 +157,7 @@
 
       :global(p.normal) {
         font-size: 10px;
-        line-height: 16px;
+        line-height: 14px;
       }
 
       :global(.image) {
