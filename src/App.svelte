@@ -13,14 +13,16 @@
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
 
+  let ih
+
   $: {
-    console.log(Object.keys(Link))
+    // Set the body to innerHeight, the visible part of the window height
+    console.log(ih)
+    document.body.height = ih
   }
-
-
-  // // *** VARIABLES
-  // let hideMenu
 </script>
+
+<svelte:window bind:innerHeight={ih} />
 
 <main>
   <!-- METADATA -->
