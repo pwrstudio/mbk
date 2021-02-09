@@ -16,14 +16,14 @@
   export let name, content
 
   // *** VARIABLES
-  let el, vh
+  let el, vh, vw
 
   afterUpdate(() => {
     el.scrollTo(0, 0)
   })
 </script>
 
-<svelte:window bind:innerHeight={vh} />
+<svelte:window bind:innerHeight={vh} bind:innerWidth={vw} />
 
 <div class="bar-content menu-content" bind:this={el}>
   <!--      -->
@@ -32,7 +32,7 @@
   {#if name === "news" && isArray(content)}
     {#each content as block, index}
       <div class="news-item" id={block.slug.current}>
-        <div class="content" style="min-height: {vh - 200}px">
+        <div class="content" style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}">
           <div class="header">
             <span>
               {#if block.publicationDate}
@@ -181,6 +181,9 @@
       width: 100%;
       min-height: 100%;
       padding-bottom: $margin * 2;
+
+      @include screen-size("medium") {
+      }
 
       .header {
         font-size: $font_size_small;

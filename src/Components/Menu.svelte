@@ -44,16 +44,13 @@
   $: {
     if (landing) {
       menuActive.set(true)
-    }
-
-    if (!$menuActive) {
-      console.log('something closed the menu')
-      menuItemActive.set(null)
+      menuItemActive.set('news')
     }
   }
 
   const toggleMenu = () => {
     menuActive.set(!$menuActive)
+    
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       tableOfContentsActive.set(false)
     }
@@ -64,9 +61,9 @@
       }
     }
 
-    if ($menuActive && vw < 768) {
-      // !$menuItemActive
-      console.log('toggled menu on')
+    if (!$menuActive) {
+      console.log('here')
+      menuItemActive.set(null)
     }
   }
 
@@ -149,7 +146,7 @@
     <MenuContent name={$menuItemActive} content={$menuContent} />
   {/if}
 
-  <ul class="bar-menu">
+  <ul class="bar-menu" class:hidden={$menuItemActive !== null && vw < 768}>
     <li
       class="bar-menu-item title"
       id="news"
@@ -299,6 +296,10 @@
     margin: 0;
     list-style-type: none;
     width: 100%;
+  }
+
+  :global(.bar-menu.hidden) {
+    display: none;
   }
 
   :global(.graphic) {

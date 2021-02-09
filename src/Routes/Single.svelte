@@ -46,20 +46,17 @@
   })
 
   let timer = null
-  let singleElement
 
   const handleScroll = () => {
     if (vw > 768) {
       clearTimeout(timer)
 
-      if(!singleElement.classList.contains('pointer-none')) {
+      if(document.body.classList.contains('pointer-none')) {
         document.body.classList.add('pointer-none')
-        singleElement.classList.add('pointer-none')
       }
 
       timer = setTimeout(() => {
         document.body.classList.remove('pointer-none')
-        singleElement.classList.remove('pointer-none')
       }, 200)
     }
   }
@@ -69,9 +66,14 @@
 
     if (myHash) {
       elementReady(myHash).then((el) => {
-        goTo(myHash)
-        console.log($currentArticles)
-        singleElement.scrollTop = el.offsetTop
+        // check if the hash is within the articles before
+        const hashes = $currentArticles.map((article) => { return get(article, 'slug.current', false) })
+        const isArticle = hashes.includes(myHash.replace('#', ''))
+
+        if (isArticle) {
+          goTo(myHash)
+          document.body.scrollTop = el.offsetTop
+        }
       })
     }
   })
@@ -85,7 +87,7 @@
     <ToC />
   </div>
   {#if vw > 786}
-    <div bind:this={singleElement} on:scroll={handleScroll} class="single">
+    <div on:scroll={handleScroll} class="single">
       <Articles />
     </div>
   {:else}
