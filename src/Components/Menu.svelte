@@ -83,6 +83,7 @@
 
   news.then(news => {
     data.news = news
+    $menuContent = data.news
   })
 
   about.then(about => {
