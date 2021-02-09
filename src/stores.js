@@ -3,7 +3,7 @@ import { writable, derived } from 'svelte/store'
 // WRITABLE
 export const menuActive = writable(false)
 export const menuContent = writable(null)
-export const menuItemActive = writable('news')
+export const menuItemActive = writable(null)
 // 
 export const tableOfContents = writable(null)
 export const tableOfContentsActive = writable(false)

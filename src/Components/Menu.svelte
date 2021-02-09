@@ -45,12 +45,28 @@
     if (landing) {
       menuActive.set(true)
     }
+
+    if (!$menuActive) {
+      console.log('something closed the menu')
+      menuItemActive.set(null)
+    }
   }
 
-  const toggleMenu = () => {    
+  const toggleMenu = () => {
     menuActive.set(!$menuActive)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       tableOfContentsActive.set(false)
+    }
+
+    if ($menuActive && vw >= 768) {
+      if (!$menuItemActive) {
+        menuItemActive.set('news')
+      }
+    }
+
+    if ($menuActive && vw < 768) {
+      // !$menuItemActive
+      console.log('toggled menu on')
     }
   }
 
@@ -124,6 +140,7 @@
 <div
   class="bar"
   class:open={$menuActive}
+  class:peek={!$menuItemActive && vw < 768}
   class:single={!landing}
   style="height: {ih + 'px'};"
   use:links
@@ -301,10 +318,6 @@
         margin-right: 10px;
       }
     }
-
-    &:last-child {
-      border-bottom: $border_black;
-    }
   }
 
   .bar {
@@ -330,8 +343,20 @@
       }
     }
 
+    .bar-menu-item {
+      &:last-child {
+        @include screen-size("small") {
+          border-bottom: none;
+        }
+      }
+    }
+
     &.open {
       transform: translate(0, 0);
+
+      &.peek {
+        transform: translate(0, calc(100% - #{$menu_items_height})) !important;
+      }
 
       @include screen-size("phone") {
         transform: translate(0, 0);

@@ -12,9 +12,9 @@
 
   // *** STORES
   import {
-      tableOfContentsActiveHash, // derived from hash
       tableOfContentsActive,
       tableOfContents,
+      menuItemActive,
       menuActive,
       hash
     } from "../stores.js"
@@ -42,6 +42,7 @@
   <div
     class="bar toc"
     class:open={$tableOfContentsActive}
+    class:peek={!$menuItemActive && vw < 768}
     class:parentOpen={$menuActive}
     style="height: {ih + 'px'};"
   >
@@ -173,6 +174,10 @@
       @include screen-size('phone') {
         &.open {
           transform: translateX(0);
+        }
+
+        &.peek {
+          transform: translate(0, calc(100% - #{$menu_items_height} - #{$menu_button_width})) !important;
         }
       }
     }
