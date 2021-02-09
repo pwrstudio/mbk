@@ -10,18 +10,20 @@
   import { afterUpdate } from "svelte"
   import { renderBlockText, urlFor } from "../sanity.js"
   import { formattedDate } from "../global.js"
-  import { isArray, has } from "lodash"
+  import { isArray, get, has } from "lodash"
 
   // *** PROPS
   export let name, content
 
   // *** VARIABLES
-  let el
+  let el, vh
 
   afterUpdate(() => {
     el.scrollTo(0, 0)
   })
 </script>
+
+<svelte:window bind:innerHeight={vh} />
 
 <div class="bar-content menu-content" bind:this={el}>
   <!--      -->
@@ -29,38 +31,48 @@
   <!--      -->
   {#if name === "news" && isArray(content)}
     {#each content as block, index}
-      <div class="news-item">
-        <div class="header">
-          <span>
-            {#if block.publicationDate}
-              {@html formattedDate(block.publicationDate)}
-            {/if}
-          </span>
-          <span>
-            {#if block.location}
-              {block.location}
-            {/if}
-          </span>
-        </div>
-        {#if has(block, "mainImage.asset")}
-          <img
-            class="image"
-            src={urlFor(block.mainImage.asset)
-              .width(400)
-              .quality(90)
-              .saturation(-100)
-              .auto("format")
-              .url()}
-          />
-        {/if}
-        {#if has(block, "content.content") && isArray(block.content.content)}
-          <div class="paragraph">
-            {@html renderBlockText(block.content.content)}
+      <div class="news-item" id={block.slug.current}>
+        <div class="content" style="min-height: {vh - 200}px">
+          <div class="header">
+            <span>
+              {#if block.publicationDate}
+                {@html formattedDate(block.publicationDate)}
+              {/if}
+            </span>
+            <span>
+              {#if block.location}
+                {block.location}
+              {/if}
+            </span>
           </div>
-        {/if}
+          {#if has(block, "mainImage.asset")}
+            <img
+              class="image"
+              src={urlFor(block.mainImage.asset)
+                .width(400)
+                .quality(90)
+                .saturation(-100)
+                .auto("format")
+                .url()}
+            />
+          {/if}
+          {#if has(block, "content.content") && isArray(block.content.content)}
+            <div class="paragraph">
+              {@html renderBlockText(block.content.content)}
+            </div>
+          {/if}
+        </div>
         {#if index < content.length - 1}
-          <div class="graphic">
-            <ArrowDown />
+          <div class="nav" on:click={() => {
+            console.log('click')
+            window.location.replace(
+              "#" + get(content[index + 1], "slug.current", null)
+            )
+          }
+          }>
+            <div class="graphic">
+              <ArrowDown />
+            </div>
           </div>
         {/if}
       </div>
@@ -78,34 +90,48 @@
   <!-- COLOPHON -->
   <!--          -->
   {:else if name === "colophon"}
-    {#if has(content, "logo.asset")}
-      <img
-        class="logo"
-        src={urlFor(content.logo.asset)
-          .width(400)
-          .quality(90)
-          .auto("format")
-          .url()}
-      />
-    {/if}
-    {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
-      <div class="paragraph">
-        {@html renderBlockText(content.wideColumn.content)}
+    <div class="news-item" id="colophon-image">
+      <div class="content" style="min-height: {vh - 200}px">
+        {#if has(content, "logo.asset")}
+          <img
+            class="logo"
+            src={urlFor(content.logo.asset)
+              .width(400)
+              .quality(90)
+              .auto("format")
+              .url()}
+          />
+        {/if}
       </div>
-    {/if}
-    <div class="narrow-cols">
-      {#if has(content, "firstNarrowColumn.content") && isArray(content.firstNarrowColumn.content)}
-        <div class="narrow-col">
-          {@html renderBlockText(content.firstNarrowColumn.content)}
+        <div class="nav" on:click={() => {
+          window.location.replace('#colophon-bottom')
+        }}>
+        <div class="graphic">
+          <ArrowDown />
         </div>
-      {/if}
-      {#if has(content, "secondNarrowColumn.content") && isArray(content.secondNarrowColumn.content)}
-        <div class="narrow-col">
-          {@html renderBlockText(content.secondNarrowColumn.content)}
-        </div>
-      {/if}
+      </div>
     </div>
-    
+    <div id="colophon-bottom" class="news-item">
+      <div class="content">
+        {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}
+          <div class="paragraph">
+            {@html renderBlockText(content.wideColumn.content)}
+          </div>
+        {/if}
+        <div class="narrow-cols">
+          {#if has(content, "firstNarrowColumn.content") && isArray(content.firstNarrowColumn.content)}
+            <div class="narrow-col">
+              {@html renderBlockText(content.firstNarrowColumn.content)}
+            </div>
+          {/if}
+          {#if has(content, "secondNarrowColumn.content") && isArray(content.secondNarrowColumn.content)}
+            <div class="narrow-col">
+              {@html renderBlockText(content.secondNarrowColumn.content)}
+            </div>
+          {/if}
+        </div>
+      </div>
+    </div>
   {/if}
 </div>
 
@@ -115,11 +141,28 @@
 
   .menu-content {
     box-sizing: border-box;
-    padding-bottom: $margin;
+    padding-bottom: 0;
     flex-shrink: 1;
     overflow-y: scroll;
-    scroll-snap-type: y proximity;
     font-size: $font_size_small;
+
+    .nav {
+      background-color:$green;
+      height: $margin * 1.5;
+      position: sticky;
+      bottom: 0;
+      margin: 0;
+      width: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .graphic {
+        margin: 0;
+      }
+    }
 
     @include screen-size("phone") {
       margin-top: $margin / 4;
@@ -135,8 +178,9 @@
     }
 
     .news-item {
+      width: 100%;
       min-height: 100%;
-      scroll-snap-align: start;
+      padding-bottom: $margin * 2;
 
       .header {
         font-size: $font_size_small;
