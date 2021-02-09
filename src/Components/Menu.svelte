@@ -37,14 +37,29 @@
   export let landing = false
 
   // *** VARIABLES
+  let title = ''
   let pvw = 0
   let vw = window.innerWidth
   let ih = window.innerHeight
 
   $: {
     if (landing) {
-      menuActive.set(true)
-      menuItemActive.set('news')
+      if (vw > 768 && !$menuActive) {
+        menuActive.set(true)
+        menuItemActive.set('news')
+      }
+    }
+
+    if ($menuItemActive) {
+      let currentData = data[$menuItemActive]
+
+      if (currentData) {
+        if (currentData.title) {
+          title = currentData.title
+        } else {
+          title = 'Info'
+        }
+      }
     }
   }
 
@@ -62,14 +77,12 @@
     }
 
     if (!$menuActive) {
-      console.log('here')
       menuItemActive.set(null)
     }
   }
 
   news.then(news => {
     data.news = news
-    $menuContent = data.news
   })
 
   about.then(about => {
@@ -130,10 +143,6 @@
   bind:innerHeight={ih}
 />
 
-<!--              -->
-<!-- DESKTOP MENU -->
-<!--              -->
-
 <div
   class="bar"
   class:open={$menuActive}
@@ -142,11 +151,35 @@
   style="height: {ih + 'px'};"
   use:links
   >
+
+  <!--              -->
+  <!-- DESKTOP MENU -->
+  <!--              -->
+
   {#if vw > 768}
+    <!-- CONTENT -->
     <MenuContent name={$menuItemActive} content={$menuContent} />
+    <!-- BUTTON -->
+    <div
+      class="bar-button"
+      class:disabled={landing && vw > 768}
+      on:click={e => {
+        if (landing === false && vw > 768) {
+          // toggleMenu()
+        }
+      }}
+    >
+      <h1 class="title">På IBK</h1>
+      <h1 class="title bottom">Info</h1>
+    </div>
   {/if}
 
-  <ul class="bar-menu" class:hidden={$menuItemActive !== null && vw < 768}>
+
+  <!--        -->
+  <!-- SHARED -->
+  <!--        -->
+
+  <ul class="bar-menu" class:hidden={$menuItemActive !== null && vw <= 768}>
     <li
       class="bar-menu-item title"
       id="news"
@@ -176,11 +209,23 @@
     </li>
   </ul>
 
-  {#if vw <= 768}
-    <MenuContent name={$menuItemActive} content={$menuContent} />
-  {/if}
+  <!--             -->
+  <!-- MOBILE MENU -->
+  <!--             -->
 
   {#if vw <= 768}
+    <!-- CONTENT -->
+    <div class="mobile-content">
+      <!-- ACTUAL CONTENT -->
+      <MenuContent name={$menuItemActive} content={$menuContent} />
+      <!-- TITLE -->
+      <div on:touchstart|preventDefault={() => {menuItemActive.set(null)}} class="ticker">
+        <div class="title">
+          {title}
+        </div>
+      </div>
+    </div>
+    <!-- BUTTON -->
     <div
       class="bar-button"
       on:touchstart|preventDefault={toggleMenu}
@@ -193,30 +238,10 @@
         </div>
       </h1>
     </div>
-  {:else}
-    <div
-      class="bar-button"
-      class:disabled={landing && vw > 768}
-      on:click={e => {
-        if (landing === false && vw > 768) {
-          toggleMenu()
-        }
-      }}
-    >
-      <h1 class="title">På IBK</h1>
-      <h1 class="title bottom">Info</h1>
-    </div>
   {/if}
 </div>
-<!--                  -->
-<!-- END DESKTOP MENU -->
-<!--                  -->
 
-<!-- 
-  ***   🐸   ***
-  *** styles ***
-  ***   🐸   ***
-      !-->
+
 <style lang="scss">
   @import "../variables.scss";
 
@@ -350,6 +375,32 @@
           border-bottom: none;
         }
       }
+    }
+
+    .mobile-content {
+      max-height: 100%;
+      display: flex;
+      flex-flow: row;
+      margin-right: -1 * $margin_xs; // hacky
+
+      .ticker {
+        min-width: $margin;
+        position: relative;
+
+        .title {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, 0);
+          display: block;
+          margin: 0 auto;
+          padding: $margin 0;
+          writing-mode: vertical-rl;
+          text-orientation: upright;
+          letter-spacing: $title_letter_spacing;
+        }
+      }
+
     }
 
     &.open {

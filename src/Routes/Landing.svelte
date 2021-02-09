@@ -26,16 +26,30 @@
 
   currentPost.set(false)
 
+  let vw = window.innerWidth
+
   onDestroy (() => {
     menuActive.set(false)
     tableOfContentsActive.set(false)
   })
+
+  const closeMenu = () => {
+    if ($menuActive) {
+      menuActive.set(false)
+    }
+  }
 </script>
+
+<svelte:window bind:innerWidth={vw} />
 
 {#await issues then issues}
   <div class="menus">
     <Menu landing={true} />
   </div>
+
+  {#if vw < 768 && $menuActive}
+    <div class="pseudo" on:touchstart|preventDefault={closeMenu} />
+  {/if}
 
   <div class="landing" use:links>
     <CoverSlider {issues} />
@@ -68,6 +82,15 @@
       width: 100vw;
       overflow: hidden;
     }
+  }
+
+  .pseudo {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    top: 0;
+    left: 0;
   }
 
   .menus {

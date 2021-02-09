@@ -16,11 +16,17 @@
   import "swiper/swiper-bundle.css"
 
   // *** STORES
-  import { currentPost, currentArticles } from "../stores.js"
+  import { currentPost, currentArticles, menuActive } from "../stores.js"
+
+  const closeMenu = () => {
+    if ($menuActive) {
+      menuActive.set(false)
+    }
+  }
 </script>
 
 {#each $currentArticles as article, index}
-  <div class="article" id={article.slug.current}>
+  <div on:touchstart={closeMenu} class="article" id={article.slug.current}>
     <div
       class="col"
       class:zoomableSlideshowLayout={get(

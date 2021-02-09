@@ -60,6 +60,10 @@
     overscroll-behavior: none;
   }
 
+  :global(video) {
+    width: 100%;
+  }
+
   :global(a),
   :global(.link) {
     color: inherit;

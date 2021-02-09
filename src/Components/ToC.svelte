@@ -7,6 +7,7 @@
 
   // *** IMPORTS
   import { links, navigate } from "svelte-routing"
+  import { fade } from "svelte/transition"
   import get from "lodash/get"
   import { goTo } from '../global'
 
@@ -40,6 +41,7 @@
 
 {#if $tableOfContents}
   <div
+    in:fade
     class="bar toc"
     class:open={$tableOfContentsActive}
     class:peek={!$menuItemActive && vw < 768}
@@ -185,7 +187,8 @@
     .articleNumber {
       display: inline-block;
       line-height: 0;
-      margin-bottom: $title_letter_spacing;
+      height: $title_letter_spacing;
+      // margin-bottom: $title_letter_spacing;
       text-align: center;
       position: relative;
 
