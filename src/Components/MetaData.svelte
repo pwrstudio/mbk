@@ -17,8 +17,12 @@
   export let post = {}
 
   // *** CONSTANTS
-  const DEFAULT_DESCRIPTION = ""
+  const DEFAULT_DESCRIPTION = "default description test"
   const DEFAULT_IMAGE = ""
+
+  $: {
+    console.log('metadata post', post)
+  }
 
   // *** VARIABLES
   let title = ""

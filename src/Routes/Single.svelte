@@ -17,7 +17,7 @@
   // *** PROPS
   export let slug = ""
 
-  // COMPONENTS
+  // *** COMPONENTS
   import Articles from "../Components/Articles.svelte"
   import Menu from "../Components/Menu.svelte"
   import ToC from "../Components/ToC.svelte"
@@ -82,6 +82,7 @@
 <svelte:window bind:innerWidth={vw} />
 
 {#await $currentPost then post}
+
   <div class="menus">
     <Menu />
     <ToC />

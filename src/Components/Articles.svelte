@@ -8,10 +8,13 @@
   // *** IMPORTS
   import { fade } from "svelte/transition"
   import { renderBlockText, urlFor } from "../sanity.js"
-  import Slideshow from "./SlideShow.svelte"
-  import Meta from "./Meta.svelte"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
+
+  // *** COMPONENTS
+  import MetaData from "./MetaData.svelte"
+  import Slideshow from "./SlideShow.svelte"
+  import Meta from "./Meta.svelte"
 
   import "swiper/swiper-bundle.css"
 
@@ -24,6 +27,10 @@
     }
   }
 </script>
+
+<!-- METADATA -->
+<!-- !!! TODO: pass current active article as 'post' prop to set correct metadata -->
+<MetaData/>
 
 {#each $currentArticles as article, index}
   <div on:touchstart={closeMenu} class="article" id={article.slug.current}>

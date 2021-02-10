@@ -13,11 +13,12 @@
   // *** COMPONENTS
   import CoverSlider from "../Components/CoverSlider.svelte"
   import Menu from "../Components/Menu.svelte"
+  import MetaData from "../Components/MetaData.svelte"
 
   // *** STORES
   import { currentPost, menuActive, tableOfContentsActive } from "../stores.js"
 
-  // *** PROP
+  // *** PROPS
   export let location
 
   // *** CONSTANTS
@@ -41,6 +42,9 @@
 </script>
 
 <svelte:window bind:innerWidth={vw} />
+
+<!-- METADATA -->
+<MetaData />
 
 {#await issues then issues}
   <div class="menus">

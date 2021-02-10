@@ -17,12 +17,10 @@
   export let byline = ''
   export let links = []
 
-  console.log('links', links)
-
 </script>
 
 <div class="block meta" in:fade>
-  
+
   <!-- HEADER -->
   <div class="header">
     <span> Magasin for Bygningskunst og Kultur </span>
