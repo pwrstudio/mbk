@@ -6,15 +6,24 @@
   // # # # # # # # # # # # # #
 
   import Fa from "svelte-fa"
-  import { faFacebookSquare, faInstagram } from "@fortawesome/free-brands-svg-icons"
+  import { faFacebookSquare, faInstagram, faTwitterSquare } from "@fortawesome/free-brands-svg-icons"
+  import { faGlobe } from '@fortawesome/free-solid-svg-icons'
   import { fade } from "svelte/transition"
   import { renderBlockText } from "../sanity.js"
 
-  export let title, articleTitle, byline
+  // *** PROPS
+  export let title = ''
+  export let  articleTitle = ''
+  export let byline = ''
+  export let links = []
+
+  console.log('links', links)
 
 </script>
 
 <div class="block meta" in:fade>
+  
+  <!-- HEADER -->
   <div class="header">
     <span> Magasin for Bygningskunst og Kultur </span>
     <span class="right">
@@ -22,17 +31,35 @@
     </span>
   </div>
 
+  <!-- TITLE -->
   <h1 class="article-title">
     {articleTitle}
   </h1>
 
+  <!-- BYLINE -->
   <div class="byline">
     <div class="text">
       {@html renderBlockText(byline)}
     </div>
+
+    <!-- SOCIAL -->
     <div class="social">
-      <Fa icon={faFacebookSquare} />
-      <Fa icon={faInstagram} />
+      {#each links as link}
+        <a href={link.url} target=_blank>
+          {#if link._type == 'facebook'}
+              <Fa icon={faFacebookSquare} />
+          {/if}
+          {#if link._type == 'instagram'}
+            <Fa icon={faInstagram} />
+          {/if}
+          {#if link._type == 'twitter'}
+            <Fa icon={faTwitterSquare} />
+          {/if}
+          {#if link._type == 'other'}
+            <Fa icon={faGlobe} />
+          {/if}
+        </a>
+      {/each}
     </div>
   </div>
 </div>

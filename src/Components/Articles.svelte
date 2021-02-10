@@ -40,6 +40,7 @@
         title={get($currentPost, "title", "")}
         articleTitle={get(article, "title", "")}
         byline={get(article, "byline.content", [])}
+        links={get(article, "links", [])}
       />
 
       <div class="block main">
