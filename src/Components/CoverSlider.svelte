@@ -62,8 +62,8 @@
   <!--       -->
   <div class="top">
     <h1 class="edition title">
-      <span class="line">Seneste</span>
-      <span class="line">Nummer</span>
+      <span class="line"></span>
+      <span class="line"></span>
     </h1>
   </div>
   <!--           -->
