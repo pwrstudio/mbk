@@ -8,13 +8,13 @@
   // *** IMPORTS
   import { urlFor, renderBlockText } from "../sanity.js"
   import { get } from "lodash"
-  import SwiperCore, { Autoplay, Pagination } from "swiper"
+  import SwiperCore, { Pagination } from "swiper"
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import "swiper/swiper-bundle.css"
   import "swiper/components/pagination/pagination.min.css"
   
   // *** SETUP
-  SwiperCore.use([Autoplay, Pagination])
+  SwiperCore.use([Pagination])
 
   // *** PROPS
   export let slides = []
@@ -109,9 +109,6 @@
 <div class="slideshow" class:zoomable>
   <Swiper
     spaceBetween={8}
-    autoplay={
-      zoomable ? false : { delay: 4000 }
-    }
     pagination={{
       el: "#custom-pagination-" + id
     }}
