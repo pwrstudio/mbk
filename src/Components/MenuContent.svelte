@@ -30,21 +30,13 @@
   <!-- NEWS -->
   <!--      -->
   {#if name === "news" && isArray(content)}
+    <!-- LOGO -->
+    <div class='kadk-logo'>
+      <img src='/img/logo.svg'/>
+    </div>
     {#each content as block, index}
       <div class="news-item" id={block.slug.current}>
         <div class="content" style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}">
-          <div class="header">
-            <span>
-              {#if block.publicationDate}
-                {@html formattedDate(block.publicationDate)}
-              {/if}
-            </span>
-            <span>
-              {#if block.location}
-                {block.location}
-              {/if}
-            </span>
-          </div>
           {#if has(block, "mainImage.asset")}
             <img
               class="image"
@@ -56,6 +48,20 @@
                 .url()}
             />
           {/if}
+          <!-- HEADER -->
+          <div class="header">
+            <!-- TITLE -->
+            <span>
+              {block.title}    
+            </span>
+            <!-- PUBLICATION DATE -->
+            <span>
+              {#if block.publicationDate}
+                {@html formattedDate(block.publicationDate)}
+              {/if}
+            </span>
+          </div>
+          <!-- CONTENT -->
           {#if has(block, "content.content") && isArray(block.content.content)}
             <div class="paragraph">
               {@html renderBlockText(block.content.content)}
@@ -169,7 +175,7 @@
         border-top: $border_black;
         border-bottom: $border_black;
         padding-top: 4px;
-        margin-bottom: $line-height;
+        margin-bottom: $margin_xs;
       }
     }
 
@@ -198,6 +204,15 @@
       .narrow-col {
         width: 50%;
       }
+    }
+  }
+
+  .kadk-logo {
+    width: 100%;
+    margin-bottom: $margin_xs;
+    img {
+      display: block;
+      width: 100%;
     }
   }
 </style>
