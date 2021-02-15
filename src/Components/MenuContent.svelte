@@ -90,27 +90,6 @@
   <!-- COLOPHON -->
   <!--          -->
   {:else if name === "colophon"}
-    <div class="news-item" id="colophon-image">
-      <div class="content" style="min-height: {vh - 200}px">
-        {#if has(content, "logo.asset")}
-          <img
-            class="logo"
-            src={urlFor(content.logo.asset)
-              .width(400)
-              .quality(90)
-              .auto("format")
-              .url()}
-          />
-        {/if}
-      </div>
-        <div class="nav" on:click={() => {
-          window.location.replace('#colophon-bottom')
-        }}>
-        <div class="graphic">
-          <ArrowDown />
-        </div>
-      </div>
-    </div>
     <div id="colophon-bottom" class="news-item">
       <div class="content">
         {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}

@@ -170,7 +170,7 @@
         }
       }}
     >
-      <h1 class="title">På IBK</h1>
+      <h1 class="title">Kort nyt</h1>
       <h1 class="title bottom">Info</h1>
     </div>
   {/if}
@@ -188,7 +188,7 @@
       on:click={updateMenuItem}
       on:touchstart={updateMenuItem}
     >
-      På IBK
+      På Instituttet
     </li>
     <li
       class="bar-menu-item title"
@@ -197,7 +197,7 @@
       on:click={updateMenuItem}
       on:touchstart={updateMenuItem}
     >
-      Om IBK
+      Om magasinet
     </li>
     <li
       class="bar-menu-item title"
