@@ -56,7 +56,7 @@
   {/if}
 
   <div class="landing" use:links>
-    <CoverSlider {issues} />
+    <CoverSlider issues={issues.reverse()} />
   </div>
 {/await}
 
