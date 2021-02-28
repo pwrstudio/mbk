@@ -84,4 +84,36 @@
     flex-flow: row;
     justify-content: space-between;
   }
+
+  :global(.article) {
+    counter-reset: fnoteCounter;
+  }
+
+  :global(.footnote-link) {
+    counter-increment: fnoteCounter;
+    color: inherit;
+    text-decoration: none !important;
+
+    &:after {
+      // vertical-align: super;
+      position: relative;
+      top: -6px;
+      font-family: $sans-stack;
+      // font-size: $font_size_small;
+      background: yellow;
+      font-size: 0.8em;
+      line-height: $line-height;
+      content: "(" counter(fnoteCounter) ")";
+      padding-left: 4px;
+    }
+
+    &:hover {
+      text-decoration: underline !important;
+    }
+
+    // &:target {
+    //   background: $yellow;
+    // }
+  }
+
 </style>

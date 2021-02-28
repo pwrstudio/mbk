@@ -21,6 +21,15 @@
   // *** STORES
   import { currentPost, currentArticles, menuActive } from "../stores.js"
 
+  // *** VARIABLES
+  let footnotePosts = []
+
+  // !!! TODO: Extract the footnotes from the currently active article, to list at bottom
+  // let a = flatMap(
+  //     post.content.content.filter(c => c._type == "block").map(x => x.markDefs)
+  //   )
+  // footnotePosts = a.filter(x => x._type === "footnote")
+
   const closeMenu = () => {
     if ($menuActive) {
       menuActive.set(false)
@@ -52,6 +61,33 @@
 
       <div class="block main">
         {@html renderBlockText(get(article, "content.content", []))}
+      </div>
+
+      <!-- FOOTNOTES -->
+      <div class="footnotes">
+        <ol>
+          {#each footnotePosts as footnote}
+            <li id={'note-' + footnote._key}>
+              {#if isArray(get(footnote, 'content.content', false))}
+                {@html renderBlockText(footnote.content.content)}
+              {/if}
+              <span
+                on:click={e => {
+                  const targetEl = document.querySelector('#link-' + footnote._key)
+                  // console.log(targetEl)
+                  if (targetEl) {
+                    // console.log(targetEl.offsetTop)
+                    window.scrollTo({
+                      top: targetEl.offsetTop - 100,
+                      left: 0,
+                      behavior: 'smooth',
+                    })
+                  }
+                }}
+                class="back-link">(BACK)</span>
+            </li>
+          {/each}
+        </ol>
       </div>
 
       {#if get(article, "zoomableSlideshowLayout", false)}
