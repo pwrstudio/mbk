@@ -230,10 +230,15 @@
 
   .footnotes {
     font-size: $font_size_small;
+    padding-bottom: 200px;
+    
+    @include screen-size("phone") {
+      padding-bottom: 0;
+    }
+
     :global(p) {
       font-size: $font_size_small;
     }
-    padding-bottom: 200px;
 
     ol {
       li {
