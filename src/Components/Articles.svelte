@@ -7,28 +7,33 @@
 
   // *** IMPORTS
   import { fade } from "svelte/transition"
-  import { renderBlockText, urlFor } from "../sanity.js"
+  import { renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
+  import flatMap from "lodash/flatMap"
+  import isArray from "lodash/isArray"
+
 
   // *** COMPONENTS
   import MetaData from "./MetaData.svelte"
   import Slideshow from "./SlideShow.svelte"
   import Meta from "./Meta.svelte"
 
+  // *** STYLES
   import "swiper/swiper-bundle.css"
 
   // *** STORES
   import { currentPost, currentArticles, menuActive } from "../stores.js"
 
-  // *** VARIABLES
-  let footnotePosts = []
-
-  // !!! TODO: Extract the footnotes from the currently active article, to list at bottom
-  // let a = flatMap(
-  //     post.content.content.filter(c => c._type == "block").map(x => x.markDefs)
-  //   )
-  // footnotePosts = a.filter(x => x._type === "footnote")
+  // Extract the footnotes from the currently active article, to list at bottom
+  const extractFootnotes = mainContent => {
+    let a = flatMap(
+      mainContent.filter(c => c._type == "block").map(x => x.markDefs)
+    )
+    let footnotes = a.filter(x => x._type === "footnote")
+    console.log('footnotes', footnotes)
+    return footnotes
+  }
 
   const closeMenu = () => {
     if ($menuActive) {
@@ -64,31 +69,31 @@
       </div>
 
       <!-- FOOTNOTES -->
-      <div class="footnotes">
-        <ol>
-          {#each footnotePosts as footnote}
-            <li id={'note-' + footnote._key}>
-              {#if isArray(get(footnote, 'content.content', false))}
-                {@html renderBlockText(footnote.content.content)}
-              {/if}
-              <span
-                on:click={e => {
-                  const targetEl = document.querySelector('#link-' + footnote._key)
-                  // console.log(targetEl)
-                  if (targetEl) {
-                    // console.log(targetEl.offsetTop)
-                    window.scrollTo({
-                      top: targetEl.offsetTop - 100,
-                      left: 0,
-                      behavior: 'smooth',
-                    })
-                  }
-                }}
-                class="back-link">(BACK)</span>
-            </li>
-          {/each}
-        </ol>
-      </div>
+      {#if get(article, "content.content", false)}
+        <div class="footnotes">
+          <ol>
+            {#each extractFootnotes(article.content.content) as footnote}
+              <li id={'note-' + footnote._key}>
+                {@html renderBlockText(get(footnote, 'content.content', []))}
+                <!-- <span
+                  on:click={e => {
+                    const targetEl = document.querySelector('#link-' + footnote._key)
+                    // console.log(targetEl)
+                    if (targetEl) {
+                      // console.log(targetEl.offsetTop)
+                      window.scrollTo({
+                        top: targetEl.offsetTop - 100,
+                        left: 0,
+                        behavior: 'smooth',
+                      })
+                    }
+                  }}
+                  class="back-link">(BACK)</span> -->
+              </li>
+            {/each}
+          </ol>
+        </div>
+      {/if}
 
       {#if get(article, "zoomableSlideshowLayout", false)}
         <div class="block full">
@@ -220,6 +225,20 @@
 
     .title {
       margin-top: 0;
+    }
+  }
+
+  .footnotes {
+    font-size: $font_size_small;
+    :global(p) {
+      font-size: $font_size_small;
+    }
+    padding-bottom: 200px;
+
+    ol {
+      li {
+        padding-left: 20px;
+      }
     }
   }
 </style>

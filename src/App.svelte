@@ -99,9 +99,9 @@
       position: relative;
       top: -6px;
       font-family: $sans-stack;
-      // font-size: $font_size_small;
-      background: yellow;
-      font-size: 0.8em;
+      font-size: $font_size_small;
+      // background: yellow;
+      // font-size: 0.8em;
       line-height: $line-height;
       content: "(" counter(fnoteCounter) ")";
       padding-left: 4px;
