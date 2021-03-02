@@ -28,17 +28,12 @@
   // *** ZOOM VARS
   let zoomed = false
   let zoomLevel = 1
-  let maxHeight = "auto"
   let vw = window.innerWidth
-
-  $: {
-    swiperInstance = swiper
-  }
+  let vh = window.innerHeight
 
   const toggleZoomButton = e => {
     if (swiperInstance.slides[swiperInstance.activeIndex]) {
       const rect = swiperInstance.slides[swiperInstance.activeIndex].getBoundingClientRect()
-      maxHeight = rect.height + "px"
   
       zoomed = !zoomed
       zoomLevel = zoomLevel === 1 ? 2 : 1
@@ -46,9 +41,11 @@
   }
 
   const toggleZoom = e => {
+    // console.log(swiperInstance, swiper)
+    console.log(swiperInstance)
     if (swiperInstance.clickedSlide) {
-      const rect = swiperInstance.clickedSlide.getBoundingClientRect()
-      maxHeight = rect.height + "px"
+      // console.log('toggle de zoom')
+      // const rect = swiperInstance.clickedSlide.getBoundingClientRect()
   
       zoomed = !zoomed
       zoomLevel = zoomLevel === 1 ? 2 : 1
@@ -69,10 +66,18 @@
   
       const toX = fracX * (scrollW - rect.width)
       const toY = fracY * (scrollH - rect.height)
-  
-      e.currentTarget.scrollLeft = toX
-      e.currentTarget.scrollTop = toY
+
+      if (zoomed) {
+        e.currentTarget.scrollLeft = toX
+        e.currentTarget.scrollTop = toY
+      }
     }
+  }
+  
+  const onSwiper = swiper => {
+    // console.log('swiper')
+    // console.log(swiper)
+    swiperInstance = swiper.detail[0]
   }
 
   // Checks in zoom containers if the original file is big enough, else falls back to a double vw image
@@ -104,7 +109,7 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw} />
+<svelte:window bind:innerWidth={vw} bind:innerHeight={vh} />
 
 <div class="slideshow" class:zoomable>
   <Swiper
@@ -112,8 +117,10 @@
     pagination={{
       el: "#custom-pagination-" + id
     }}
+    on:swiper={onSwiper}
     on:click={toggleZoom}
     on:touchstart={toggleZoom}
+    on:slideChange={() => { zoomed = false }}
   >
     {#each slides as slide}
       <SwiperSlide>
@@ -122,11 +129,11 @@
             ref={slide._key}
             class="zoom-container"
             class:zoomed
-            style="max-height: {maxHeight};"
+            style="height: {0.75*vh}px;"
             on:mousemove={scrollThrough}
           >
             <img
-              class="slide-img"
+              class="slide-img zoomable"
               class:zoomed
               src={zoomImgUrl(slide.asset)}
               alt={slide.asset.alt}
@@ -245,6 +252,17 @@
       object-fit: cover;
     }
 
+    :global(.slide-img.zoomable) {
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      margin: 0 auto;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     :global(.slide-img.zoomed) {
       padding: 0;
       margin: 0;
@@ -254,6 +272,10 @@
       max-width: none;
       max-height: none;
       cursor: zoom-out;
+      transform: unset;
+      position: unset;
+      left: unset;
+      top: unset;
     }
 
     .caption {

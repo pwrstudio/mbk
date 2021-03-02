@@ -76,8 +76,8 @@
   
         if (isArticle) {
           console.log('is article')
-          goTo(windowHash)
           document.body.scrollTop = el.offsetTop
+          goTo(windowHash)
         }
       } catch (error) {
         console.error(error)
@@ -123,17 +123,17 @@
   }
 
   .single {
+    padding-left: 2 * $menu_button_width;
     scroll-snap-type: y mandatory;
     background-color: $white;
-    padding-left: 2 * $menu_button_width;
-    height: 100%;
     overflow-y: hidden;
+    height: 100%;
 
     @include screen-size("phone") {
       scroll-snap-type: unset;
       padding-left: 0;
       overflow-y: auto;
-      padding-bottom: $menu_button_width;
+      box-sizing: border-box;
     }
   }
 </style>

@@ -226,6 +226,10 @@
     }
   }
 
+  .article:last-child {
+    margin-bottom: $menu_button_width * 2;
+  }
+
   .footnotes {
     font-size: $font_size_small;
     padding-bottom: 200px;
