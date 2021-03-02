@@ -7,15 +7,17 @@
 
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
-  import { onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import { goTo, elementReady } from '../global'
   import get from "lodash/get"
 
   // STORES
-  import { tableOfContents, currentPost, currentArticles } from "../stores.js"
+  import { tableOfContents, currentPost, currentArticles, hash } from "../stores.js"
 
   // *** PROPS
   export let slug = ""
+
+  // *** IMPORTS
 
   // *** COMPONENTS
   import Articles from "../Components/Articles.svelte"
@@ -61,21 +63,34 @@
     }
   }
 
-  onMount(() => {
-    const myHash = get(window.location, 'hash', false)
-
-    if (myHash) {
-      elementReady(myHash).then((el) => {
+  onMount(async () => {
+    const windowHash = get(window.location, 'hash', false)
+    
+    if (windowHash) {
+      console.log('HASH')
+      try {
+        const el = await elementReady(windowHash)
         // check if the hash is within the articles before
         const hashes = $currentArticles.map((article) => { return get(article, 'slug.current', false) })
-        const isArticle = hashes.includes(myHash.replace('#', ''))
-
+        const isArticle = hashes.includes(windowHash.replace('#', ''))
+  
         if (isArticle) {
-          goTo(myHash)
+          console.log('is article')
+          goTo(windowHash)
           document.body.scrollTop = el.offsetTop
         }
-      })
+      } catch (error) {
+        console.error(error)
+      }
+    } else {
+      try {
+        const result = await articlesData
+        goTo(result.tableOfContents[0].slug.current)
+      } catch (error) {
+        console.error(error)
+      }
     }
+
   })
 </script>
 

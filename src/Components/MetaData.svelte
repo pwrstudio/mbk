@@ -10,8 +10,11 @@
   import isEmpty from "lodash/isEmpty"
   import truncate from "lodash/truncate"
 
-  // *** STORES
+  // *** SANITY
   import { toPlainText, urlFor } from "../sanity.js"
+
+  // *** STORES
+  import { activeArticle } from "../stores.js"
 
   // *** PROPS
   export let post = {}
@@ -19,6 +22,10 @@
   // *** CONSTANTS
   const DEFAULT_DESCRIPTION = "default description test"
   const DEFAULT_IMAGE = ""
+
+  $: {
+    console.log('The active article changed:', $activeArticle)
+  }
 
   $: {
     console.log('metadata post', post)

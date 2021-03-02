@@ -31,7 +31,6 @@
       mainContent.filter(c => c._type == "block").map(x => x.markDefs)
     )
     let footnotes = a.filter(x => x._type === "footnote")
-    console.log('footnotes', footnotes)
     return footnotes
   }
 
@@ -44,7 +43,7 @@
 
 <!-- METADATA -->
 <!-- !!! TODO: pass current active article as 'post' prop to set correct metadata -->
-<MetaData/>
+<MetaData />
 
 {#each $currentArticles as article, index}
   <div on:touchstart={closeMenu} class="article" id={article.slug.current}>
