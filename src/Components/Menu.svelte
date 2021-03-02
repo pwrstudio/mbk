@@ -166,7 +166,7 @@
       class:disabled={landing && vw > 768}
       on:click={e => {
         if (landing === false && vw > 768) {
-          // toggleMenu()
+          toggleMenu()
         }
       }}
     >
