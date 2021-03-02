@@ -24,11 +24,7 @@
   const DEFAULT_IMAGE = ""
 
   $: {
-    console.log('The active article changed:', $activeArticle)
-  }
-
-  $: {
-    console.log('metadata post', post)
+    console.log('MetaData Article:', $activeArticle)
   }
 
   // *** VARIABLES
@@ -46,17 +42,17 @@
 
   $: {
     title =
-      (has(post, "title") && !isEmpty(post.title)
-        ? stripHtml(post.title) + " | "
+      (has($activeArticle, "title") && !isEmpty($activeArticle.title)
+        ? stripHtml($activeArticle.title) + " | "
         : "") + "MAGASIN FOR BYGNINGSKUNST OG KULTUR"
   }
 
   $: {
     description =
-      has(post, "content.content") &&
-      isArray(post.content.content) &&
-      !isEmpty(post.content.content)
-        ? truncate(toPlainText(post.content.content), {
+      has($activeArticle, "content.content") &&
+      isArray($activeArticle.content.content) &&
+      !isEmpty($activeArticle.content.content)
+        ? truncate(toPlainText($activeArticle.content.content), {
             length: 260,
             separator: /.? +/,
           })
@@ -65,8 +61,8 @@
 
   $: {
     image =
-      has(post, "mainImage") && post.mainImage
-        ? urlFor(post.mainImage).quality(80).height(800).width(1200).url()
+      has($activeArticle, "mainImage") && $activeArticle.mainImage
+        ? urlFor($activeArticle.mainImage).quality(80).height(800).width(1200).url()
         : DEFAULT_IMAGE
   }
 </script>
