@@ -16,9 +16,6 @@
   // *** STORES
   import { activeArticle } from "../stores.js"
 
-  // *** PROPS
-  export let post = {}
-
   // *** CONSTANTS
   const DEFAULT_DESCRIPTION = "default description test"
   const DEFAULT_IMAGE = ""

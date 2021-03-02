@@ -42,7 +42,6 @@
 </script>
 
 <!-- METADATA -->
-<!-- !!! TODO: pass current active article as 'post' prop to set correct metadata -->
 <MetaData />
 
 {#each $currentArticles as article, index}
