@@ -115,7 +115,8 @@
   <Swiper
     spaceBetween={8}
     pagination={{
-      el: "#custom-pagination-" + id
+      el: "#custom-pagination-" + id,
+      clickable: true
     }}
     on:swiper={onSwiper}
     on:click={toggleZoom}

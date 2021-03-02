@@ -106,7 +106,10 @@
           prevEl: ".custom-controls-prev",
           nextEl: ".custom-controls-next",
         }}
-        pagination={{ el: ".custom-pagination" }}
+        pagination={{
+          el: ".custom-pagination",
+          clickable: true
+        }}
         slidesPerView={2}
         spaceBetween={10.5}
         on:swiper={onSwiper}
@@ -137,7 +140,10 @@
           prevEl: ".custom-controls-prev-mobile",
           nextEl: ".custom-controls-next-mobile",
         }}
-        pagination={{ el: ".custom-pagination-mobile" }}
+        pagination={{
+          el: ".custom-pagination-mobile",
+          clickable: true
+        }}
         slidesPerView={1}
         spaceBetween={10.5}
         on:swiper={onSwiper}
