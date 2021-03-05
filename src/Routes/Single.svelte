@@ -85,7 +85,9 @@
     } else {
       try {
         const result = await articlesData
-        goTo(result.tableOfContents[0].slug.current)
+        if(get(result, 'tableOfContents[0].slug.current', false)) {
+          goTo(result.tableOfContents[0].slug.current)
+        }
       } catch (error) {
         console.error(error)
       }

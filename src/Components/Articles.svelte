@@ -245,6 +245,9 @@
     ol {
       li {
         padding-left: 20px;
+        &:target {
+          background: $light_green;
+        }
       }
     }
   }
