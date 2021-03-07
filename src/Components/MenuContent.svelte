@@ -170,6 +170,10 @@
       @include screen-size("medium") {
       }
 
+      .content {
+        background: $green;
+      }
+
       .header {
         font-size: $font_size_small;
         border-top: $border_black;
