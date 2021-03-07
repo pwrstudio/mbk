@@ -23,6 +23,7 @@
 
 <a
   class="cover"
+  class:empty={get(issue, 'tableOfContents', []).length == 0}
   style="transform: scale({scale});"
   use:links
   in:fade
@@ -62,6 +63,10 @@
     justify-content: flex-end;
     background-color: $white;
     position: relative;
+    
+    &.empty {
+      pointer-events: none;
+    }
 
     &.scalable {
       transform: scale(0.5);
