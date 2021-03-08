@@ -9,9 +9,9 @@
   import { renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
-  import { goTo } from "../global"
   import flatMap from "lodash/flatMap"
-
+  import isArray from "lodash/isArray"
+  import { goTo } from '../global'
 
   // *** COMPONENTS
   import MetaData from "./MetaData.svelte"
