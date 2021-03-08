@@ -23,7 +23,7 @@
 
   <!-- HEADER -->
   <div class="header">
-    <span> Magasin for Bygningskunst og Kultur </span>
+    <span>Magasin for Bygningskunst og Kultur</span>
     <span class="right">
       {title}
     </span>

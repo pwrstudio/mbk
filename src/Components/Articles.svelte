@@ -225,12 +225,16 @@
     }
 
     :global(p) {
-      font-size: $font_size_small;
+      font-size: 16px;
+      line-height: 20px;
     }
 
     ol {
       li {
         padding-left: 20px;
+        &:target {
+          background: $light_green;
+        }
       }
     }
   }

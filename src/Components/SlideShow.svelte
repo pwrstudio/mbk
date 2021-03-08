@@ -283,8 +283,8 @@
       // position: absolute;
       bottom: 0;
       :global(p) {
-        font-size: $font_size_semi_small;
-        line-height: 14px;
+        font-size: 16px;  
+        line-height: 20px;
       }
       :global(p a) {
         text-decoration: underline;

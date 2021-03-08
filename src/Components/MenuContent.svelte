@@ -130,7 +130,7 @@
     flex-shrink: 1;
     overflow-y: scroll;
     font-size: $font_size_small;
-
+  
     .nav {
       background-color:$green;
       height: $margin * 1.5;
@@ -158,8 +158,9 @@
     }
 
     .image {
-      width: 100%;
+      max-width: 100%;
       mix-blend-mode: multiply;
+      max-height: 260px;
     }
 
     .news-item {
@@ -168,6 +169,10 @@
       padding-bottom: $margin * 2;
 
       @include screen-size("medium") {
+      }
+
+      .content {
+        background: $green;
       }
 
       .header {
