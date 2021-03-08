@@ -23,6 +23,27 @@
   // *** VARIABLES
   let vw = window.innerWidth
   let ih = window.innerHeight
+  let show = new Array()
+
+  $: {
+    if (!!$tableOfContents) {
+      show = $tableOfContents.map((item) => { return item.slug.current === $hash })
+      const range = 3
+
+      if (show.length > 7) {
+        const activeIndex = show.indexOf(true)
+        for (let i = activeIndex; i > activeIndex - range; i--) {
+          show[i] = true
+        }
+        for (let i = activeIndex; i < activeIndex + range; i++) {
+          show[i] = true
+        }
+      }
+
+      show[0] = true
+      show[show.length - 1] = true
+    }
+  }
 
   const toggleToC = () => {
     tableOfContentsActive.set(!$tableOfContentsActive)
@@ -58,7 +79,6 @@
             navigate('/')
           }
         }
-        on:touchstart={e => {window.location.replace('/')}}
       >
         TILBAGE TIL FORSIDE
       </li>
@@ -91,7 +111,7 @@
             on:click={e => {goTo(get(article, 'slug.current', ''))}}
             on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
           >
-            {index + 1}
+            <span>{index + 1}</span>
           </h1>
         {/each}
       </div>
@@ -104,16 +124,19 @@
             INDHOLD
           </span>
         </h1>
-        {#each $tableOfContents as article, index}
-          <h1
-            class="title articleNumber"
-            class:active={$hash === get(article, 'slug.current', '')}
-            on:click={e => {goTo(get(article, 'slug.current', ''))}}
-            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
-          >
-            {index + 1}
-          </h1>
-        {/each}
+        <ul class="bullets">
+          {#each $tableOfContents as article, index}
+            <li
+              class:dots={(!show[index] && index === 1) || (!show[index] && index === show.length - 2)}
+              class:hidden={!show[index]}
+              class:active={$hash === get(article, 'slug.current', '')}
+              on:click={e => {goTo(get(article, 'slug.current', ''))}}
+              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+              class="bullet">
+              {(!show[index] && index === 1) || (!show[index] && index === show.length - 2) ? '...' : index + 1 }
+            </li>
+          {/each}
+        </ul>
       </div>
     {/if}
   </div>
@@ -184,11 +207,43 @@
       }
     }
 
+    .bullets,
+    .bullets .bullet  {
+      writing-mode: lr;
+      text-orientation: unset;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .bullets {
+      .bullet {
+        margin-bottom: $title_letter_spacing;
+
+        &.hidden {
+          display: none;
+
+          &.dots {
+            display: inline-block;
+          }
+        }
+
+        &.active {
+          text-decoration: underline;
+        }
+      }
+    }
+
     .articleNumber {
       display: inline-block;
+      width: 100%;
+      white-space: nowrap;
+      writing-mode: unset;
+      text-orientation: unset;
       line-height: 0;
       height: $title_letter_spacing;
-      // margin-bottom: $title_letter_spacing;
       text-align: center;
       position: relative;
 
