@@ -7,7 +7,7 @@
 
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
-  import { onMount, onDestroy } from "svelte"
+  import { onMount, tick } from "svelte"
   import { goTo, elementReady } from '../global'
   import get from "lodash/get"
 
@@ -50,6 +50,7 @@
   let timer = null
 
   const handleScroll = () => {
+    console.log('handle scroll')
     if (vw > 768) {
       clearTimeout(timer)
 
@@ -75,8 +76,9 @@
         const isArticle = hashes.includes(windowHash.replace('#', ''))
   
         if (isArticle) {
-          console.log('is article')
-          document.body.scrollTop = el.offsetTop
+          console.log('is article', el.offsetTop)
+          goTo('')
+          await tick()
           goTo(windowHash)
         }
       } catch (error) {

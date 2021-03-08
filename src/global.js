@@ -26,6 +26,7 @@ export const formattedDate = (start, end) => {
 };
 
 export const goTo = (newHash) => {
+  console.log('go to')
   menuActive.set(false)
   tableOfContentsActive.set(false)
   hash.set(newHash.replace('#', ''))

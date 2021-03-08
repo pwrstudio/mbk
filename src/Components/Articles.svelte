@@ -73,20 +73,6 @@
             {#each extractFootnotes(article.content.content) as footnote}
               <li id={'note-' + footnote._key}>
                 {@html renderBlockText(get(footnote, 'content.content', []))}
-                <!-- <span
-                  on:click={e => {
-                    const targetEl = document.querySelector('#link-' + footnote._key)
-                    // console.log(targetEl)
-                    if (targetEl) {
-                      // console.log(targetEl.offsetTop)
-                      window.scrollTo({
-                        top: targetEl.offsetTop - 100,
-                        left: 0,
-                        behavior: 'smooth',
-                      })
-                    }
-                  }}
-                  class="back-link">(BACK)</span> -->
               </li>
             {/each}
           </ol>
