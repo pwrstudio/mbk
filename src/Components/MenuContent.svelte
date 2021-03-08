@@ -158,8 +158,9 @@
     }
 
     .image {
-      width: 100%;
+      max-width: 100%;
       mix-blend-mode: multiply;
+      max-height: 260px;
     }
 
     .news-item {
