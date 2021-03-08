@@ -130,7 +130,7 @@
     flex-shrink: 1;
     overflow-y: scroll;
     font-size: $font_size_small;
-
+  
     .nav {
       background-color:$green;
       height: $margin * 1.5;

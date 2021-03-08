@@ -322,6 +322,8 @@
     margin: 0;
     list-style-type: none;
     width: 100%;
+    box-shadow: 0px -20px 20px $green;
+    z-index: 10;
   }
 
   :global(.bar-menu.hidden) {
