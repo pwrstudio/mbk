@@ -6,12 +6,11 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import { fade } from "svelte/transition"
   import { renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
+  import { goTo } from "../global"
   import flatMap from "lodash/flatMap"
-  import isArray from "lodash/isArray"
 
 
   // *** COMPONENTS
@@ -90,14 +89,10 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
-            window.location.replace(
-              "#" + get($currentArticles[index + 1], "slug.current", null)
-            )
+            goTo(get($currentArticles[index + 1], "slug.current", null))
           }}
           on:touchstart|preventDefault={e => {
-            window.location.replace(
-              "#" + get($currentArticles[index + 1], "slug.current", null)
-            )
+            goTo(get($currentArticles[index + 1], "slug.current", null))
           }}
         >
           <h2 class="title next">
