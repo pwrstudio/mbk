@@ -239,7 +239,8 @@
     }
 
     :global(p) {
-      font-size: $font_size_small;
+      font-size: 18px;
+      line-height: 20px;
     }
 
     ol {
