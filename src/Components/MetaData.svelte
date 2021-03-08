@@ -71,9 +71,10 @@
   <meta property="description" content={description} />
   <meta property="og:description" content={description} />
   <meta property="twitter:description" content={description} />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta property="image" content={image} />
   <meta property="og:image" content={image} />
+  <meta property="og:type" content="website" />
   <meta property="twitter:image" content={image} />
-  <!-- VIEWPORT -->
-  <meta property="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta property="og:site_name" content="MAGASIN FOR BYGNINGSKUNST OG KULTUR" />
 </svelte:head>
