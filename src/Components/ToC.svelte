@@ -49,7 +49,7 @@
     style="height: {ih + 'px'};"
   >
     <ul
-      class="bar-menu"
+      class="bar-menu t-o-c"
       use:links
     >
       <li
