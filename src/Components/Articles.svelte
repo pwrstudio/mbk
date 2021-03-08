@@ -12,7 +12,7 @@
   import get from "lodash/get"
   import flatMap from "lodash/flatMap"
   import isArray from "lodash/isArray"
-
+  import { goTo } from '../global'
 
   // *** COMPONENTS
   import MetaData from "./MetaData.svelte"
@@ -90,14 +90,16 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
-            window.location.replace(
-              "#" + get($currentArticles[index + 1], "slug.current", null)
-            )
+            goTo("#" + get($currentArticles[index + 1], "slug.current", null))
+            // window.location.replace(
+            //   "#" + get($currentArticles[index + 1], "slug.current", null)
+            // )
           }}
           on:touchstart|preventDefault={e => {
-            window.location.replace(
-              "#" + get($currentArticles[index + 1], "slug.current", null)
-            )
+            goTo("#" + get($currentArticles[index + 1], "slug.current", null))
+            // window.location.replace(
+            //   "#" + get($currentArticles[index + 1], "slug.current", null)
+            // )
           }}
         >
           <h2 class="title next">
