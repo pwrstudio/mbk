@@ -220,6 +220,7 @@
 
     :global(.swiper-slide) {
       height: auto;
+      user-select: none;
     }
 
     :global(.img-container) {
