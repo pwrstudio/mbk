@@ -246,6 +246,8 @@
   .footnotes {
     font-size: $font_size_small;
     padding-bottom: 4em;
+    width: 100%;
+    overflow: hidden;
     
     @include screen-size("phone") {
       padding-bottom: 0;
