@@ -17,7 +17,9 @@
       tableOfContents,
       menuItemActive,
       menuActive,
-      hash
+      hash,
+      currentArticleSlug,
+      currentIssueSlug
     } from "../stores.js"
 
   // *** VARIABLES
@@ -86,8 +88,7 @@
         <li
           class="bar-menu-item title link"
           class:active={$hash === get(article, 'slug.current', '')}
-          on:click={e => {goTo(get(article, 'slug.current', ''))}}
-          on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+          on:click={e => navigate(get(article, 'slug.current', ''))}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
@@ -108,8 +109,10 @@
           <h1
             class="title articleNumber"
             class:active={$hash === get(article, 'slug.current', '')}
-            on:click={e => {goTo(get(article, 'slug.current', ''))}}
-            on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
+            on:click={e => {
+                navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
+              }
+            }
           >
             <span>{index + 1}</span>
           </h1>
@@ -127,12 +130,14 @@
         <ul class="bullets">
           {#each $tableOfContents as article, index}
             <li
+              class="bullet"
               class:dots={(!show[index] && index === 1) || (!show[index] && index === show.length - 2)}
               class:hidden={!show[index]}
-              class:active={$hash === get(article, 'slug.current', '')}
-              on:click={e => {goTo(get(article, 'slug.current', ''))}}
-              on:touchstart={e => {goTo(get(article, 'slug.current', ''))}}
-              class="bullet">
+              class:active={$currentArticleSlug === get(article, 'slug.current', '')}
+              on:click={e => {
+                  navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
+                }
+              }>
               {(!show[index] && index === 1) || (!show[index] && index === show.length - 2) ? '...' : index + 1 }
             </li>
           {/each}

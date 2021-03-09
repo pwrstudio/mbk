@@ -9,6 +9,9 @@ export const tableOfContents = writable(null)
 export const tableOfContentsActive = writable(false)
 export const hash = writable(false)
 
+export const currentIssueSlug = writable(false)
+export const currentArticleSlug = writable(false)
+
 export const currentArticles = writable([])
 export const currentPost = writable(false)
 

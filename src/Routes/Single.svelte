@@ -12,42 +12,44 @@
   import get from "lodash/get"
 
   // STORES
-  import { tableOfContents, currentPost, currentArticles, hash } from "../stores.js"
+  import { tableOfContents, currentPost, currentArticleSlug, currentIssueSlug, currentArticles, hash } from "../stores.js"
 
   // *** PROPS
-  export let slug = ""
-
-  // *** IMPORTS
+  export let params = false
 
   // *** COMPONENTS
   import Articles from "../Components/Articles.svelte"
   import Menu from "../Components/Menu.svelte"
   import ToC from "../Components/ToC.svelte"
-
-  // *** PROP
-  export let location
-
-  let vw = window.innerWidth
+import { document } from "lodash/_freeGlobal";
 
   // ** CONSTANTS
-  const query =
-    "*[slug.current == $slug]{..., tableOfContents[]->{title, slug}}[0]" // add article info for ToC
-  const articlesQuery = "*[slug.current == $slug]{tableOfContents[]->{...}}[0]"
-  const params = { slug }
-  // const post = loadData(query, params)
-  const postData = loadData(query, params)
-  const articlesData = loadData(articlesQuery, params)
+  const query = "*[slug.current == $slug]{..., tableOfContents[]->{...}}[0]"
 
-  postData.then(post => {
-    $currentPost = post
-    $tableOfContents = post.tableOfContents
-  })
-
-  articlesData.then(articles => {
-    $currentArticles = articles.tableOfContents
-  })
-
+  // VARIABLES
+  let vw = window.innerWidth
   let timer = null
+  let issue = false
+  let article = false
+
+  $: {
+    // ___ Split the url parameter into variables
+    const args = get(params, "[*]", "").split("/")
+    // __ first part is issue...
+    issue = args[0]
+    currentIssueSlug.set(issue)
+    console.log("__ ISSUE:", issue)
+    // ... second part is article
+    article = args[1]
+    currentArticleSlug.set(article)
+    console.log("__ ARTICLE:", article)
+    // Scroll to article on change
+    let targetEl = document.querySelector('#' + article)
+    console.log('targetEl', targetEl)
+    if(targetEl) {
+      targetEl.scrollIntoView({behavior: "smooth"});
+    }
+  }
 
   const handleScroll = () => {
     console.log('handle scroll')
@@ -65,8 +67,15 @@
   }
 
   onMount(async () => {
-    const windowHash = get(window.location, 'hash', false)
-    
+    let postData = await loadData(query, { slug: issue })
+    // console.log('postData', postData)
+    currentPost.set(postData)
+    currentArticles.set(postData.tableOfContents)
+    tableOfContents.set(postData.tableOfContents)
+
+    const windowHash = '#' + article
+    // console.log('windowHash', windowHash)
+  
     if (windowHash) {
       console.log('HASH')
       try {
@@ -77,9 +86,14 @@
   
         if (isArticle) {
           console.log('is article', el.offsetTop)
-          goTo('')
+          // goTo('')
           await tick()
-          goTo(windowHash)
+          // goTo(windowHash)
+          let targetEl = document.querySelector('#' + article)
+          console.log('targetEl', targetEl)
+          if(targetEl) {
+            targetEl.scrollIntoView({behavior: "smooth"});
+          }
         }
       } catch (error) {
         console.error(error)
@@ -88,13 +102,12 @@
       try {
         const result = await articlesData
         if(get(result, 'tableOfContents[0].slug.current', false)) {
-          goTo(result.tableOfContents[0].slug.current)
+          navigate('/' + $currentIssueSlug + '/' + result.tableOfContents[0].slug.current)
         }
       } catch (error) {
         console.error(error)
       }
     }
-
   })
 </script>
 

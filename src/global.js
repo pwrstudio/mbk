@@ -1,5 +1,13 @@
 import { format, getYear } from "date-fns";
-import { menuActive, tableOfContentsActive, hash, tableOfContentsActiveHash } from "./stores.js"
+import { navigate } from "svelte-routing"
+import { 
+  menuActive, 
+  tableOfContentsActive, 
+  hash,
+  currentIssueSlug,
+  currentArticleSlug, 
+  tableOfContentsActiveHash 
+} from "./stores.js"
 
 export const formattedDate = (start, end) => {
     if (!start) {
@@ -30,8 +38,13 @@ export const goTo = (newHash) => {
   menuActive.set(false)
   tableOfContentsActive.set(false)
   hash.set(newHash.replace('#', ''))
-  console.log(newHash)
-  window.location.hash = newHash
+
+  currentArticleSlug.set(newHash)
+
+  console.log('Xxxx', currentIssueSlug.subscribe())
+  // console.log($currentIssueSlug + '/' + $currentArticleSlug)
+  // navigate($currentIssueSlug + '/' + $currentArticleSlug)
+  // window.location.hash = newHash
 }
 
 // MIT Licensed

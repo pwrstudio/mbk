@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+  import { navigate } from "svelte-routing"
   import { renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
@@ -22,7 +23,7 @@
   import "swiper/swiper-bundle.css"
 
   // *** STORES
-  import { currentPost, currentArticles, menuActive } from "../stores.js"
+  import { currentPost, currentArticles, menuActive, currentArticleSlug, currentIssueSlug } from "../stores.js"
 
   // Extract the footnotes from the currently active article, to list at bottom
   const extractFootnotes = mainContent => {
@@ -33,11 +34,7 @@
     return footnotes
   }
 
-  const closeMenu = () => {
-    if ($menuActive) {
-      menuActive.set(false)
-    }
-  }
+  const closeMenu = () => menuActive.set($menuActive ? false : true)
 </script>
 
 <!-- METADATA -->
@@ -68,6 +65,7 @@
       <!-- FOOTNOTES -->
       {#if get(article, "content.content", false)}
         <div class="footnotes">
+          <div class='footnotes-header'>NOTER</div>
           <ol>
             {#each extractFootnotes(article.content.content) as footnote}
               <li id={'note-' + footnote._key}>
@@ -89,10 +87,8 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
-            goTo(get($currentArticles[index + 1], "slug.current", null))
-          }}
-          on:touchstart|preventDefault={e => {
-            goTo(get($currentArticles[index + 1], "slug.current", null))
+            navigate('/' + $currentIssueSlug + '/' + get($currentArticles[index + 1], "slug.current", null))
+            // goTo(get($currentArticles[index + 1], "slug.current", null))
           }}
         >
           <h2 class="title next">
@@ -213,7 +209,7 @@
 
   .footnotes {
     font-size: $font_size_small;
-    padding-bottom: 200px;
+    padding-bottom: 4em;
     
     @include screen-size("phone") {
       padding-bottom: 0;
@@ -232,5 +228,9 @@
         }
       }
     }
+  }
+
+  .footnotes-header {
+    margin-left: 1em;
   }
 </style>

@@ -27,7 +27,9 @@
   <!-- LANDING -->
   <Route path="/" component={Landing} />
   <!-- SINGLE -->
-  <Route path="/:slug" component={Single} />
+  <Route path="/*" let:params>
+    <Single {params} />
+  </Route>
   <!-- 404 -->
   <Route component={Error404} />
 </Router>
