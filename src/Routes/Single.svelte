@@ -52,24 +52,30 @@
     console.log("__ ARTICLE:", article)
     // Scroll to article on change
     let targetEl = document.querySelector('#' + article)
-    console.log('targetEl', targetEl)
+    // console.log('targetEl', targetEl)
     if(targetEl) {
       targetEl.scrollIntoView({behavior: "smooth"});
+      // Scroll text column of new article to top
+      let textColumn = targetEl.querySelector('.col')
+      console.log('textColumn', textColumn)
+      if(textColumn) {
+        // !!! Not sure why the below is not working ...
+        // textColumn.scrollTo(0,0)
+      }
     }
-    // !!! Close menu / ToC
+    
+    // Close menu / ToC
     menuActive.set(false)
     tableOfContentsActive.set(false)
   }
 
   const handleScroll = () => {
-    console.log('handle scroll')
+    // console.log('handle scroll')
     if (vw > 768) {
       clearTimeout(timer)
-
       if(document.body.classList.contains('pointer-none')) {
         document.body.classList.add('pointer-none')
       }
-
       timer = setTimeout(() => {
         document.body.classList.remove('pointer-none')
       }, 200)
