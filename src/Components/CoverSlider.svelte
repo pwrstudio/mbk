@@ -44,7 +44,7 @@
     }
 
     if (vw < 400) {
-      coverScale = vw.map(120, 400, 0, 0.8)
+      coverScale = vw.map(80, 440, 0, 0.8)
     }
   }
 </script>
