@@ -59,7 +59,7 @@
       let textColumn = targetEl.querySelector('.col')
 
       if(textColumn) {
-        textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
+        // textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
       }
 
       if (article !== previousArticle) {
