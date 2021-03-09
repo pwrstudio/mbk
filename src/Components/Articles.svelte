@@ -30,6 +30,7 @@
       mainContent.filter(c => c._type == "block").map(x => x.markDefs)
     )
     let footnotes = a.filter(x => x._type === "footnote")
+    console.log(footnotes.length)
     return footnotes
   }
 
@@ -75,7 +76,7 @@
 
       <!-- FOOTNOTES -->
       {#if get(article, "content.content", false) && extractFootnotes(article.content.content) }
-        <div class="footnotes">
+        <div class:hidden={extractFootnotes(article.content.content).length === 0} class="footnotes">
           <div class='footnotes-header'>NOTER</div>
           <ol>
             {#each extractFootnotes(article.content.content) as footnote}
@@ -248,6 +249,10 @@
     
     @include screen-size("phone") {
       padding-bottom: 0;
+    }
+
+    &.hidden {
+      display: none;
     }
 
     :global(p) {
