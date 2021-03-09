@@ -39,6 +39,12 @@
 
   :global(*) {
     @include hide-scroll;
+    &::selection {
+      background: rgba(230,230,230,1);
+    }
+    &::-moz-selection {
+      background: rgba(230,230,230,1);
+    }
   }
 
   :global(body) {
