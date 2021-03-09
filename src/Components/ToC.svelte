@@ -9,7 +9,6 @@
   import { links, navigate } from "svelte-routing"
   import { fade } from "svelte/transition"
   import get from "lodash/get"
-  import { goTo } from '../global'
 
   // *** STORES
   import {
