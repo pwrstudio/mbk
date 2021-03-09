@@ -21,7 +21,6 @@
   import Articles from "../Components/Articles.svelte"
   import Menu from "../Components/Menu.svelte"
   import ToC from "../Components/ToC.svelte"
-import { document } from "lodash/_freeGlobal";
 
   // ** CONSTANTS
   const query = "*[slug.current == $slug]{..., tableOfContents[]->{...}}[0]"
@@ -49,6 +48,7 @@ import { document } from "lodash/_freeGlobal";
     if(targetEl) {
       targetEl.scrollIntoView({behavior: "smooth"});
     }
+    // !!! TODO: close menu
   }
 
   const handleScroll = () => {
