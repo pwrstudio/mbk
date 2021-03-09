@@ -228,8 +228,7 @@
 
     .bullets {
       .bullet {
-        // margin-bottom: $title_letter_spacing;
-        margin-bottom: 5px;
+        margin-bottom: $margin_xs;
 
         &.hidden {
           display: none;

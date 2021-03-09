@@ -33,7 +33,9 @@
     return footnotes
   }
 
-  const closeMenu = () => menuActive.set($menuActive ? false : true)
+  const closeMenu = () => {
+    menuActive.set(false)
+  }
 </script>
 
 <!-- METADATA -->
@@ -56,6 +58,16 @@
         byline={get(article, "byline.content", [])}
         links={get(article, "links", [])}
       />
+
+      <div class="block full mobile">
+        {#if !get(article, "zoomableSlideshowLayout", false)}
+          <div class="col slideshow-mobile" class:slideshow={get(article, "slideshow", [])}>
+            {#if get(article, "slideshow", [])}
+              <Slideshow mobile id={'mob'+index} slides={get(article, "slideshow", [])} />
+            {/if}
+          </div>
+        {/if}
+      </div>
 
       <div class="block main">
         {@html renderBlockText(get(article, "content.content", []))}
@@ -107,7 +119,7 @@
     </div>
 
     {#if !get(article, "zoomableSlideshowLayout", false)}
-      <div class="col" class:slideshow={get(article, "slideshow", [])}>
+      <div class="col slideshow-regular" class:slideshow={get(article, "slideshow", [])}>
         {#if get(article, "slideshow", [])}
           <Slideshow id={index} slides={get(article, "slideshow", [])} />
         {/if}
@@ -118,6 +130,22 @@
 
 <style lang="scss">
   @import "../variables.scss";
+
+  .slideshow-mobile {
+    display: none;
+
+    @include screen-size("phone") {
+      display: block;
+    }
+  }
+
+  .slideshow-regular {
+    display: block;
+
+    @include screen-size("phone") {
+      display: none;
+    }
+  }
 
   .article {
     box-sizing: border-box;
@@ -168,6 +196,7 @@
 
           &.full {
             width: 100%;
+
           }
 
           &.main {

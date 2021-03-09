@@ -20,6 +20,7 @@
   export let slides = []
   export let zoomable = false
   export let id = 0
+  export let mobile = false
 
   // *** SWIPER VARS
   let swiperInstance = null
@@ -118,6 +119,7 @@
       el: "#custom-pagination-" + id,
       clickable: true
     }}
+    autoHeight={mobile}
     on:swiper={onSwiper}
     on:click={toggleZoom}
     on:touchstart={toggleZoom}
