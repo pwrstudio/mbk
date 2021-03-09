@@ -8,11 +8,19 @@
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
   import { onMount, tick } from "svelte"
-  import { goTo, elementReady } from '../global'
+  import { elementReady } from '../global'
   import get from "lodash/get"
 
   // STORES
-  import { tableOfContents, currentPost, currentArticleSlug, currentIssueSlug, currentArticles, hash } from "../stores.js"
+  import { 
+    tableOfContents,
+    currentPost,
+    currentArticleSlug,
+    currentIssueSlug,
+    currentArticles,
+    menuActive,
+    tableOfContentsActive 
+  } from "../stores.js"
 
   // *** PROPS
   export let params = false
@@ -48,7 +56,9 @@
     if(targetEl) {
       targetEl.scrollIntoView({behavior: "smooth"});
     }
-    // !!! TODO: close menu
+    // !!! Close menu / ToC
+    menuActive.set(false)
+    tableOfContentsActive.set(false)
   }
 
   const handleScroll = () => {
@@ -86,9 +96,7 @@
   
         if (isArticle) {
           console.log('is article', el.offsetTop)
-          // goTo('')
           await tick()
-          // goTo(windowHash)
           let targetEl = document.querySelector('#' + article)
           console.log('targetEl', targetEl)
           if(targetEl) {

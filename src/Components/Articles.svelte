@@ -12,7 +12,6 @@
   import get from "lodash/get"
   import flatMap from "lodash/flatMap"
   import isArray from "lodash/isArray"
-  import { goTo } from '../global'
 
   // *** COMPONENTS
   import MetaData from "./MetaData.svelte"
@@ -88,7 +87,6 @@
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
             navigate('/' + $currentIssueSlug + '/' + get($currentArticles[index + 1], "slug.current", null))
-            // goTo(get($currentArticles[index + 1], "slug.current", null))
           }}
         >
           <h2 class="title next">
