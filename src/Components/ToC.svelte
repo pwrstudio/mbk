@@ -132,7 +132,7 @@
             on:click={e => {
                 navigate('/')
               }
-            }>0</li>
+            }>⌂</li>
           {#each $tableOfContents as article, index}
             <li
               class="bullet"

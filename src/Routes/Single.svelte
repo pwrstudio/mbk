@@ -38,35 +38,39 @@
   let timer = null
   let issue = false
   let article = false
+  let previousArticle = null
 
   $: {
+
     // ___ Split the url parameter into variables
     const args = get(params, "[*]", "").split("/")
     // __ first part is issue...
     issue = args[0]
     currentIssueSlug.set(issue)
-    console.log("__ ISSUE:", issue)
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
-    console.log("__ ARTICLE:", article)
     // Scroll to article on change
     let targetEl = document.querySelector('#' + article)
-    // console.log('targetEl', targetEl)
-    if(targetEl) {
-      targetEl.scrollIntoView({behavior: "smooth"});
+
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
       // Scroll text column of new article to top
       let textColumn = targetEl.querySelector('.col')
-      console.log('textColumn', textColumn)
+
       if(textColumn) {
-        // !!! Not sure why the below is not working ...
-        // textColumn.scrollTo(0,0)
+        textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
       }
+
+      if (article !== previousArticle) {
+        // Close menu / ToC
+        menuActive.set(false)
+        tableOfContentsActive.set(false)
+      }
+
+      // Set the previous article to a variable so you can check if you need to hide the menu
+      previousArticle = article
     }
-    
-    // Close menu / ToC
-    menuActive.set(false)
-    tableOfContentsActive.set(false)
   }
 
   const handleScroll = () => {
@@ -144,10 +148,6 @@
 
 <style lang="scss">
   @import "../../variables.scss";
-
-  :global(*) {
-    // scroll-behavior: smooth;
-  }
 
   :global(.pointer-none) {
     pointer-events: none;
