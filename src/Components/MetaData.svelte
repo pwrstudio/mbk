@@ -17,7 +17,7 @@
   import { activeArticle } from "../stores.js"
 
   // *** CONSTANTS
-  const DEFAULT_DESCRIPTION = "default description test"
+  const DEFAULT_DESCRIPTION = "Magasin for Bygningskunst og Kultur er optaget af et arkitektonisk fagområde hvor sociale, ideologiske, politiske, historiske og æstetiske faktorer interagerer. Vi undersøger, hvordan bygningskunst og bygningskulturer både udspringer af og medskaber kulturer."
   const DEFAULT_IMAGE = ""
 
   $: {
@@ -25,8 +25,8 @@
   }
 
   // *** VARIABLES
-  let title = ""
-  let description = ""
+  let title = "MAGASIN FOR BYGNINGSKUNST OG KULTUR"
+  let description = "Magasin for Bygningskunst og Kultur er optaget af et arkitektonisk fagområde hvor sociale, ideologiske, politiske, historiske og æstetiske faktorer interagerer. Vi undersøger, hvordan bygningskunst og bygningskulturer både udspringer af og medskaber kulturer."
   let image = ""
 
   // console.dir(post)
