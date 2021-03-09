@@ -226,6 +226,7 @@
     :global(.img-container) {
       width: 100%;
       height: 100%;
+      max-height: calc(100vh - #{$margin * 2});
       display: flex;
       flex-flow: column nowrap;
       justify-content: space-between;
@@ -243,7 +244,8 @@
 
     :global(.slide-img) {
       max-width: 100%;
-      max-height: 100%;
+      max-height: calc(100% - #{$margin * 2});
+      padding-bottom: $margin_xs;
     }
 
     :global(.slide-img.contain) {
