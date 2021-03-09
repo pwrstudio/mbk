@@ -62,13 +62,20 @@
       </div>
 
       <!-- FOOTNOTES -->
-      {#if get(article, "content.content", false)}
+      {#if get(article, "content.content", false) && extractFootnotes(article.content.content) }
         <div class="footnotes">
           <div class='footnotes-header'>NOTER</div>
           <ol>
             {#each extractFootnotes(article.content.content) as footnote}
               <li id={'note-' + footnote._key}>
                 {@html renderBlockText(get(footnote, 'content.content', []))}
+                <span class='back-link' on:click={e => {
+                  let backLinkTarget = document.querySelector('#' + 'link-' + footnote._key)
+                  console.log('backLinkTarget', backLinkTarget)
+                  if(backLinkTarget) {
+                    backLinkTarget.scrollIntoView({behavior: "smooth"});
+                  }
+                }}>↩</span>
               </li>
             {/each}
           </ol>
@@ -135,6 +142,7 @@
       padding: $margin $margin / 4;
       height: 100%;
       overflow-y: scroll;
+      scroll-behavior: smooth;
 
       @include screen-size("phone") {
         width: 100%;
@@ -216,19 +224,27 @@
     :global(p) {
       font-size: 16px;
       line-height: 20px;
+      display: inline;
+      margin-bottom: 0;
     }
 
     ol {
       li {
         padding-left: 20px;
-        &:target {
-          background: $light_green;
-        }
+        margin-bottom: 10px;
+        // &:target {
+        //   background: $light_green;
+        // }
       }
     }
   }
 
   .footnotes-header {
     margin-left: 1em;
+  }
+
+  .back-link {
+    cursor: pointer;
+    font-size: 12px;
   }
 </style>

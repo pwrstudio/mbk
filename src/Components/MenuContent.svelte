@@ -71,9 +71,9 @@
         {#if index < content.length - 1}
           <div class="nav" on:click={() => {
             console.log('click')
-            window.location.replace(
-              "#" + get(content[index + 1], "slug.current", null)
-            )
+            // window.location.replace(
+            //   "#" + get(content[index + 1], "slug.current", null)
+            // )
           }
           }>
             <div class="graphic">
