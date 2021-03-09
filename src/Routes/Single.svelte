@@ -106,7 +106,7 @@
           let targetEl = document.querySelector('#' + article)
           console.log('targetEl', targetEl)
           if(targetEl) {
-            targetEl.scrollIntoView({behavior: "smooth"});
+            targetEl.scrollIntoView();
           }
         }
       } catch (error) {
@@ -146,7 +146,7 @@
   @import "../../variables.scss";
 
   :global(*) {
-    scroll-behavior: smooth;
+    // scroll-behavior: smooth;
   }
 
   :global(.pointer-none) {
