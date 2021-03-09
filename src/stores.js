@@ -16,10 +16,10 @@ export const currentArticles = writable([])
 export const currentPost = writable(false)
 
 // DERIVED
-export const activeArticle = derived([hash, currentArticles],
-  ([$hash, $currentArticles]) => {
+export const activeArticle = derived([currentArticleSlug, currentArticles],
+  ([$currentArticleSlug, $currentArticles]) => {
       return $currentArticles.find((article) => {
-        return article.slug.current === $hash
+        return article.slug.current === $currentArticleSlug
       })
     }
   )
