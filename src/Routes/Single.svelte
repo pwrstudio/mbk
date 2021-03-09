@@ -41,12 +41,12 @@
   let previousArticle = null
 
   $: {
-
     // ___ Split the url parameter into variables
     const args = get(params, "[*]", "").split("/")
     // __ first part is issue...
     issue = args[0]
     currentIssueSlug.set(issue)
+    console.log('$currentIssueSlug', $currentIssueSlug)
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
