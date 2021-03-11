@@ -23,4 +23,3 @@ export const activeArticle = derived([currentArticleSlug, currentArticles],
       })
     }
   )
-export const tableOfContentsActiveHash = derived(hash, $hash => { return `#${$hash}` })

@@ -41,6 +41,7 @@
   let previousArticle = null
 
   $: {
+    console.log('doing this now')
 
     // ___ Split the url parameter into variables
     const args = get(params, "[*]", "").split("/")
@@ -50,19 +51,22 @@
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
+
+    console.log(article)
     // Scroll to article on change
     let targetEl = document.querySelector('#' + article)
 
     if (targetEl) {
       targetEl.scrollIntoView({ behavior: "smooth" });
-      // Scroll text column of new article to top
-      let textColumn = targetEl.querySelector('.col')
-
-      if(textColumn) {
-        textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
-      }
 
       if (article !== previousArticle) {
+        // Scroll text column of new article to top
+        let textColumn = targetEl.querySelector('.col')
+
+        if (textColumn) {
+          textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
+        }
+
         // Close menu / ToC
         menuActive.set(false)
         tableOfContentsActive.set(false)
@@ -117,9 +121,11 @@
         console.error(error)
       }
     } else {
+      console.log('doing thissss')
       try {
         const result = await articlesData
         if(get(result, 'tableOfContents[0].slug.current', false)) {
+          console.log('nav')
           navigate('/' + $currentIssueSlug + '/' + result.tableOfContents[0].slug.current)
         }
       } catch (error) {

@@ -20,10 +20,6 @@
   const DEFAULT_DESCRIPTION = "Magasin for Bygningskunst og Kultur er optaget af et arkitektonisk fagområde hvor sociale, ideologiske, politiske, historiske og æstetiske faktorer interagerer. Vi undersøger, hvordan bygningskunst og bygningskulturer både udspringer af og medskaber kulturer."
   const DEFAULT_IMAGE = ""
 
-  $: {
-    console.log('MetaData Article:', $activeArticle)
-  }
-
   // *** VARIABLES
   let title = "MAGASIN FOR BYGNINGSKUNST OG KULTUR"
   let description = "Magasin for Bygningskunst og Kultur er optaget af et arkitektonisk fagområde hvor sociale, ideologiske, politiske, historiske og æstetiske faktorer interagerer. Vi undersøger, hvordan bygningskunst og bygningskulturer både udspringer af og medskaber kulturer."

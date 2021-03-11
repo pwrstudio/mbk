@@ -10,6 +10,8 @@
   import { fade } from "svelte/transition"
   import get from "lodash/get"
 
+  let inTransition = false
+
   // *** STORES
   import {
       tableOfContentsActive,
@@ -24,33 +26,18 @@
   // *** VARIABLES
   let vw = window.innerWidth
   let ih = window.innerHeight
-  let show = new Array()
-
-  $: {
-    if (!!$tableOfContents) {
-      show = $tableOfContents.map((item) => { return item.slug.current === $hash })
-      const range = 3
-
-      if (show.length > 7) {
-        const activeIndex = show.indexOf(true)
-        for (let i = activeIndex; i > activeIndex - range; i--) {
-          show[i] = true
-        }
-        for (let i = activeIndex; i < activeIndex + range; i++) {
-          show[i] = true
-        }
-      }
-
-      show[0] = true
-      show[show.length - 1] = true
-    }
-  }
 
   const toggleToC = () => {
+    console.log('TOGGLE')
+    inTransition = true
     tableOfContentsActive.set(!$tableOfContentsActive)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       menuActive.set(false)
     }
+
+    setTimeout(() => {
+      inTransition = false
+    }, 200)
   }
 
 </script>
@@ -65,6 +52,7 @@
   <div
     in:fade
     class="bar toc"
+    class:disabled={inTransition}
     class:open={$tableOfContentsActive}
     class:peek={!$menuItemActive && vw < 768}
     class:parentOpen={$menuActive}
@@ -77,6 +65,7 @@
       <li
         class="bar-menu-item title link"
         on:click={e => {
+            console.log('nav')
             navigate('/')
           }
         }
@@ -87,7 +76,10 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click={e => navigate(get(article, 'slug.current', ''))}
+          on:click|self={e => {
+            navigate(get(article, 'slug.current', ''))
+            }
+          }
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
@@ -109,6 +101,7 @@
             class="title articleNumber"
             class:active={$hash === get(article, 'slug.current', '')}
             on:click={e => {
+                console.log('nav')
                 navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
               }
             }
@@ -121,7 +114,9 @@
       <div
         class="bar-button"
       >
-        <h1 class="title indhold" on:click={toggleToC}>
+        <h1 class="title indhold"
+          on:click={toggleToC}
+        >
           <span>
             INDHOLD
           </span>
@@ -130,6 +125,7 @@
           <li
             class="bullet"
             on:click={e => {
+                console.log('nav')
                 navigate('/')
               }
             }>⌂</li>
@@ -138,6 +134,7 @@
               class="bullet"
               class:active={$currentArticleSlug === get(article, 'slug.current', '')}
               on:click={e => {
+                  console.log('nav')
                   navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
                 }
               }>
@@ -158,6 +155,11 @@
     padding-left: $margin / 2;
     background: $grey_solid;
     z-index: 999;
+    pointer-events: initial;
+
+    &.disabled {
+      pointer-events: none;
+    }
 
     @include screen-size("phone") {
       margin-left: unset;

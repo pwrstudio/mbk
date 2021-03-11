@@ -106,6 +106,7 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
+            console.log('nav')
             navigate('/' + $currentIssueSlug + '/' + get($currentArticles[index + 1], "slug.current", null))
           }}
         >
