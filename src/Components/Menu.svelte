@@ -327,6 +327,9 @@
   }
   :global(.bar-menu:not(.t-o-c)) {
     box-shadow: 0px -20px 20px $green;
+    @include screen-size("phone") {
+      box-shadow: unset;
+    }
   }
 
   :global(.bar-menu.hidden) {

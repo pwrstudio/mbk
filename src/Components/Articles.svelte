@@ -11,7 +11,7 @@
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
   import flatMap from "lodash/flatMap"
-  import isArray from "lodash/isArray"
+  // import isArray from "lodash/isArray"
 
   // *** COMPONENTS
   import MetaData from "./MetaData.svelte"
@@ -30,7 +30,7 @@
       mainContent.filter(c => c._type == "block").map(x => x.markDefs)
     )
     let footnotes = a.filter(x => x._type === "footnote")
-    console.log(footnotes.length)
+    // console.log(footnotes.length)
     return footnotes
   }
 
@@ -84,7 +84,7 @@
                 {@html renderBlockText(get(footnote, 'content.content', []))}
                 <span class='back-link' on:click={e => {
                   let backLinkTarget = document.querySelector('#' + 'link-' + footnote._key)
-                  console.log('backLinkTarget', backLinkTarget)
+                  // console.log('backLinkTarget', backLinkTarget)
                   if(backLinkTarget) {
                     backLinkTarget.scrollIntoView({behavior: "smooth"});
                   }
@@ -247,6 +247,8 @@
   .footnotes {
     font-size: $font_size_small;
     padding-bottom: 4em;
+    width: 100%;
+    overflow: hidden;
     
     @include screen-size("phone") {
       padding-bottom: 0;

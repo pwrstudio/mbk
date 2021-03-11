@@ -41,13 +41,12 @@
   let previousArticle = null
 
   $: {
-    console.log('doing this now')
-
     // ___ Split the url parameter into variables
     const args = get(params, "[*]", "").split("/")
     // __ first part is issue...
     issue = args[0]
     currentIssueSlug.set(issue)
+    console.log('$currentIssueSlug', $currentIssueSlug)
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
@@ -58,6 +57,12 @@
 
     if (targetEl) {
       targetEl.scrollIntoView({ behavior: "smooth" });
+      // Scroll text column of new article to top
+      let textColumn = targetEl.querySelector('.col')
+
+      if(textColumn) {
+        // textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
+      }
 
       if (article !== previousArticle) {
         // Scroll text column of new article to top

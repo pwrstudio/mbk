@@ -76,10 +76,7 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click|self={e => {
-            navigate(get(article, 'slug.current', ''))
-            }
-          }
+          on:click={e => navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
@@ -89,7 +86,7 @@
     {#if vw < 768}
       <div
         class="bar-button"
-        on:touchstart={toggleToC}
+        on:click={toggleToC}
       >
         <h1 class="title indhold">
           <span>

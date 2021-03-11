@@ -8,6 +8,9 @@
   // *** IMPORTS
   import SwiperCore, { Navigation, Pagination } from "swiper"
   import { Swiper, SwiperSlide } from "swiper/svelte"
+  import get from "lodash/get"
+
+  // *** STYLES
   import "swiper/swiper-bundle.css"
   import "swiper/components/navigation/navigation.css"
   import "swiper/components/pagination/pagination.min.css"
@@ -148,7 +151,7 @@
         spaceBetween={10.5}
         on:swiper={onSwiper}
       >
-        {#each issues as issue}
+        {#each issues.filter(i => get(i, 'tableOfContents', []).length > 0) as issue}
           <SwiperSlide>
             <!-- {#if vw > 400} -->
             <Cover {issue} scale={coverScale} />
