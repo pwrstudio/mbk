@@ -97,7 +97,7 @@
     {#if vw < 768}
       <div
         class="bar-button"
-        on:touchstart={toggleToC}
+        on:click={toggleToC}
       >
         <h1 class="title indhold">
           <span>
