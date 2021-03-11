@@ -6,11 +6,14 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
+  import { onMount } from "svelte"
   import { Router, Route, Link } from "svelte-routing"
   // COMPONENTS
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
+
+  // import smoothscroll from 'smoothscroll-polyfill'
 
   let ih
 
@@ -19,6 +22,11 @@
     document.documentElement.style.height = ih + 'px'
     document.body.style.height = ih + 'px'
   }
+
+  onMount(() => {
+    // kick off the polyfill!
+    // smoothscroll.polyfill();
+  })
 </script>
 
 <svelte:window bind:innerHeight={ih} />

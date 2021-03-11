@@ -57,24 +57,22 @@
 
     if (targetEl) {
       targetEl.scrollIntoView({ behavior: "smooth" });
-      // Scroll text column of new article to top
-      let textColumn = targetEl.querySelector('.col')
-
-      if(textColumn) {
-        // textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
-      }
 
       if (article !== previousArticle) {
-        // Scroll text column of new article to top
-        let textColumn = targetEl.querySelector('.col')
-
-        if (textColumn) {
-          textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
-        }
-
         // Close menu / ToC
         menuActive.set(false)
         tableOfContentsActive.set(false)
+
+        const scrollBack = async () => {
+          await tick()
+  
+          const textColumn = targetEl.querySelector('.col')
+          if (textColumn) {
+            textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
+          }
+        }
+
+        setTimeout(scrollBack, 900)
       }
 
       // Set the previous article to a variable so you can check if you need to hide the menu
