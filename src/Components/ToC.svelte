@@ -32,7 +32,9 @@
 
   const goToArticle = article => {
     scrollParent.scrollTop = 0
-    navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
+    const destination = '/' + $currentIssueSlug + '/' + get(article, 'slug.current', '')
+    console.log(destination)
+    navigate(destination)
   }
 
   const toggleToC = () => {
@@ -84,7 +86,7 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click={e => goToArticle(e, article) }
+          on:click={e => goToArticle(article) }
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
