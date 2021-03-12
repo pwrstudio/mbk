@@ -120,7 +120,9 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click={e => goToArticle(article) }
+          on:click={e => {
+            goToArticle(article)
+          }}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
@@ -177,7 +179,6 @@
               class:dots={(!show[index] && index === 1) || (!show[index] && index === show.length - 2)}
               class:hidden={!show[index] && index !== 0 && index !== show.length - 1}
               on:click={e => {
-                  console.log('nav')
                   navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
                 }
               }>
