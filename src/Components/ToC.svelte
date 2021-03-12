@@ -30,6 +30,11 @@
   // BINDINGS
   let scrollParent = null
   let show = new Array()
+  let peek = false
+
+  $: {
+    peek = !$menuItemActive && vw < 768
+  }
 
   $: {
     if (!!$tableOfContents) {
@@ -64,8 +69,15 @@
     }
   }
 
+  $: {
+    if ((!$tableOfContentsActive && scrollParent) || (scrollParent && peek)) {
+      console.log('reset')
+      scrollParent.scrollTop = 0
+    }
+  }
+
   const goToArticle = article => {
-    scrollParent.scrollTop = 0
+    // scrollParent.scrollTop = 0
     const destination = '/' + $currentIssueSlug + '/' + get(article, 'slug.current', '')
     console.log(destination)
     navigate(destination)
@@ -82,7 +94,6 @@
       inTransition = false
     }, 200)
   }
-
 </script>
 
 <!--                 -->
@@ -98,7 +109,7 @@
     class="bar toc"
     class:disabled={inTransition}
     class:open={$tableOfContentsActive}
-    class:peek={!$menuItemActive && vw < 768}
+    class:peek={peek}
     class:parentOpen={$menuActive}
     style="height: {ih + 'px'};"
   >
@@ -200,6 +211,7 @@
     background: $grey_solid;
     z-index: 999;
     pointer-events: initial;
+    overflow: hidden;
 
     &.disabled {
       pointer-events: none;
@@ -236,6 +248,7 @@
     }
 
     &.open {
+      overflow: scroll;
       transform: translateX(0);
 
       @include screen-size("phone") {
