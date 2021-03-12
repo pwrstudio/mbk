@@ -29,6 +29,40 @@
 
   // BINDINGS
   let scrollParent = null
+  let show = new Array()
+
+  $: {
+    if (!!$tableOfContents) {
+      const max = 5
+      let placed = 0
+
+      // Make the current active index true
+      show = $tableOfContents.map((item) => { return item.slug.current === $currentArticleSlug })
+      placed++
+
+      let activeIndex = show.indexOf(true)
+
+      let direction = 1
+
+      while (placed < max) {
+        if (show[activeIndex + direction] === undefined) {
+          direction = -1 * direction
+        }
+
+        let offset = 1
+        while (show[activeIndex + (offset * direction)] === true) {
+          offset++
+        }
+
+        if (show[activeIndex + (offset * direction)] === false) {
+          show[activeIndex + (offset * direction)] = true
+          placed++
+        }
+
+        direction = -1 * direction
+      }
+    }
+  }
 
   const goToArticle = article => {
     scrollParent.scrollTop = 0
@@ -140,12 +174,14 @@
             <li
               class="bullet"
               class:active={$currentArticleSlug === get(article, 'slug.current', '')}
+              class:dots={(!show[index] && index === 1) || (!show[index] && index === show.length - 2)}
+              class:hidden={!show[index] && index !== 0 && index !== show.length - 1}
               on:click={e => {
                   console.log('nav')
                   navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
                 }
               }>
-              { index + 1 }
+              {((!show[index] && index === 1) || (!show[index] && index === show.length - 2)) ? '...' : index+1}
             </li>
           {/each}
         </ul>
@@ -237,7 +273,7 @@
 
     .bullets {
       .bullet {
-        margin-bottom: $margin_xs;
+        margin-bottom: $title_letter_spacing;
 
         &.hidden {
           display: none;
