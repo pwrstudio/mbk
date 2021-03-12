@@ -84,7 +84,9 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click={e => goToArticle(e, article) }
+          on:click={e => {
+            navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
+          }}
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>
