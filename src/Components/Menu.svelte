@@ -187,7 +187,6 @@
       id="news"
       class:active={$menuItemActive === "news"}
       on:click={updateMenuItem}
-      on:touchstart={updateMenuItem}
     >
       På Instituttet
     </li>
@@ -196,7 +195,6 @@
       id="about"
       class:active={$menuItemActive === "about"}
       on:click={updateMenuItem}
-      on:touchstart={updateMenuItem}
     >
       Om magasinet
     </li>
@@ -205,7 +203,6 @@
       id="colophon"
       class:active={$menuItemActive === "colophon"}
       on:click={updateMenuItem}
-      on:touchstart={updateMenuItem}
     >
       Kolofon
     </li>
@@ -221,7 +218,7 @@
       <!-- ACTUAL CONTENT -->
       <MenuContent name={$menuItemActive} content={$menuContent} />
       <!-- TITLE -->
-      <div on:touchstart|preventDefault={() => {menuItemActive.set(null)}} class="ticker">
+      <div on:click|preventDefault={() => {menuItemActive.set(null)}} class="ticker">
         <div class="title">
           {title}
         </div>
@@ -230,7 +227,7 @@
     <!-- BUTTON -->
     <div
       class="bar-button"
-      on:touchstart|preventDefault={toggleMenu}
+      on:click|preventDefault={toggleMenu}
     >
       <h1 class="title hamburger">
         <div class="hamburger-cross-icon" class:open={$menuActive}>

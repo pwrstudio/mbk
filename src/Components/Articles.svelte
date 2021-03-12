@@ -43,7 +43,7 @@
 <MetaData />
 
 {#each $currentArticles as article, index}
-  <div on:touchstart={closeMenu} class="article" id={article.slug.current}>
+  <div on:click={closeMenu} class="article" id={article.slug.current}>
     <div
       class="col"
       class:zoomableSlideshowLayout={get(

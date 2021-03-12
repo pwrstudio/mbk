@@ -52,7 +52,7 @@
   </div>
 
   {#if vw < 768 && $menuActive}
-    <div class="pseudo" on:touchstart|preventDefault={closeMenu} />
+    <div class="pseudo" on:click|preventDefault={closeMenu} />
   {/if}
 
   <div class="landing" use:links>

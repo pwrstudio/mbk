@@ -122,7 +122,6 @@
     autoHeight={mobile}
     on:swiper={onSwiper}
     on:click={toggleZoom}
-    on:touchstart={toggleZoom}
     on:slideChange={() => { zoomed = false }}
   >
     {#each slides as slide}
@@ -170,7 +169,6 @@
         <span
           class="button"
           on:click={toggleZoomButton}
-          on:touchstart={toggleZoomButton}
         >
           {`${zoomLevel * 100}%`}[±]
         </span>
