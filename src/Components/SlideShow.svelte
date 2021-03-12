@@ -228,9 +228,10 @@
     :global(.img-container) {
       width: 100%;
       height: 100%;
-      max-height: calc(100vh - #{$margin * 2});
+      max-height: calc(100vh - #{$margin * 2.5});
       display: flex;
       flex-flow: column nowrap;
+      align-items: flex-start;
       justify-content: space-between;
 
       @include screen-size("phone") {
@@ -285,8 +286,9 @@
     }
 
     .caption {
-      // position: absolute;
       bottom: 0;
+      bottom: 0;
+      margin-right: 40px;
       :global(p) {
         font-size: 16px;  
         line-height: 20px;

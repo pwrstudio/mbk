@@ -324,7 +324,9 @@
     list-style-type: none;
     width: 100%;
     z-index: 10;
+    padding-bottom: 42px;
   }
+
   :global(.bar-menu:not(.t-o-c)) {
     box-shadow: 0px -20px 20px $green;
     @include screen-size("phone") {

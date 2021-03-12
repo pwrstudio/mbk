@@ -57,7 +57,8 @@
         title={get($currentPost, "title", "")}
         articleTitle={get(article, "title", "")}
         byline={get(article, "byline.content", [])}
-        links={get(article, "links", [])}
+        articleSlug={get(article, "slug.current", "")}
+        issueSlug={get($currentPost, "slug.current", "")}
       />
 
       <div class="block full mobile">
