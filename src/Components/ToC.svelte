@@ -27,8 +27,15 @@
   let vw = window.innerWidth
   let ih = window.innerHeight
 
+  // BINDINGS
+  let scrollParent = null
+
+  const goToArticle = article => {
+    scrollParent.scrollTop = 0
+    navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
+  }
+
   const toggleToC = () => {
-    console.log('TOGGLE')
     inTransition = true
     tableOfContentsActive.set(!$tableOfContentsActive)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
@@ -51,6 +58,7 @@
 {#if $tableOfContents}
   <div
     in:fade
+    bind:this={scrollParent}
     class="bar toc"
     class:disabled={inTransition}
     class:open={$tableOfContentsActive}
@@ -76,7 +84,7 @@
         <li
           class="bar-menu-item title link"
           class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-          on:click={e => navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))}
+          on:click={e => goToArticle(e, article) }
         >
           {`${index + 1}. `} {get(article, 'title', '')}
         </li>

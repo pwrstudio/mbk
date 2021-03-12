@@ -57,7 +57,7 @@
         if (currentData.title) {
           title = currentData.title
         } else {
-          title = 'Info'
+          title = 'KORT NYT'
         }
       }
     }
