@@ -72,7 +72,7 @@
   $: {
     if ((!$tableOfContentsActive && scrollParent) || (scrollParent && peek)) {
       console.log('reset')
-      scrollParent.scrollTop = 0
+      // scrollParent.scrollTop = 0
     }
   }
 
