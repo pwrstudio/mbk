@@ -113,14 +113,31 @@ import { navigator } from "lodash/_freeGlobal";
     padding-bottom: $margin_xs;
     display: flex;
     align-items: flex-end;
+
+    @include screen-size("small") {
+      flex-direction: column;
+    }
   
     .text {
       flex-grow: 1;
       margin-right: $margin;
+
+      @include screen-size("small") {
+        margin-right: 0;
+      }
     }
 
     .social {
       white-space: nowrap;
+
+      @include screen-size("small") {
+        :global(a) {
+          margin-left: 5px;
+        }  
+        :global(svg) {
+          height: 1.4em !important;
+        }      
+      }
     }
 
     :global(p) {
