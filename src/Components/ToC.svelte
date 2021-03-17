@@ -8,7 +8,9 @@
   // *** IMPORTS
   import { links, navigate } from "svelte-routing"
   import { fade } from "svelte/transition"
+  import { tick } from "svelte"
   import get from "lodash/get"
+  import { scrollBack } from "../global"
 
   let inTransition = false
 
@@ -76,10 +78,12 @@
     }
   }
 
-  const goToArticle = article => {
-    // scrollParent.scrollTop = 0
+  const goToArticle = async article => {
     const destination = '/' + $currentIssueSlug + '/' + get(article, 'slug.current', '')
-    console.log(destination)
+
+    scrollBack(scrollParent)
+    await tick()
+    // console.log(destination)
     navigate(destination)
   }
 

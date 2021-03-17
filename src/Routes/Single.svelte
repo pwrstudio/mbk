@@ -8,7 +8,7 @@
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
   import { onMount, tick } from "svelte"
-  import { elementReady } from '../global'
+  import { elementReady, scrollBack } from '../global'
   import get from "lodash/get"
 
   // STORES
@@ -62,17 +62,9 @@
         // Close menu / ToC
         menuActive.set(false)
         tableOfContentsActive.set(false)
+        const target = targetEl.querySelector('.col')
 
-        const scrollBack = async () => {
-          await tick()
-  
-          const textColumn = targetEl.querySelector('.col')
-          if (textColumn) {
-            textColumn.scrollTop = 0 // scrollTo(0,0) is a function that only works on the window.
-          }
-        }
-
-        setTimeout(scrollBack, 900)
+        scrollBack(target, 900)
       }
 
       // Set the previous article to a variable so you can check if you need to hide the menu

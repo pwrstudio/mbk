@@ -1,4 +1,5 @@
 import { format, getYear } from "date-fns";
+import { tick } from "svelte"
 // import { navigate } from "svelte-routing"
 // import { 
 //   menuActive, 
@@ -73,5 +74,26 @@ export function elementReady (selector) {
         subtree: true
       });
   });
+}
+
+/**
+ * 
+ * @param {DOMElement} target 
+ * @param {Number} delay 
+ */
+export async function scrollBack (target, delay) {
+  if (delay) {
+    await tick()
+    setTimeout(() => {    
+      if (target) {
+        target.scrollTop = 0
+      }
+    }, delay)
+  } else {
+    if (target) {
+      target.scrollTop = 0
+      await true
+    }
+  }
 }
 
