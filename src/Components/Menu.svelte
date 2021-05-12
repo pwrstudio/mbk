@@ -14,6 +14,7 @@
 
   // *** COMPONENTS
   import MenuContent from "./MenuContent.svelte"
+  import MailingListForm from "./MailingListForm.svelte"
 
   // *** STORES
   import {
@@ -21,6 +22,7 @@
     menuItemActive,
     menuContent,
     tableOfContentsActive,
+    newsExtended,
   } from "../stores.js"
 
   // *** CONSTANTS
@@ -37,7 +39,7 @@
   export let landing = false
 
   // *** VARIABLES
-  let title = ''
+  let title = ""
   let pvw = 0
   let vw = window.innerWidth
   let ih = window.innerHeight
@@ -46,7 +48,7 @@
     if (landing) {
       if (vw > 768 && !$menuActive) {
         menuActive.set(true)
-        menuItemActive.set('news')
+        menuItemActive.set("news")
       }
     }
 
@@ -57,7 +59,7 @@
         if (currentData.title) {
           title = currentData.title
         } else {
-          title = 'KORT NYT'
+          title = "KORT NYT"
         }
       }
     }
@@ -66,14 +68,14 @@
   const toggleMenu = () => {
     console.log("TOGGLE")
     menuActive.set(!$menuActive)
-    
+
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       tableOfContentsActive.set(false)
     }
 
     if ($menuActive && vw >= 768) {
       if (!$menuItemActive) {
-        menuItemActive.set('news')
+        menuItemActive.set("news")
       }
     }
 
@@ -101,7 +103,7 @@
     $menuContent = data[e.currentTarget.id]
   }
 
-  afterUpdate (() => {
+  afterUpdate(() => {
     if (pvw < 768 && vw >= 768) {
       menuActive.set(true)
     }
@@ -140,20 +142,17 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window
-  bind:innerWidth={vw}
-  bind:innerHeight={ih}
-/>
+<svelte:window bind:innerWidth={vw} bind:innerHeight={ih} />
 
 <div
   class="bar"
   class:open={$menuActive}
   class:peek={!$menuItemActive && vw < 768}
   class:single={!landing}
+  class:extended={$newsExtended}
   style="height: {ih + 'px'};"
   use:links
-  >
-
+>
   <!--              -->
   <!-- DESKTOP MENU -->
   <!--              -->
@@ -176,37 +175,42 @@
     </div>
   {/if}
 
-
   <!--        -->
   <!-- SHARED -->
   <!--        -->
 
-  <ul class="bar-menu" class:hidden={$menuItemActive !== null && vw <= 768}>
-    <li
-      class="bar-menu-item title"
-      id="news"
-      class:active={$menuItemActive === "news"}
-      on:click={updateMenuItem}
-    >
-      På Instituttet
-    </li>
-    <li
-      class="bar-menu-item title"
-      id="about"
-      class:active={$menuItemActive === "about"}
-      on:click={updateMenuItem}
-    >
-      Om magasinet
-    </li>
-    <li
-      class="bar-menu-item title"
-      id="colophon"
-      class:active={$menuItemActive === "colophon"}
-      on:click={updateMenuItem}
-    >
-      Kolofon
-    </li>
-  </ul>
+  {#if !$newsExtended}
+    <ul class="bar-menu" class:hidden={$menuItemActive !== null && vw <= 768}>
+      <li
+        class="bar-menu-item title"
+        id="news"
+        class:active={$menuItemActive === "news"}
+        on:click={updateMenuItem}
+      >
+        På Instituttet
+      </li>
+      <li
+        class="bar-menu-item title"
+        id="about"
+        class:active={$menuItemActive === "about"}
+        on:click={updateMenuItem}
+      >
+        Om magasinet
+      </li>
+      <li
+        class="bar-menu-item title"
+        id="colophon"
+        class:active={$menuItemActive === "colophon"}
+        on:click={updateMenuItem}
+      >
+        Kolofon
+      </li>
+    </ul>
+
+    <div class="newsletter-signup">
+      <MailingListForm />
+    </div>
+  {/if}
 
   <!--             -->
   <!-- MOBILE MENU -->
@@ -218,17 +222,19 @@
       <!-- ACTUAL CONTENT -->
       <MenuContent name={$menuItemActive} content={$menuContent} />
       <!-- TITLE -->
-      <div on:click|preventDefault={() => {menuItemActive.set(null)}} class="ticker">
+      <div
+        on:click|preventDefault={() => {
+          menuItemActive.set(null)
+        }}
+        class="ticker"
+      >
         <div class="title">
           {title}
         </div>
       </div>
     </div>
     <!-- BUTTON -->
-    <div
-      class="bar-button"
-      on:click|preventDefault={toggleMenu}
-    >
+    <div class="bar-button" on:click|preventDefault={toggleMenu}>
       <h1 class="title hamburger">
         <div class="hamburger-cross-icon" class:open={$menuActive}>
           <span />
@@ -239,7 +245,6 @@
     </div>
   {/if}
 </div>
-
 
 <style lang="scss">
   @import "../variables.scss";
@@ -267,6 +272,7 @@
     overflow: auto;
     padding: $margin;
     padding-right: $menu_button_width;
+    padding-bottom: 32px;
     font-family: $sans-stack;
     font-size: $font_size_small;
     display: flex;
@@ -281,6 +287,10 @@
       transform: translateY(calc(100% - #{$menu_button_width}));
       width: 100vw;
       padding: $menu_button_width $margin / 4 0;
+    }
+
+    &.extended {
+      width: $extended-menu-width;
     }
   }
 
@@ -321,7 +331,7 @@
     list-style-type: none;
     width: 100%;
     z-index: 10;
-    padding-bottom: 42px;
+    // padding-bottom: 42px;
   }
 
   :global(.bar-menu:not(.t-o-c)) {
@@ -408,7 +418,6 @@
           letter-spacing: $title_letter_spacing;
         }
       }
-
     }
 
     &.open {
@@ -505,5 +514,11 @@
         }
       }
     }
+  }
+
+  .newsletter-signup {
+    margin: 0;
+    padding-top: 3px;
+    border-top: $border_black;
   }
 </style>

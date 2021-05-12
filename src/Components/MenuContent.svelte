@@ -7,16 +7,22 @@
 
   // *** IMPORTS
   import ArrowDown from "./Graphics/ArrowDown.svelte"
+  import ArrowRight from "./Graphics/ArrowRight.svelte"
   import { afterUpdate } from "svelte"
   import { renderBlockText, urlFor } from "../sanity.js"
   import { formattedDate } from "../global.js"
   import { isArray, get, has } from "lodash"
 
+  // *** STORES
+  import { newsExtended } from "../stores.js"
+
   // *** PROPS
   export let name, content
 
   // *** VARIABLES
-  let el, vh, vw
+  let el
+  let vh
+  let vw
 
   afterUpdate(() => {
     el.scrollTo(0, 0)
@@ -25,18 +31,27 @@
 
 <svelte:window bind:innerHeight={vh} bind:innerWidth={vw} />
 
-<div class="bar-content menu-content" bind:this={el}>
+<div
+  class="bar-content menu-content"
+  class:extended={$newsExtended}
+  bind:this={el}
+>
   <!--      -->
   <!-- NEWS -->
   <!--      -->
   {#if name === "news" && isArray(content)}
     <!-- LOGO -->
-    <div class='kadk-logo'>
-      <img src='/img/logo.svg'/>
-    </div>
+    {#if !$newsExtended}
+      <div class="kadk-logo">
+        <img src="/img/logo.svg" />
+      </div>
+    {/if}
     {#each content as block, index}
       <div class="news-item" id={block.slug.current}>
-        <div class="content" style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}">
+        <div
+          class="content"
+          style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}"
+        >
           {#if has(block, "mainImage.asset")}
             <img
               class="image"
@@ -52,7 +67,7 @@
           <div class="header">
             <!-- TITLE -->
             <span>
-              {block.title}    
+              {block.title}
             </span>
             <!-- PUBLICATION DATE -->
             <span>
@@ -62,39 +77,48 @@
             </span>
           </div>
           <!-- CONTENT -->
-          {#if has(block, "content.content") && isArray(block.content.content)}
-            <div class="paragraph">
-              {@html renderBlockText(block.content.content)}
-            </div>
+          <!-- EXTENDED -->
+          {#if $newsExtended}
+            {#if has(block, "extendedContent.content") && isArray(block.extendedContent.content)}
+              <div class="paragraph">
+                {@html renderBlockText(block.extendedContent.content)}
+              </div>
+            {/if}
+          {/if}
+          <!-- NOT EXTENDED -->
+          {#if !$newsExtended}
+            {#if has(block, "content.content") && isArray(block.content.content)}
+              <div class="paragraph">
+                {@html renderBlockText(block.content.content)}
+              </div>
+            {/if}
+            <!-- READ MORE TOGGLE -->
+            {#if block.extendedView}
+              <div
+                class="read-more"
+                on:click={e => {
+                  newsExtended.set(true)
+                }}
+              >
+                <ArrowRight />
+              </div>
+            {/if}
           {/if}
         </div>
-        {#if index < content.length - 1}
-          <div class="nav" on:click={() => {
-            console.log('click')
-            window.location.replace(
-              "#" + get(content[index + 1], "slug.current", null)
-            )
-          }
-          }>
-            <div class="graphic">
-              <ArrowDown />
-            </div>
-          </div>
-        {/if}
       </div>
     {/each}
-  <!--       -->
-  <!-- ABOUT -->
-  <!--       -->
+    <!--       -->
+    <!-- ABOUT -->
+    <!--       -->
   {:else if name === "about"}
     {#if has(content, "content.content") && isArray(content.content.content)}
       <div class="paragraph">
         {@html renderBlockText(content.content.content)}
       </div>
     {/if}
-  <!--          -->
-  <!-- COLOPHON -->
-  <!--          -->
+    <!--          -->
+    <!-- COLOPHON -->
+    <!--          -->
   {:else if name === "colophon"}
     <div id="colophon-bottom" class="news-item">
       <div class="content">
@@ -130,9 +154,9 @@
     flex-shrink: 1;
     overflow-y: scroll;
     font-size: $font_size_small;
-  
+
     .nav {
-      background-color:$green;
+      background-color: red;
       height: $margin * 1.5;
       position: sticky;
       bottom: 0;
@@ -161,6 +185,14 @@
       max-width: 100%;
       mix-blend-mode: multiply;
       max-height: 260px;
+    }
+
+    &.extended {
+      .image {
+        // max-width: 100%;
+        mix-blend-mode: unset;
+        max-height: unset;
+      }
     }
 
     .news-item {
@@ -219,5 +251,12 @@
       display: block;
       width: 100%;
     }
+  }
+
+  .read-more {
+    width: 25px;
+    height: 50px;
+    background: red;
+    cursor: pointer;
   }
 </style>
