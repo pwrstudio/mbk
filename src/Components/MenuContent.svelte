@@ -6,15 +6,23 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
-  import ArrowDown from "./Graphics/ArrowDown.svelte"
-  import ArrowRight from "./Graphics/ArrowRight.svelte"
+
   import { afterUpdate } from "svelte"
   import { renderBlockText, urlFor } from "../sanity.js"
   import { formattedDate } from "../global.js"
   import { isArray, get, has } from "lodash"
 
+  // *** COMPONENTS
+  import ArrowDown from "./Graphics/ArrowDown.svelte"
+  import ArrowRight from "./Graphics/ArrowRight.svelte"
+  import Share from "./Share.svelte"
+
   // *** STORES
-  import { newsExtended } from "../stores.js"
+  import {
+    newsExtended,
+    extendedPost,
+    tableOfContentsActive,
+  } from "../stores.js"
 
   // *** PROPS
   export let name, content
@@ -41,21 +49,13 @@
   <!--      -->
   {#if name === "news" && isArray(content)}
     <!-- LOGO -->
-    {#if !$newsExtended}
-      <div class="kadk-logo">
-        <img src="/img/logo.svg" />
-      </div>
-    {/if}
-    {#each content as block, index}
-      <div class="news-item" id={block.slug.current}>
-        <div
-          class="content"
-          style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}"
-        >
-          {#if has(block, "mainImage.asset")}
+    {#if $newsExtended}
+      <div class="news-item">
+        <div class="content">
+          {#if has($extendedPost, "mainImage.asset")}
             <img
               class="image"
-              src={urlFor(block.mainImage.asset)
+              src={urlFor($extendedPost.mainImage.asset)
                 .width(400)
                 .quality(90)
                 .saturation(-100)
@@ -67,26 +67,63 @@
           <div class="header">
             <!-- TITLE -->
             <span>
-              {block.title}
+              {$extendedPost.title}
             </span>
             <!-- PUBLICATION DATE -->
             <span>
-              {#if block.publicationDate}
-                {@html formattedDate(block.publicationDate)}
+              {#if $extendedPost.publicationDate}
+                {@html formattedDate($extendedPost.publicationDate)}
               {/if}
             </span>
           </div>
+          <!-- SHARE -->
+          <div class="share">
+            <!-- SHARING-->
+            <Share articleTitle={$extendedPost.title} />
+          </div>
           <!-- CONTENT -->
-          <!-- EXTENDED -->
-          {#if $newsExtended}
-            {#if has(block, "extendedContent.content") && isArray(block.extendedContent.content)}
-              <div class="paragraph">
-                {@html renderBlockText(block.extendedContent.content)}
-              </div>
-            {/if}
+          {#if has($extendedPost, "extendedContent.content") && isArray($extendedPost.extendedContent.content)}
+            <div class="paragraph">
+              {@html renderBlockText($extendedPost.extendedContent.content)}
+            </div>
           {/if}
-          <!-- NOT EXTENDED -->
-          {#if !$newsExtended}
+        </div>
+      </div>
+    {:else}
+      <div class="kadk-logo">
+        <img src="/img/logo.svg" />
+      </div>
+      {#each content as block, index}
+        <div class="news-item" id={block.slug.current}>
+          <div
+            class="content"
+            style="min-height: {vw >= 768 ? vh - 200 + 'px' : 'auto'}"
+          >
+            {#if has(block, "mainImage.asset")}
+              <img
+                class="image"
+                src={urlFor(block.mainImage.asset)
+                  .width(400)
+                  .quality(90)
+                  .saturation(-100)
+                  .auto("format")
+                  .url()}
+              />
+            {/if}
+            <!-- HEADER -->
+            <div class="header">
+              <!-- TITLE -->
+              <span>
+                {block.title}
+              </span>
+              <!-- PUBLICATION DATE -->
+              <span>
+                {#if block.publicationDate}
+                  {@html formattedDate(block.publicationDate)}
+                {/if}
+              </span>
+            </div>
+            <!-- CONTENT -->
             {#if has(block, "content.content") && isArray(block.content.content)}
               <div class="paragraph">
                 {@html renderBlockText(block.content.content)}
@@ -97,16 +134,18 @@
               <div
                 class="read-more"
                 on:click={e => {
+                  extendedPost.set(block)
+                  tableOfContentsActive.set(false)
                   newsExtended.set(true)
                 }}
               >
                 <ArrowRight />
               </div>
             {/if}
-          {/if}
+          </div>
         </div>
-      </div>
-    {/each}
+      {/each}
+    {/if}
     <!--       -->
     <!-- ABOUT -->
     <!--       -->
@@ -192,6 +231,11 @@
         // max-width: 100%;
         mix-blend-mode: unset;
         max-height: unset;
+        width: 100%;
+      }
+
+      .share {
+        float: right;
       }
     }
 

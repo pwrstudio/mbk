@@ -68,6 +68,7 @@
   const toggleMenu = () => {
     console.log("TOGGLE")
     menuActive.set(!$menuActive)
+    newsExtended.set(false)
 
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       tableOfContentsActive.set(false)

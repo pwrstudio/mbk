@@ -16,7 +16,13 @@
   import MetaData from "../Components/MetaData.svelte"
 
   // *** STORES
-  import { currentPost, menuActive, tableOfContentsActive } from "../stores.js"
+  import {
+    currentPost,
+    menuActive,
+    tableOfContentsActive,
+    newsExtended,
+    extendedPost,
+  } from "../stores.js"
 
   // *** PROPS
   export let location
@@ -29,9 +35,11 @@
 
   let vw = window.innerWidth
 
-  onDestroy (() => {
+  onDestroy(() => {
     menuActive.set(false)
     tableOfContentsActive.set(false)
+    newsExtended.set(false)
+    extendedPost.set({})
   })
 
   const closeMenu = () => {
