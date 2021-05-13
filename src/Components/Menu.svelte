@@ -166,7 +166,9 @@
       class="bar-button"
       class:disabled={landing && vw > 768}
       on:click={e => {
-        if (landing === false && vw > 768) {
+        if ($newsExtended) {
+          newsExtended.set(false)
+        } else if (landing === false && vw > 768) {
           toggleMenu()
         }
       }}
@@ -268,11 +270,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: $menu-width;
+    width: $extended-menu_width;
     line-height: $line-height;
     overflow: auto;
     padding: $margin;
     padding-right: $menu_button_width;
+    padding-left: calc(#{$menu-difference} + 42px);
     padding-bottom: 32px;
     font-family: $sans-stack;
     font-size: $font_size_small;
@@ -281,17 +284,13 @@
     justify-content: space-between;
     transition: transform 0.2s ease-out;
     user-select: none;
-    transform: translateX((-1 * $menu-width) + $menu_button_width);
+    transform: translateX((-1 * $extended-menu-width) + $menu_button_width);
 
     @include screen-size("phone") {
       bottom: 0;
       transform: translateY(calc(100% - #{$menu_button_width}));
       width: 100vw;
       padding: $menu_button_width $margin / 4 0;
-    }
-
-    &.extended {
-      width: $extended-menu-width;
     }
   }
 
@@ -330,7 +329,7 @@
     padding: 0;
     margin: 0;
     list-style-type: none;
-    width: 100%;
+    // width: $menu_width;
     z-index: 10;
     // padding-bottom: 42px;
   }
@@ -422,7 +421,7 @@
     }
 
     &.open {
-      transform: translate(0, 0);
+      transform: translate(-$menu-difference, 0);
 
       &.peek {
         transform: translate(0, calc(100% - #{$menu_items_height})) !important;
@@ -437,6 +436,11 @@
           transform: translate(0, $menu_button_width);
         }
       }
+    }
+
+    &.extended {
+      transform: translate(0, 0);
+      padding-left: 42px;
     }
   }
 
@@ -521,5 +525,6 @@
     margin: 0;
     padding-top: 3px;
     border-top: $border_black;
+    // width: $menu_width;
   }
 </style>

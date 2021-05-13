@@ -76,7 +76,7 @@
         margin-left: 5px;
       }
       :global(svg) {
-        height: 1.4em !important;
+        height: 2em !important;
       }
     }
   }

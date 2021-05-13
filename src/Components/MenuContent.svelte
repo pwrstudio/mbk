@@ -13,8 +13,9 @@
   import { isArray, get, has } from "lodash"
 
   // *** COMPONENTS
-  import ArrowDown from "./Graphics/ArrowDown.svelte"
+  import ArrowDown from "./Graphics/ArrowDownSmall.svelte"
   import ArrowRight from "./Graphics/ArrowRight.svelte"
+  import ArrowLeft from "./Graphics/ArrowLeft.svelte"
   import Share from "./Share.svelte"
 
   // *** STORES
@@ -51,6 +52,15 @@
     <!-- LOGO -->
     {#if $newsExtended}
       <div class="news-item">
+        <div
+          class="close-extended"
+          on:click={e => {
+            extendedPost.set({})
+            newsExtended.set(false)
+          }}
+        >
+          <ArrowLeft />
+        </div>
         <div class="content">
           {#if has($extendedPost, "mainImage.asset")}
             <img
@@ -129,7 +139,7 @@
                 {@html renderBlockText(block.content.content)}
               </div>
             {/if}
-            <!-- READ MORE TOGGLE -->
+            <!-- READ-MORE -->
             {#if block.extendedView}
               <div
                 class="read-more"
@@ -140,6 +150,18 @@
                 }}
               >
                 <ArrowRight />
+              </div>
+              <!-- SCROLL-DOWN -->
+            {:else}
+              <div
+                class="scroll-down"
+                on:click={e => {
+                  window.location.replace(
+                    "#" + get(content[index + 1], "slug.current", null)
+                  )
+                }}
+              >
+                <ArrowDown />
               </div>
             {/if}
           </div>
@@ -193,6 +215,8 @@
     flex-shrink: 1;
     overflow-y: scroll;
     font-size: $font_size_small;
+    width: 100%;
+    float: right;
 
     .nav {
       background-color: red;
@@ -226,21 +250,9 @@
       max-height: 260px;
     }
 
-    &.extended {
-      .image {
-        // max-width: 100%;
-        mix-blend-mode: unset;
-        max-height: unset;
-        width: 100%;
-      }
-
-      .share {
-        float: right;
-      }
-    }
-
     .news-item {
-      width: 100%;
+      // width: 100%;
+      position: relative;
       min-height: 100%;
       padding-bottom: $margin * 2;
 
@@ -257,6 +269,32 @@
         border-bottom: $border_black;
         padding-top: 4px;
         margin-bottom: $margin_xs;
+      }
+    }
+
+    &.extended {
+      .image {
+        // max-width: 100%;
+        mix-blend-mode: unset;
+        max-height: unset;
+        width: 100%;
+      }
+
+      .share {
+        float: right;
+      }
+
+      .news-item {
+        padding-left: 42px;
+
+        .close-extended {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 20px;
+          height: 42px;
+          cursor: pointer;
+        }
       }
     }
 
@@ -298,8 +336,15 @@
   }
 
   .read-more {
-    width: 25px;
-    height: 50px;
+    width: 20px;
+    height: 42px;
+    // background: red;
+    cursor: pointer;
+  }
+
+  .scroll-down {
+    width: 42px;
+    height: 20px;
     // background: red;
     cursor: pointer;
   }

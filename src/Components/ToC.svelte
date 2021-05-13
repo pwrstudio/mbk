@@ -223,6 +223,8 @@
     z-index: 999;
     pointer-events: initial;
     overflow: hidden;
+    width: $menu-width;
+    transform: translateX((-1 * $menu-width) + $menu_button_width);
 
     &.disabled {
       pointer-events: none;
