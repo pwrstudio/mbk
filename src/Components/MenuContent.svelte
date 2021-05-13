@@ -300,7 +300,7 @@
   .read-more {
     width: 25px;
     height: 50px;
-    background: red;
+    // background: red;
     cursor: pointer;
   }
 </style>
