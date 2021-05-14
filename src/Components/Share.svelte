@@ -71,12 +71,16 @@
   .social {
     white-space: nowrap;
 
+    :global(svg) {
+      height: 1.3em !important;
+    }
+
     @include screen-size("small") {
       :global(a) {
         margin-left: 5px;
       }
       :global(svg) {
-        height: 2em !important;
+        height: 1.3em !important;
       }
     }
   }

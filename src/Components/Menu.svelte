@@ -209,10 +209,11 @@
         Kolofon
       </li>
     </ul>
-
-    <div class="newsletter-signup">
-      <MailingListForm />
-    </div>
+    {#if vw >= 768}
+      <div class="newsletter-signup">
+        <MailingListForm />
+      </div>
+    {/if}
   {/if}
 
   <!--             -->
@@ -441,6 +442,9 @@
     &.extended {
       transform: translate(0, 0);
       padding-left: 42px;
+      @include screen-size("phone") {
+        padding-left: 12px;
+      }
     }
   }
 
