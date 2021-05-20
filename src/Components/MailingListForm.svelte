@@ -8,7 +8,7 @@
 
 <div class="mailing-list-form">
   <form
-    action="https://platformlabor.us4.list-manage.com/subscribe/post?u=da38117a47595407af0640dad&id=75a37b8376"
+    action="https://bygningskunstogkultur.us6.list-manage.com/subscribe/post?u=9f56c5ff1c374d9b8a9ce4cd1&amp;id=58e9382dd9"
     method="post"
     id="mc-embedded-subscribe-form"
     name="mc-embedded-subscribe-form"
@@ -35,7 +35,7 @@
       <div style="position: absolute; left: -5000px;" aria-hidden="true">
         <input
           type="text"
-          name="b_da38117a47595407af0640dad_75a37b8376"
+          name="b_9f56c5ff1c374d9b8a9ce4cd1_58e9382dd9"
           tabindex="-1"
           value=""
         />
