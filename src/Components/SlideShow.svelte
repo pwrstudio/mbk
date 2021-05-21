@@ -12,7 +12,8 @@
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import "swiper/swiper-bundle.css"
   import "swiper/components/pagination/pagination.min.css"
-  
+  import { window } from "lodash/_freeGlobal"
+
   // *** SETUP
   SwiperCore.use([Pagination])
 
@@ -34,8 +35,11 @@
 
   const toggleZoomButton = e => {
     if (swiperInstance.slides[swiperInstance.activeIndex]) {
-      const rect = swiperInstance.slides[swiperInstance.activeIndex].getBoundingClientRect()
-  
+      const rect =
+        swiperInstance.slides[
+          swiperInstance.activeIndex
+        ].getBoundingClientRect()
+
       zoomed = !zoomed
       zoomLevel = zoomLevel === 1 ? 2 : 1
     }
@@ -43,28 +47,30 @@
 
   const toggleZoom = e => {
     // console.log(swiperInstance, swiper)
-    console.log(swiperInstance)
     if (swiperInstance.clickedSlide) {
       // console.log('toggle de zoom')
       // const rect = swiperInstance.clickedSlide.getBoundingClientRect()
-  
-      zoomed = !zoomed
-      zoomLevel = zoomLevel === 1 ? 2 : 1
+      if (zoomable) {
+        zoomed = !zoomed
+        zoomLevel = zoomLevel === 1 ? 2 : 1
+      } else {
+        swiperInstance.slideNext()
+      }
     }
   }
 
   const scrollThrough = e => {
     if (e.currentTarget) {
       const rect = e.currentTarget.getBoundingClientRect()
-  
+
       const x = e.clientX - rect.left // x position within the element.
       const y = e.clientY - rect.top // y position within the element.
       const scrollW = e.currentTarget.scrollWidth
       const scrollH = e.currentTarget.scrollHeight
-  
+
       const fracX = x / rect.width
       const fracY = y / rect.height
-  
+
       const toX = fracX * (scrollW - rect.width)
       const toY = fracY * (scrollH - rect.height)
 
@@ -74,7 +80,7 @@
       }
     }
   }
-  
+
   const onSwiper = swiper => {
     // console.log('swiper')
     // console.log(swiper)
@@ -88,12 +94,15 @@
     const originalDims = /-(\d+)x(\d+)/
 
     // Setup regex for Double
-    const double = urlFor(asset).width(vw * 2).quality(90).url()
+    const double = urlFor(asset)
+      .width(vw * 2)
+      .quality(90)
+      .url()
     const doubleDims = /w=(\d+)/
 
     const originalDimensions = original.match(originalDims)
     const doubleDimensions = double.match(doubleDims)
-    
+
     const originalW = originalDimensions[1]
     const doubleW = doubleDimensions[1]
 
@@ -117,12 +126,14 @@
     spaceBetween={8}
     pagination={{
       el: "#custom-pagination-" + id,
-      clickable: true
+      clickable: true,
     }}
     autoHeight={mobile}
     on:swiper={onSwiper}
     on:click={toggleZoom}
-    on:slideChange={() => { zoomed = false }}
+    on:slideChange={() => {
+      zoomed = false
+    }}
   >
     {#each slides as slide}
       <SwiperSlide>
@@ -131,7 +142,7 @@
             ref={slide._key}
             class="zoom-container"
             class:zoomed
-            style="height: {0.75*vh}px;"
+            style="height: {0.75 * vh}px;"
             on:mousemove={scrollThrough}
           >
             <img
@@ -145,8 +156,8 @@
           <div class="img-container">
             <img
               class="slide-img contain"
-              class:contain={!get(slide, 'cover')}
-              class:cover={get(slide, 'cover')}
+              class:contain={!get(slide, "cover")}
+              class:cover={get(slide, "cover")}
               src={urlFor(slide.asset).quality(90).width(1200).url()}
               alt={slide.asset.alt}
             />
@@ -166,16 +177,12 @@
 
     {#if zoomable}
       <div class="zoomLevel">
-        <span
-          class="button"
-          on:click={toggleZoomButton}
-        >
+        <span class="button" on:click={toggleZoomButton}>
           {`${zoomLevel * 100}%`}[±]
         </span>
       </div>
     {/if}
   </div>
-
 </div>
 
 <style lang="scss">
@@ -288,7 +295,7 @@
       bottom: 0;
       margin-right: 40px;
       :global(p) {
-        font-size: 16px;  
+        font-size: 16px;
         line-height: 20px;
       }
       :global(p a) {

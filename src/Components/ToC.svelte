@@ -16,14 +16,15 @@
 
   // *** STORES
   import {
-      tableOfContentsActive,
-      tableOfContents,
-      menuItemActive,
-      menuActive,
-      hash,
-      currentArticleSlug,
-      currentIssueSlug
-    } from "../stores.js"
+    tableOfContentsActive,
+    tableOfContents,
+    menuItemActive,
+    menuActive,
+    hash,
+    currentArticleSlug,
+    currentIssueSlug,
+    newsExtended,
+  } from "../stores.js"
 
   // *** VARIABLES
   let vw = window.innerWidth
@@ -44,7 +45,9 @@
       let placed = 0
 
       // Make the current active index true
-      show = $tableOfContents.map((item) => { return item.slug.current === $currentArticleSlug })
+      show = $tableOfContents.map(item => {
+        return item.slug.current === $currentArticleSlug
+      })
       placed++
 
       let activeIndex = show.indexOf(true)
@@ -57,12 +60,12 @@
         }
 
         let offset = 1
-        while (show[activeIndex + (offset * direction)] === true) {
+        while (show[activeIndex + offset * direction] === true) {
           offset++
         }
 
-        if (show[activeIndex + (offset * direction)] === false) {
-          show[activeIndex + (offset * direction)] = true
+        if (show[activeIndex + offset * direction] === false) {
+          show[activeIndex + offset * direction] = true
           placed++
         }
 
@@ -73,13 +76,14 @@
 
   $: {
     if ((!$tableOfContentsActive && scrollParent) || (scrollParent && peek)) {
-      console.log('reset')
+      console.log("reset")
       // scrollParent.scrollTop = 0
     }
   }
 
   const goToArticle = async article => {
-    const destination = '/' + $currentIssueSlug + '/' + get(article, 'slug.current', '')
+    const destination =
+      "/" + $currentIssueSlug + "/" + get(article, "slug.current", "")
 
     scrollBack(scrollParent)
     await tick()
@@ -90,10 +94,10 @@
   const toggleToC = () => {
     inTransition = true
     tableOfContentsActive.set(!$tableOfContentsActive)
+    newsExtended.set(false)
     if (vw < 768 && $tableOfContentsActive && $menuActive) {
       menuActive.set(false)
     }
-
     setTimeout(() => {
       inTransition = false
     }, 200)
@@ -104,7 +108,7 @@
 <!-- WINDOW BINDINGS -->
 <!--                 -->
 
-<svelte:window bind:innerWidth={vw} bind:innerHeight={ih}/>
+<svelte:window bind:innerWidth={vw} bind:innerHeight={ih} />
 
 {#if $tableOfContents}
   <div
@@ -113,91 +117,94 @@
     class="bar toc"
     class:disabled={inTransition}
     class:open={$tableOfContentsActive}
-    class:peek={peek}
+    class:peek
     class:parentOpen={$menuActive}
+    class:parentExtended={$newsExtended}
     style="height: {ih + 'px'};"
   >
-    <ul
-      class="bar-menu t-o-c"
-      use:links
-    >
+    <ul class="bar-menu t-o-c" use:links>
       <li
         class="bar-menu-item title link"
         on:click={e => {
-            console.log('nav')
-            navigate('/')
-          }
-        }
+          console.log("nav")
+          navigate("/")
+        }}
       >
         TILBAGE TIL FORSIDE
       </li>
       {#each $tableOfContents as article, index}
         <li
           class="bar-menu-item title link"
-          class:active={$currentArticleSlug === get(article, 'slug.current', '')}
+          class:active={$currentArticleSlug ===
+            get(article, "slug.current", "")}
           on:click={e => {
             goToArticle(article)
           }}
         >
-          {`${index + 1}. `} {get(article, 'title', '')}
+          {`${index + 1}. `}
+          {get(article, "title", "")}
         </li>
       {/each}
     </ul>
 
     {#if vw < 768}
-      <div
-        class="bar-button"
-        on:click={toggleToC}
-      >
+      <div class="bar-button" on:click={toggleToC}>
         <h1 class="title indhold">
-          <span>
-            INDHOLD
-          </span>
+          <span> INDHOLD </span>
         </h1>
         {#each $tableOfContents as article, index}
           <h1
             class="title articleNumber"
-            class:active={$hash === get(article, 'slug.current', '')}
+            class:active={$hash === get(article, "slug.current", "")}
             on:click={e => {
-                console.log('nav')
-                navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
-              }
-            }
+              console.log("nav")
+              navigate(
+                "/" + $currentIssueSlug + "/" + get(article, "slug.current", "")
+              )
+            }}
           >
             <span>{index + 1}</span>
           </h1>
         {/each}
       </div>
     {:else}
-      <div
-        class="bar-button"
-      >
-        <h1 class="title indhold"
-          on:click={toggleToC}
-        >
-          <span>
-            INDHOLD
-          </span>
+      <div class="bar-button">
+        <h1 class="title indhold" on:click={toggleToC}>
+          <span> INDHOLD </span>
         </h1>
         <ul class="bullets">
           <li
             class="bullet"
             on:click={e => {
-                console.log('nav')
-                navigate('/')
-              }
-            }>⌂</li>
+              console.log("nav")
+              navigate("/")
+            }}
+          >
+            ⌂
+          </li>
           {#each $tableOfContents as article, index}
             <li
               class="bullet"
-              class:active={$currentArticleSlug === get(article, 'slug.current', '')}
-              class:dots={(!show[index] && index === 1) || (!show[index] && index === show.length - 2)}
-              class:hidden={!show[index] && index !== 0 && index !== show.length - 1}
+              class:active={$currentArticleSlug ===
+                get(article, "slug.current", "")}
+              class:dots={(!show[index] && index === 1) ||
+                (!show[index] && index === show.length - 2)}
+              class:hidden={!show[index] &&
+                index !== 0 &&
+                index !== show.length - 1}
               on:click={e => {
-                  navigate('/' + $currentIssueSlug + '/' + get(article, 'slug.current', ''))
-                }
-              }>
-              {((!show[index] && index === 1) || (!show[index] && index === show.length - 2)) ? '...' : index+1}
+                navigate(
+                  "/" +
+                    $currentIssueSlug +
+                    "/" +
+                    get(article, "slug.current", "")
+                )
+              }}
+            >
+              {(!show[index] && index === 1) ||
+              (!show[index] && index === show.length - 2)
+                ? "..."
+                : index + 1}
             </li>
           {/each}
         </ul>
@@ -216,6 +223,8 @@
     z-index: 999;
     pointer-events: initial;
     overflow: hidden;
+    width: $menu-width;
+    transform: translateX((-1 * $menu-width) + $menu_button_width);
 
     &.disabled {
       pointer-events: none;
@@ -267,19 +276,26 @@
         transform: translateX($menu_width - $menu_button_width);
       }
 
-      @include screen-size('phone') {
+      @include screen-size("phone") {
         &.open {
           transform: translateX(0);
         }
 
         &.peek {
-          transform: translate(0, calc(100% - #{$menu_items_height} - #{$menu_button_width})) !important;
+          transform: translate(
+            0,
+            calc(100% - #{$menu_items_height} - #{$menu_button_width})
+          ) !important;
         }
       }
     }
 
+    &.parentExtended {
+      transform: translateX(260px);
+    }
+
     .bullets,
-    .bullets .bullet  {
+    .bullets .bullet {
       writing-mode: lr;
       text-orientation: unset;
       list-style-type: none;
@@ -324,13 +340,12 @@
           left: -5px;
           height: 1.5px;
           width: 10px;
-          content: '';
+          content: "";
           display: block;
           position: absolute;
           background-color: $black;
         }
       }
     }
-
   }
 </style>

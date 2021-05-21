@@ -161,8 +161,9 @@ const serializers = {
             const videoUrl = 'https://cdn.sanity.io/files/yesqrmft/production/' + props.node.videoFile.asset._ref
                 .replace('file-', '')
                 .replace('-mp4', '.mp4')
+            const posterUrl = props.node.posterImage ? urlFor(props.node.posterImage).width(640).quality(90).auto('format').url() : ''
             return h('figure', { className: 'video' }, [
-                h('video', { src: videoUrl, controls: true, loop: true, autoplay: props.node.autoPlay }),
+                h('video', { src: videoUrl, controls: true, loop: true, autoplay: props.node.autoPlay, poster: posterUrl }),
                 ...prepareTextElements(props)
             ])
         },

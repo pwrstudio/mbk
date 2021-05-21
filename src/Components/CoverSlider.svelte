@@ -22,6 +22,7 @@
   import Cover from "./Cover.svelte"
   import ArrowRight from "./Graphics/ArrowRight.svelte"
   import ArrowLeft from "./Graphics/ArrowLeft.svelte"
+  import { newsExtended } from "../stores"
 
   // *** PROPS
   export let issues = []
@@ -30,13 +31,13 @@
   let scale = 1
   let coverScale = 1
 
-  const onSwiper = (swiper) => {
+  const onSwiper = swiper => {
     // console.log(swiper)
   }
 
-  /** Extend the number class to map values to a new range */ 
+  /** Extend the number class to map values to a new range */
   Number.prototype.map = function (inMin, inMax, outMin, outMax) {
-    return (this - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+    return ((this - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
   }
 
   $: {
@@ -59,40 +60,37 @@
 <svelte:window bind:innerWidth={vw} />
 
 <div
-  class="coverslider">
+  class="coverslider"
+  on:click={e => {
+    newsExtended.set(false)
+  }}
+>
   <!--       -->
   <!-- TITLE -->
   <!--       -->
   <div class="top">
     <h1 class="edition title">
-      <span class="line"></span>
-      <span class="line"></span>
+      <span class="line" />
+      <span class="line" />
     </h1>
   </div>
   <!--           -->
   <!-- END TITLE -->
   <!--           -->
 
-  <div
-    class="middle">
-
+  <div class="middle">
     <!--          -->
     <!-- CONTROLS -->
     <!--          -->
-    <div
-      class="custom-controls-prev"
-      class:absolutely={scale !== 1}>
+    <div class="custom-controls-prev" class:absolutely={scale !== 1}>
       <ArrowLeft />
     </div>
-    <div
-      class="custom-controls-prev-mobile">
+    <div class="custom-controls-prev-mobile">
       <ArrowLeft />
     </div>
     <!--              -->
     <!-- END CONTROLS -->
     <!--              -->
-
-
 
     <!--         -->
     <!-- DESKTOP -->
@@ -100,18 +98,19 @@
     <div
       class="swiper-desktop"
       class:scaled={scale !== 1}
-      style="transform: scale({scale})">
+      style="transform: scale({scale})"
+    >
       <Swiper
         touchRatio={0}
         navigation={{
-          type: 'bullets',
+          type: "bullets",
           clickable: true,
           prevEl: ".custom-controls-prev",
           nextEl: ".custom-controls-next",
         }}
         pagination={{
           el: ".custom-pagination",
-          clickable: true
+          clickable: true,
         }}
         slidesPerView={2}
         spaceBetween={10.5}
@@ -128,8 +127,6 @@
     <!-- END DESKTOP -->
     <!--             -->
 
-
-
     <!--        -->
     <!-- MOBILE -->
     <!--        -->
@@ -138,20 +135,20 @@
       <Swiper
         touchRatio={1}
         navigation={{
-          type: 'bullets',
+          type: "bullets",
           clickable: true,
           prevEl: ".custom-controls-prev-mobile",
           nextEl: ".custom-controls-next-mobile",
         }}
         pagination={{
           el: ".custom-pagination-mobile",
-          clickable: true
+          clickable: true,
         }}
         slidesPerView={1}
         spaceBetween={10.5}
         on:swiper={onSwiper}
       >
-        {#each issues.filter(i => get(i, 'tableOfContents', []).length > 0) as issue}
+        {#each issues.filter(i => get(i, "tableOfContents", []).length > 0) as issue}
           <SwiperSlide>
             <!-- {#if vw > 400} -->
             <Cover {issue} scale={coverScale} />
@@ -166,14 +163,10 @@
     <!-- END MOBILE -->
     <!--            -->
 
-
-
     <!--          -->
     <!-- CONTROLS -->
     <!--          -->
-    <div
-      class="custom-controls-next"
-      class:absolutely={scale !== 1}>
+    <div class="custom-controls-next" class:absolutely={scale !== 1}>
       <ArrowRight />
     </div>
     <div class="custom-controls-next-mobile">
@@ -182,7 +175,6 @@
     <!--              -->
     <!-- END CONTROLS -->
     <!--              -->
-
   </div>
 
   <!--            -->

@@ -7,19 +7,20 @@
 
   // *** IMPORTS
   import { loadData, renderBlockText } from "../sanity.js"
-  import { onMount, tick } from "svelte"
-  import { elementReady, scrollBack } from '../global'
+  import { onMount, onDestroy, tick } from "svelte"
+  import { elementReady, scrollBack } from "../global"
   import get from "lodash/get"
 
   // STORES
-  import { 
+  import {
     tableOfContents,
     currentPost,
     currentArticleSlug,
     currentIssueSlug,
     currentArticles,
     menuActive,
-    tableOfContentsActive 
+    tableOfContentsActive,
+    newsExtended,
   } from "../stores.js"
 
   // *** PROPS
@@ -46,23 +47,23 @@
     // __ first part is issue...
     issue = args[0]
     currentIssueSlug.set(issue)
-    console.log('$currentIssueSlug', $currentIssueSlug)
+    console.log("$currentIssueSlug", $currentIssueSlug)
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
 
     console.log(article)
     // Scroll to article on change
-    let targetEl = document.querySelector('#' + article)
+    let targetEl = document.querySelector("#" + article)
 
     if (targetEl) {
-      targetEl.scrollIntoView({ behavior: "smooth" });
+      targetEl.scrollIntoView({ behavior: "smooth" })
 
       if (article !== previousArticle) {
         // Close menu / ToC
         menuActive.set(false)
         tableOfContentsActive.set(false)
-        const target = targetEl.querySelector('.col')
+        const target = targetEl.querySelector(".col")
 
         scrollBack(target, 900)
       }
@@ -76,11 +77,11 @@
     // console.log('handle scroll')
     if (vw > 768) {
       clearTimeout(timer)
-      if(document.body.classList.contains('pointer-none')) {
-        document.body.classList.add('pointer-none')
+      if (document.body.classList.contains("pointer-none")) {
+        document.body.classList.add("pointer-none")
       }
       timer = setTimeout(() => {
-        document.body.classList.remove('pointer-none')
+        document.body.classList.remove("pointer-none")
       }, 200)
     }
   }
@@ -92,48 +93,61 @@
     currentArticles.set(postData.tableOfContents)
     tableOfContents.set(postData.tableOfContents)
 
-    const windowHash = '#' + article
+    const windowHash = "#" + article
     // console.log('windowHash', windowHash)
-  
+
     if (windowHash) {
-      console.log('HASH')
+      console.log("HASH")
       try {
         const el = await elementReady(windowHash)
         // check if the hash is within the articles before
-        const hashes = $currentArticles.map((article) => { return get(article, 'slug.current', false) })
-        const isArticle = hashes.includes(windowHash.replace('#', ''))
-  
+        const hashes = $currentArticles.map(article => {
+          return get(article, "slug.current", false)
+        })
+        const isArticle = hashes.includes(windowHash.replace("#", ""))
+
         if (isArticle) {
-          console.log('is article', el.offsetTop)
+          console.log("is article", el.offsetTop)
           await tick()
-          let targetEl = document.querySelector('#' + article)
-          console.log('targetEl', targetEl)
-          if(targetEl) {
-            targetEl.scrollIntoView();
+          let targetEl = document.querySelector("#" + article)
+          console.log("targetEl", targetEl)
+          if (targetEl) {
+            targetEl.scrollIntoView()
           }
         }
       } catch (error) {
         console.error(error)
       }
     } else {
-      console.log('doing thissss')
+      console.log("doing thissss")
       try {
         const result = await articlesData
-        if(get(result, 'tableOfContents[0].slug.current', false)) {
-          console.log('nav')
-          navigate('/' + $currentIssueSlug + '/' + result.tableOfContents[0].slug.current)
+        if (get(result, "tableOfContents[0].slug.current", false)) {
+          console.log("nav")
+          navigate(
+            "/" +
+              $currentIssueSlug +
+              "/" +
+              result.tableOfContents[0].slug.current
+          )
         }
       } catch (error) {
         console.error(error)
       }
     }
   })
+
+  onDestroy(() => {
+    menuActive.set(false)
+    tableOfContentsActive.set(false)
+    newsExtended.set(false)
+    extendedPost.set({})
+  })
 </script>
 
 <svelte:window bind:innerWidth={vw} />
 
 {#await $currentPost then post}
-
   <div class="menus">
     <Menu />
     <ToC />
