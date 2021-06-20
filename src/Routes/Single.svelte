@@ -21,6 +21,7 @@
     menuActive,
     tableOfContentsActive,
     newsExtended,
+    extendedPost,
   } from "../stores.js"
 
   // *** PROPS
