@@ -41,18 +41,20 @@
 
   $: {
     if (!!$tableOfContents) {
+      console.log($tableOfContents)
       const max = 5
+      // const max = Math.min(5, $tableOfContents.length)
       let placed = 0
 
       // Make the current active index true
       show = $tableOfContents.map(item => {
         return item.slug.current === $currentArticleSlug
-      })
-      placed++
+      }) // e.g. [false, false, true, false, false]
+      placed++ // 1
 
       let activeIndex = show.indexOf(true)
 
-      let direction = 1
+      let direction = 1 // add
 
       while (placed < max) {
         if (show[activeIndex + direction] === undefined) {
@@ -66,10 +68,12 @@
 
         if (show[activeIndex + offset * direction] === false) {
           show[activeIndex + offset * direction] = true
-          placed++
         }
 
         direction = -1 * direction
+
+        // You're done, kiddo
+        placed++
       }
     }
   }
