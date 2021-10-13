@@ -17,12 +17,19 @@
   import MetaData from "./MetaData.svelte"
   import Slideshow from "./SlideShow.svelte"
   import Meta from "./Meta.svelte"
+  import ZoomMeta from "./ZoomMeta.svelte"
 
   // *** STYLES
   import "swiper/swiper-bundle.css"
 
   // *** STORES
-  import { currentPost, currentArticles, menuActive, currentArticleSlug, currentIssueSlug } from "../stores.js"
+  import {
+    currentPost,
+    currentArticles,
+    menuActive,
+    currentArticleSlug,
+    currentIssueSlug,
+  } from "../stores.js"
 
   // Extract the footnotes from the currently active article, to list at bottom
   const extractFootnotes = mainContent => {
@@ -52,54 +59,84 @@
         false
       )}
     >
-      <!-- META -->
-      <Meta
-        title={get($currentPost, "title", "")}
-        articleTitle={get(article, "title", "")}
-        byline={get(article, "byline.content", [])}
-        articleSlug={get(article, "slug.current", "")}
-        issueSlug={get($currentPost, "slug.current", "")}
-      />
+      {#if get(article, "zoomableSlideshowLayout", false)}
+        <!-- ZOOM-META -->
+        <ZoomMeta
+          title={get($currentPost, "title", "")}
+          articleTitle={get(article, "title", "")}
+          byline={get(article, "byline.content", [])}
+          articleSlug={get(article, "slug.current", "")}
+          issueSlug={get($currentPost, "slug.current", "")}
+          mainText={get(article, "content.content", [])}
+        />
 
-      <div class="block full mobile">
-        {#if !get(article, "zoomableSlideshowLayout", false)}
-          <div class="col slideshow-mobile" class:slideshow={get(article, "slideshow", [])}>
-            {#if get(article, "slideshow", [])}
-              <Slideshow mobile id={'mob'+index} slides={get(article, "slideshow", [])} />
-            {/if}
+        <div class="block full">
+          <Slideshow
+            id={index}
+            zoomable
+            slides={get(article, "slideshow", [])}
+          />
+        </div>
+      {:else}
+        <!-- META -->
+        <Meta
+          title={get($currentPost, "title", "")}
+          articleTitle={get(article, "title", "")}
+          byline={get(article, "byline.content", [])}
+          articleSlug={get(article, "slug.current", "")}
+          issueSlug={get($currentPost, "slug.current", "")}
+        />
+
+        <div class="block full mobile">
+          {#if !get(article, "zoomableSlideshowLayout", false)}
+            <div
+              class="col slideshow-mobile"
+              class:slideshow={get(article, "slideshow", [])}
+            >
+              {#if get(article, "slideshow", [])}
+                <Slideshow
+                  mobile
+                  id={"mob" + index}
+                  slides={get(article, "slideshow", [])}
+                />
+              {/if}
+            </div>
+          {/if}
+        </div>
+
+        <div class="block main">
+          {@html renderBlockText(get(article, "content.content", []))}
+        </div>
+
+        <!-- FOOTNOTES -->
+        {#if get(article, "content.content", false) && extractFootnotes(article.content.content)}
+          <div
+            class:hidden={extractFootnotes(article.content.content).length ===
+              0}
+            class="footnotes"
+          >
+            <div class="footnotes-header">NOTER</div>
+            <ol>
+              {#each extractFootnotes(article.content.content) as footnote}
+                <li id={"note-" + footnote._key}>
+                  {@html renderBlockText(get(footnote, "content.content", []))}
+                  <span
+                    class="back-link"
+                    on:click={e => {
+                      let backLinkTarget = document.querySelector(
+                        "#" + "link-" + footnote._key
+                      )
+                      // console.log('backLinkTarget', backLinkTarget)
+                      if (backLinkTarget) {
+                        backLinkTarget.scrollIntoView({ behavior: "smooth" })
+                      }
+                    }}>↩</span
+                  >
+                </li>
+              {/each}
+            </ol>
           </div>
         {/if}
-      </div>
-
-      <div class="block main">
-        {@html renderBlockText(get(article, "content.content", []))}
-      </div>
-
-      <!-- FOOTNOTES -->
-      {#if get(article, "content.content", false) && extractFootnotes(article.content.content) }
-        <div class:hidden={extractFootnotes(article.content.content).length === 0} class="footnotes">
-          <div class='footnotes-header'>NOTER</div>
-          <ol>
-            {#each extractFootnotes(article.content.content) as footnote}
-              <li id={'note-' + footnote._key}>
-                {@html renderBlockText(get(footnote, 'content.content', []))}
-                <span class='back-link' on:click={e => {
-                  let backLinkTarget = document.querySelector('#' + 'link-' + footnote._key)
-                  // console.log('backLinkTarget', backLinkTarget)
-                  if(backLinkTarget) {
-                    backLinkTarget.scrollIntoView({behavior: "smooth"});
-                  }
-                }}>↩</span>
-              </li>
-            {/each}
-          </ol>
-        </div>
-      {/if}
-
-      {#if get(article, "zoomableSlideshowLayout", false)}
-        <div class="block full">
-          <Slideshow id={index} zoomable slides={get(article, "slideshow", [])} />
-        </div>
       {/if}
 
       {#if index < $currentArticles.length - 1}
@@ -107,8 +144,13 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
-            console.log('nav')
-            navigate('/' + $currentIssueSlug + '/' + get($currentArticles[index + 1], "slug.current", null))
+            console.log("nav")
+            navigate(
+              "/" +
+                $currentIssueSlug +
+                "/" +
+                get($currentArticles[index + 1], "slug.current", null)
+            )
           }}
         >
           <h2 class="title next">
@@ -122,7 +164,10 @@
     </div>
 
     {#if !get(article, "zoomableSlideshowLayout", false)}
-      <div class="col slideshow-regular" class:slideshow={get(article, "slideshow", [])}>
+      <div
+        class="col slideshow-regular"
+        class:slideshow={get(article, "slideshow", [])}
+      >
         {#if get(article, "slideshow", [])}
           <Slideshow id={index} slides={get(article, "slideshow", [])} />
         {/if}
@@ -160,7 +205,7 @@
     flex-flow: row nowrap;
     scroll-snap-align: start;
 
-    @include screen-size ("phone") {
+    @include screen-size("phone") {
       height: calc(100vh - #{$menu_button_width});
       flex-flow: column nowrap;
       height: auto;
@@ -199,7 +244,6 @@
 
           &.full {
             width: 100%;
-
           }
 
           &.main {
@@ -250,7 +294,7 @@
     padding-bottom: 4em;
     width: 100%;
     overflow: hidden;
-    
+
     @include screen-size("phone") {
       padding-bottom: 0;
     }

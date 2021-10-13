@@ -12,7 +12,6 @@
   import { Swiper, SwiperSlide } from "swiper/svelte"
   import "swiper/swiper-bundle.css"
   import "swiper/components/pagination/pagination.min.css"
-  import { window } from "lodash/_freeGlobal"
 
   // *** SETUP
   SwiperCore.use([Pagination])
@@ -142,7 +141,6 @@
             ref={slide._key}
             class="zoom-container"
             class:zoomed
-            style="height: {0.75 * vh}px;"
             on:mousemove={scrollThrough}
           >
             <img
@@ -191,6 +189,14 @@
   .slideshow {
     height: 100%;
 
+    &.zoomable {
+      @include screen-size("small") {
+        height: 70%;
+        margin-top: 10px;
+        margin-bottom: 100px;
+      }
+    }
+
     .zoomLevel {
       padding-top: $margin_xs;
 
@@ -222,7 +228,11 @@
     }
 
     :global(.swiper-wrapper) {
-      height: calc(100vh - #{$margin * 2});
+      height: calc(90vh - #{$margin * 2});
+
+      @include screen-size("small") {
+        height: 100%;
+      }
     }
 
     :global(.swiper-slide) {
@@ -248,6 +258,10 @@
       overflow: scroll;
       cursor: zoom-in;
       scroll-behavior: unset;
+      margin-top: 10px;
+      margin-left: 10px;
+      height: calc(100% - 20px);
+      width: calc(100% - 20px);
     }
 
     :global(.slide-img) {
@@ -305,5 +319,9 @@
 
     @include screen-size("small") {
     }
+  }
+
+  :global(.zoomable .swiper-slide) {
+    background: #f2f2f2;
   }
 </style>
