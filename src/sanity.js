@@ -14,6 +14,7 @@ const SANITY_ID = 'yesqrmft'
 export const client = sanityClient({
     projectId: SANITY_ID,
     dataset: 'production',
+    // token: 'skJRkQjCJnbjLzbfSGLLcyWK94ho2T4ay0pvjPXUbih336k1DvVpk3q1pQqmHjks2lvHRQqzVWcNU9LtFiHzBdR4rCTsdzNfkl8kKlwurtZjgQiW2b0QZzasmAukfBNK9rBVHUR9omcBLVJDZRN80rwT02h79Y3wgjKXpNH1Tklv2NAgXttP', // or leave blank to be anonymous user
     useCdn: true // `false` if you want to ensure fresh data
 })
 

@@ -88,28 +88,33 @@
 
   // Checks in zoom containers if the original file is big enough, else falls back to a double vw image
   const zoomImgUrl = asset => {
-    // Setup regex for original
-    const original = urlFor(asset).quality(90).url()
-    const originalDims = /-(\d+)x(\d+)/
+    try {
+      // Setup regex for original
+      const original = urlFor(asset).quality(90).url()
+      const originalDims = /-(\d+)x(\d+)/
 
-    // Setup regex for Double
-    const double = urlFor(asset)
-      .width(vw * 2)
-      .quality(90)
-      .url()
-    const doubleDims = /w=(\d+)/
+      // Setup regex for Double
+      const double = urlFor(asset)
+        .width(vw * 2)
+        .quality(90)
+        .url()
+      const doubleDims = /w=(\d+)/
 
-    const originalDimensions = original.match(originalDims)
-    const doubleDimensions = double.match(doubleDims)
+      const originalDimensions = original.match(originalDims)
+      const doubleDimensions = double.match(doubleDims)
 
-    const originalW = originalDimensions[1]
-    const doubleW = doubleDimensions[1]
+      const originalW = originalDimensions[1]
+      const doubleW = doubleDimensions[1]
 
-    // Compare sizes...
-    if (Number(originalW) > Number(doubleW)) {
-      return original
-    } else {
-      return double
+      // Compare sizes...
+      if (Number(originalW) > Number(doubleW)) {
+        return original
+      } else {
+        return double
+      }
+    } catch (err) {
+      console.log(err)
+      return ""
     }
   }
 </script>
@@ -146,6 +151,7 @@
             <img
               class="slide-img zoomable"
               class:zoomed
+              class:is-svg={get(slide, "asset._ref", "").includes("-svg")}
               src={zoomImgUrl(slide.asset)}
               alt={slide.asset.alt}
             />
@@ -268,6 +274,7 @@
       max-width: 100%;
       max-height: calc(100% - #{$margin * 2});
       padding-bottom: $margin_xs;
+      background: white;
     }
 
     :global(.slide-img.contain) {
@@ -302,6 +309,11 @@
       position: unset;
       left: unset;
       top: unset;
+    }
+
+    :global(.slide-img.is-svg.zoomed) {
+      width: 200vw;
+      height: auto;
     }
 
     .caption {
