@@ -287,6 +287,7 @@
 
   .article:last-child {
     margin-bottom: $menu_button_width * 2;
+    padding-bottom: 100px;
   }
 
   .footnotes {
