@@ -19,8 +19,8 @@
 
   $: {
     // Set the body to innerHeight, the visible part of the window height
-    document.documentElement.style.height = ih + 'px'
-    document.body.style.height = ih + 'px'
+    document.documentElement.style.height = ih + "px"
+    document.body.style.height = ih + "px"
   }
 
   onMount(() => {
@@ -48,10 +48,10 @@
   :global(*) {
     @include hide-scroll;
     &::selection {
-      background: rgba(230,230,230,1);
+      background: rgba(230, 230, 230, 1);
     }
     &::-moz-selection {
-      background: rgba(230,230,230,1);
+      background: rgba(230, 230, 230, 1);
     }
   }
 
@@ -132,4 +132,48 @@
     // }
   }
 
+  :global(figure) {
+    width: $text_width;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: $font_size_small;
+    line-height: $line-height;
+    font-family: $sans-stack;
+    margin-bottom: $line-height;
+    margin-top: $line-height;
+
+    .embed-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 720px;
+      width: 100%;
+      margin-bottom: 0.5em;
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    }
+
+    .soundcloud-container {
+      // height: 300px;
+      width: 100%;
+      overflow: hidden;
+      max-width: 100%;
+      margin-bottom: 0.5em;
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    }
+  }
 </style>

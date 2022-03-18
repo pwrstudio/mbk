@@ -234,6 +234,15 @@
       pointer-events: none;
     }
 
+    .bar-menu-item {
+      &:last-child {
+        @include screen-size("small") {
+          border-bottom: none;
+          padding-bottom: 56px;
+        }
+      }
+    }
+
     @include screen-size("phone") {
       margin-left: unset;
       padding-left: unset;
