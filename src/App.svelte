@@ -12,6 +12,11 @@
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
+  import MetaData from "./Components/MetaData.svelte"
+  import MetaDataNews from "./Components/MetaDataNews.svelte"
+
+  // *** STORES
+  import { newsExtended, extendedPost } from "./stores.js"
 
   // import smoothscroll from 'smoothscroll-polyfill'
 
@@ -23,6 +28,9 @@
     document.body.style.height = ih + "px"
   }
 
+  $: console.log("$newsExtended", $newsExtended)
+  $: console.log("$extendedPost", $extendedPost)
+
   onMount(() => {
     // kick off the polyfill!
     // smoothscroll.polyfill();
@@ -31,13 +39,27 @@
 
 <svelte:window bind:innerHeight={ih} />
 
+<!-- METADATA -->
+{#if $newsExtended && $extendedPost}
+  <MetaDataNews />
+{:else}
+  <MetaData />
+{/if}
+
 <Router>
   <!-- LANDING -->
   <Route path="/" component={Landing} />
+
+  <!-- SINGLE NEWS -->
+  <Route path="/nyhed/*" let:params>
+    <Landing {params} singleNews={true} />
+  </Route>
+
   <!-- SINGLE -->
   <Route path="/*" let:params>
     <Single {params} />
   </Route>
+
   <!-- 404 -->
   <Route component={Error404} />
 </Router>
@@ -141,7 +163,7 @@
     line-height: $line-height;
     font-family: $sans-stack;
     margin-bottom: $line-height;
-    margin-top: $line-height;
+    margin-top: 0;
 
     .embed-container {
       position: relative;

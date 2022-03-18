@@ -14,7 +14,7 @@
   // import isArray from "lodash/isArray"
 
   // *** COMPONENTS
-  import MetaData from "./MetaData.svelte"
+  // import MetaData from "./MetaData.svelte"
   import Slideshow from "./SlideShow.svelte"
   import Meta from "./Meta.svelte"
   import ZoomMeta from "./ZoomMeta.svelte"
@@ -46,8 +46,8 @@
   }
 </script>
 
-<!-- METADATA -->
-<MetaData />
+<!-- METADATA
+<MetaData /> -->
 
 {#each $currentArticles as article, index}
   <div on:click={closeMenu} class="article" id={article.slug.current}>
