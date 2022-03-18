@@ -290,6 +290,7 @@
 
       .share {
         float: right;
+        padding-left: 10px;
       }
 
       .news-item {
