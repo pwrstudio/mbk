@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   import Fa from "svelte-fa"
+  import copy from "copy-to-clipboard"
   import {
     faFacebookSquare,
     faLinkedin,
@@ -14,6 +15,8 @@
   import {
     faEnvelope,
     faShareAltSquare,
+    faLink,
+    faCheck,
   } from "@fortawesome/free-solid-svg-icons"
 
   // *** PROPS
@@ -42,6 +45,11 @@
         .catch(error => console.log("Error sharing", error))
     }
   }
+  let copied = false
+  const copyLink = () => {
+    copy(URL)
+    copied = true
+  }
 </script>
 
 <div class="social">
@@ -57,6 +65,13 @@
   <a href={EMAIL} target="_blank">
     <Fa icon={faEnvelope} />
   </a>
+  <span class="copy" on:click={copyLink}>
+    {#if copied}
+      <Fa icon={faCheck} />
+    {:else}
+      <Fa icon={faLink} />
+    {/if}
+  </span>
   <!-- Native share dialog if available (mobile) -->
   {#if navigator.share}
     <span on:click={nativeShare} target="_blank">
@@ -71,8 +86,16 @@
   .social {
     white-space: nowrap;
 
+    .copy {
+      cursor: pointer;
+    }
+
     :global(svg) {
       height: 1.3em !important;
+    }
+
+    :global(.copy svg) {
+      height: 1.1em !important;
     }
 
     @include screen-size("small") {

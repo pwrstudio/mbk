@@ -13,7 +13,6 @@
   // *** COMPONENTS
   import CoverSlider from "../Components/CoverSlider.svelte"
   import Menu from "../Components/Menu.svelte"
-  import MetaData from "../Components/MetaData.svelte"
 
   // *** STORES
   import {
@@ -26,6 +25,8 @@
 
   // *** PROPS
   export let location
+  export let params = false
+  export let singleNews = false
 
   // *** CONSTANTS
   const query = "*[_type == 'issue'] | order(publicationDate)"
@@ -51,12 +52,12 @@
 
 <svelte:window bind:innerWidth={vw} />
 
-<!-- METADATA -->
-<MetaData />
-
 {#await issues then issues}
   <div class="menus">
-    <Menu landing={true} />
+    <Menu
+      landing={true}
+      singleNews={singleNews && params["*"] ? params["*"] : false}
+    />
   </div>
 
   {#if vw < 768 && $menuActive}

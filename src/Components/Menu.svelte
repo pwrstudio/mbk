@@ -8,6 +8,7 @@
   // *** IMPORTS
   import { links } from "svelte-routing"
   import { loadData } from "../sanity.js"
+  import get from "lodash/get.js"
 
   import { getContext, onMount, afterUpdate } from "svelte"
   import { ROUTER } from "svelte-routing/src/contexts"
@@ -23,6 +24,7 @@
     menuContent,
     tableOfContentsActive,
     newsExtended,
+    extendedPost,
   } from "../stores.js"
 
   // *** CONSTANTS
@@ -37,6 +39,7 @@
 
   // *** PROPS
   export let landing = false
+  export let singleNews = false
 
   // *** VARIABLES
   let title = ""
@@ -88,6 +91,18 @@
   news.then(news => {
     data.news = news
     $menuContent = data.news
+    if (singleNews) {
+      // console.log("singleNews slug:", singleNews)
+      // console.log("news", news)
+      const currentNewsItem = news.find(
+        newsItem => get(newsItem, "slug.current", "") === singleNews
+      )
+      // console.log("currentNewsItem", currentNewsItem)
+      if (currentNewsItem) {
+        newsExtended.set(true)
+        extendedPost.set(currentNewsItem)
+      }
+    }
   })
 
   about.then(about => {

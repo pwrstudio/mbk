@@ -89,12 +89,20 @@
           <!-- SHARE -->
           <div class="share">
             <!-- SHARING-->
-            <Share articleTitle={$extendedPost.title} />
+            <Share
+              articleTitle={$extendedPost.title}
+              articleSlug={$extendedPost.slug.current}
+              issueSlug={"nyhed"}
+            />
           </div>
           <!-- CONTENT -->
           {#if has($extendedPost, "extendedContent.content") && isArray($extendedPost.extendedContent.content)}
             <div class="paragraph">
               {@html renderBlockText($extendedPost.extendedContent.content)}
+            </div>
+          {:else if has($extendedPost, "content.content") && isArray($extendedPost.content.content)}
+            <div class="paragraph">
+              {@html renderBlockText($extendedPost.content.content)}
             </div>
           {/if}
         </div>
@@ -140,19 +148,19 @@
               </div>
             {/if}
             <!-- READ-MORE -->
-            {#if block.extendedView}
-              <div
-                class="read-more"
-                on:click={e => {
-                  extendedPost.set(block)
-                  tableOfContentsActive.set(false)
-                  newsExtended.set(true)
-                }}
-              >
-                <ArrowRight />
-              </div>
-              <!-- SCROLL-DOWN -->
-            {:else}
+            <!-- {#if block.extendedView} -->
+            <div
+              class="read-more"
+              on:click={e => {
+                extendedPost.set(block)
+                tableOfContentsActive.set(false)
+                newsExtended.set(true)
+              }}
+            >
+              <ArrowRight />
+            </div>
+            <!-- SCROLL-DOWN -->
+            <!-- {:else}
               <div
                 class="scroll-down"
                 on:click={e => {
@@ -163,7 +171,7 @@
               >
                 <ArrowDown />
               </div>
-            {/if}
+            {/if} -->
           </div>
         </div>
       {/each}
@@ -274,10 +282,10 @@
 
     &.extended {
       .image {
-        // max-width: 100%;
         mix-blend-mode: unset;
-        max-height: unset;
+        max-height: 500px;
         width: 100%;
+        object-fit: cover;
       }
 
       .share {
