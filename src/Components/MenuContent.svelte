@@ -36,6 +36,20 @@
   afterUpdate(() => {
     el.scrollTo(0, 0)
   })
+
+  const closeExtendedNews = () => {
+    let targetNewsItem = $extendedPost.slug.current
+    extendedPost.set({})
+    newsExtended.set(false)
+    window.setTimeout(() => {
+      let targetNewsItemEl = document.querySelector(`#${targetNewsItem}`)
+      if (targetNewsItemEl) {
+        targetNewsItemEl.scrollIntoView({
+          block: "start",
+        })
+      }
+    }, 200)
+  }
 </script>
 
 <svelte:window bind:innerHeight={vh} bind:innerWidth={vw} />
@@ -52,13 +66,7 @@
     <!-- LOGO -->
     {#if $newsExtended}
       <div class="news-item">
-        <div
-          class="close-extended"
-          on:click={e => {
-            extendedPost.set({})
-            newsExtended.set(false)
-          }}
-        >
+        <div class="close-extended" on:click={closeExtendedNews}>
           <ArrowLeft />
         </div>
         <div class="content">

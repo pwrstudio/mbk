@@ -28,9 +28,6 @@
     document.body.style.height = ih + "px"
   }
 
-  $: console.log("$newsExtended", $newsExtended)
-  $: console.log("$extendedPost", $extendedPost)
-
   onMount(() => {
     // kick off the polyfill!
     // smoothscroll.polyfill();
