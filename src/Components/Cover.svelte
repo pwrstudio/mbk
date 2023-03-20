@@ -23,7 +23,7 @@
 
 <a
   class="cover"
-  class:empty={get(issue, 'tableOfContents', []).length == 0}
+  class:empty={get(issue, "tableOfContents", []).length == 0}
   style="transform: scale({scale});"
   use:links
   in:fade
@@ -44,7 +44,7 @@
         .quality(90)
         .auto("format")
         .url()}
-      alt={issue.mainImage.alt}
+      alt={get(issue, "mainImag.alt", "")}
     />
   </div>
 </a>
@@ -63,7 +63,7 @@
     justify-content: flex-end;
     background-color: $white;
     position: relative;
-    
+
     &.empty {
       pointer-events: none;
     }

@@ -153,7 +153,7 @@
               class:zoomed
               class:is-svg={get(slide, "asset._ref", "").includes("-svg")}
               src={zoomImgUrl(slide.asset)}
-              alt={slide.asset.alt}
+              alt={get(slide, "asset.alt", "")}
             />
           </div>
         {:else}
@@ -163,7 +163,7 @@
               class:contain={!get(slide, "cover")}
               class:cover={get(slide, "cover")}
               src={urlFor(slide.asset).quality(90).width(1200).url()}
-              alt={slide.asset.alt}
+              alt={get(slide, "asset.alt", "")}
             />
             {#if slide.caption}
               <div class="caption">
