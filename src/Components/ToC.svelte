@@ -160,6 +160,14 @@
           </div>
         </li>
       {/each}
+      <li
+        class="bar-menu-item title-item link"
+        on:click={e => {
+          window.location = "/pdf-issue/" + $currentIssueSlug
+        }}
+      >
+        <div class="title-text pdf">Hent udgaven som PDF</div>
+      </li>
     </ul>
 
     {#if vw < 768}
@@ -376,5 +384,13 @@
   .title-text {
     text-transform: uppercase;
     margin-bottom: 5px;
+  }
+
+  .pdf {
+    &:before {
+      display: inline-block;
+      content: "→";
+      margin-right: 10px;
+    }
   }
 </style>
