@@ -17,6 +17,7 @@
     faShareAltSquare,
     faLink,
     faCheck,
+    faFilePdf,
   } from "@fortawesome/free-solid-svg-icons"
 
   // *** PROPS
@@ -25,6 +26,7 @@
   export let articleSlug = ""
 
   // SHARING LINKS
+  const PDF_URL = "/pdf-article/" + articleSlug
   const URL =
     "https://bygningskunstogkultur.dk/" + issueSlug + "/" + articleSlug
   const LINKEDIN = "https://www.linkedin.com/shareArticle?mini=true&url=" + URL
@@ -53,6 +55,9 @@
 </script>
 
 <div class="social">
+  <a href={PDF_URL} target="_blank">
+    <Fa icon={faFilePdf} />
+  </a>
   <a href={FACEBOOK} target="_blank">
     <Fa icon={faFacebookSquare} />
   </a>

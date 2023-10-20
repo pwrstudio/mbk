@@ -7,13 +7,15 @@
 
   // IMPORTS
   import { onMount } from "svelte"
-  import { Router, Route, Link } from "svelte-routing"
+  import { Router, Route } from "svelte-routing"
   // COMPONENTS
   import Landing from "./Routes/Landing.svelte"
   import Single from "./Routes/Single.svelte"
   import Error404 from "./Routes/Error404.svelte"
   import MetaData from "./Components/MetaData.svelte"
   import MetaDataNews from "./Components/MetaDataNews.svelte"
+  import ArticlePdfGen from "./Routes/ArticlePdfGen.svelte"
+  import IssuePdfGen from "./Routes/IssuePdfGen.svelte"
 
   // *** STORES
   import { newsExtended, extendedPost } from "./stores.js"
@@ -50,6 +52,16 @@
   <!-- SINGLE NEWS -->
   <Route path="/nyhed/*" let:params>
     <Landing {params} singleNews={true} />
+  </Route>
+
+  <!-- PDF GEN: SINGLE ARTICLE -->
+  <Route path="/pdf-article/*" let:params>
+    <ArticlePdfGen {params} />
+  </Route>
+
+  <!-- PDF GEN: ISSUE ARTICLE -->
+  <Route path="/pdf-issue/*" let:params>
+    <IssuePdfGen {params} />
   </Route>
 
   <!-- SINGLE -->
