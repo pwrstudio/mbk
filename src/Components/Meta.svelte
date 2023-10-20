@@ -16,6 +16,8 @@
   export let byline = ""
   export let issueSlug = ""
   export let articleSlug = ""
+  export let articleReadingTime = 0
+  export let articleAuthor = ""
 </script>
 
 <div class="block meta" in:fade>
@@ -36,6 +38,16 @@
   <div class="byline">
     <div class="text">
       {@html renderBlockText(byline)}
+
+      {#if articleAuthor}
+        <div class="author">
+          <p class="normal">{articleAuthor}</p>
+        </div>
+      {/if}
+
+      <div class="reading-time">
+        <p class="normal">{articleReadingTime} min</p>
+      </div>
     </div>
 
     <!-- SHARING-->
@@ -87,5 +99,9 @@
     :global(p) {
       margin: 0;
     }
+  }
+
+  .author {
+    margin-top: 1em;
   }
 </style>

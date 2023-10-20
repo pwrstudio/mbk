@@ -3,6 +3,7 @@ import blocksToHtml from '@sanity/block-content-to-html'
 import imageUrlBuilder from '@sanity/image-url'
 import getVideoId from "get-video-id";
 import has from 'lodash/has'
+import get from "lodash/get"
 
 const tracer = x => {
     console.dir(x)
@@ -189,4 +190,15 @@ export const loadData = async (query, params) => {
     } catch (err) {
         return Promise.reject(new Error(404));
     }
+}
+
+export const calculateArticleReadingTime = article => {
+    const blockContent = get(article, "content.content", [])
+    const wordsPerMinute = 200 // average reading speed
+    const text = toPlainText(blockContent)
+    const words = text.split(/\s/g).length // split by spaces
+    const minutes = words / wordsPerMinute
+    const readTime = Math.ceil(minutes)
+    console.log(article.title, words, readTime)
+    return readTime
 }

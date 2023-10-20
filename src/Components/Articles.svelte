@@ -7,7 +7,7 @@
 
   // *** IMPORTS
   import { navigate } from "svelte-routing"
-  import { renderBlockText } from "../sanity.js"
+  import { calculateArticleReadingTime, renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
   import get from "lodash/get"
   import flatMap from "lodash/flatMap"
@@ -84,6 +84,8 @@
           articleTitle={get(article, "title", "")}
           byline={get(article, "byline.content", [])}
           articleSlug={get(article, "slug.current", "")}
+          articleAuthor={get(article, "author", "")}
+          articleReadingTime={calculateArticleReadingTime(article)}
           issueSlug={get($currentPost, "slug.current", "")}
         />
 

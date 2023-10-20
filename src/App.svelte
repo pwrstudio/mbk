@@ -195,4 +195,8 @@
       }
     }
   }
+
+  :global(blockquote) {
+    line-height: 1.5em;
+  }
 </style>

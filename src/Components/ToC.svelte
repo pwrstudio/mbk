@@ -11,6 +11,7 @@
   import { tick } from "svelte"
   import get from "lodash/get"
   import { scrollBack } from "../global"
+  import { calculateArticleReadingTime } from "../sanity"
 
   let inTransition = false
 
@@ -128,7 +129,7 @@
   >
     <ul class="bar-menu t-o-c" use:links>
       <li
-        class="bar-menu-item title link"
+        class="bar-menu-item title-item link"
         on:click={e => {
           console.log("nav")
           navigate("/")
@@ -138,15 +139,25 @@
       </li>
       {#each $tableOfContents as article, index}
         <li
-          class="bar-menu-item title link"
+          class="bar-menu-item title-item link"
           class:active={$currentArticleSlug ===
             get(article, "slug.current", "")}
           on:click={e => {
             goToArticle(article)
           }}
         >
-          {`${index + 1}. `}
-          {get(article, "title", "")}
+          <div class="title-text">
+            {`${index + 1}. `}
+            {get(article, "title", "")}
+          </div>
+          {#if article.author}
+            <div class="author">
+              {article.author}
+            </div>
+          {/if}
+          <div class="reading-time">
+            {calculateArticleReadingTime(article) + " min"}
+          </div>
         </li>
       {/each}
     </ul>
@@ -255,7 +266,7 @@
     .bar-button {
       justify-content: start;
 
-      .title {
+      .title-item {
         margin-bottom: $title_letter_spacing;
 
         &:not(.indhold) {
@@ -360,5 +371,10 @@
         }
       }
     }
+  }
+
+  .title-text {
+    text-transform: uppercase;
+    margin-bottom: 5px;
   }
 </style>
