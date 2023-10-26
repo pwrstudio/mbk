@@ -26,8 +26,6 @@
 
   const TEXT_LIMIT = 400
   let mainTextLength = toPlainText(mainText).length
-  console.log(mainText)
-  console.log(mainTextLength)
 
   function splitTextBlocks(text) {
     let array1 = []
@@ -58,38 +56,6 @@
 
   // Example usage:
   const [shortText, extendedText] = splitTextBlocks(mainText)
-
-  // // Function to set the styles based on main-text properties
-  // function setStylesBasedOnMainText() {
-  //   // Get the elements
-  //   const mainText = document.querySelector(".main-text")
-  //   const extendedText = document.querySelector("#extended-text")
-
-  //   // Get the bounding rectangle of mainText to get its position and dimensions
-  //   const mainTextRect = mainText.getBoundingClientRect()
-
-  //   // Calculate the desired properties
-  //   const topPosition = mainTextRect.bottom
-  //   const leftPosition = mainTextRect.left
-  //   const width = mainTextRect.width
-  //   const height = window.innerHeight - topPosition
-
-  //   // Apply the styles to extendedText
-  //   extendedText.style.top = `${topPosition}px`
-  //   extendedText.style.left = `${leftPosition}px`
-  //   extendedText.style.width = `${width}px`
-  //   extendedText.style.height = `${height}px`
-  // }
-
-  // Testing: http://localhost:5000/nr-2-2021/opmaling-af-gjorslev-gods
-
-  // onMount(() => {
-  //   // Call the function initially
-  //   setStylesBasedOnMainText()
-
-  //   // Add a window resize listener
-  //   window.addEventListener("resize", setStylesBasedOnMainText)
-  // })
 </script>
 
 <div class="zoom-header-container">
@@ -125,20 +91,13 @@
         {readMoreActive ? "READ LESS" : "READ MORE"}
       </div>
       {#if readMoreActive}
-        {@html renderBlockText(extendedText)}
+        <div class="extended-text" in:fade>
+          {@html renderBlockText(extendedText)}
+        </div>
       {/if}
     {/if}
   </div>
 </div>
-
-<!-- <div
-  class="extended-text"
-  id="extended-text"
-  class:active={readMoreActive}
-  in:fade
->
-  {@html renderBlockText(extendedText)}
-</div> -->
 
 <style lang="scss">
   @import "../variables.scss";
@@ -221,6 +180,7 @@
     text-decoration: underline;
     cursor: pointer;
     margin-bottom: 1em;
+    user-select: none;
 
     &:hover {
       text-decoration: none;
