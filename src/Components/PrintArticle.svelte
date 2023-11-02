@@ -75,16 +75,18 @@
   {/if}
   <!-- IMAGES -->
   <div class="images">
-    {#each post.slideshow as slide}
-      <div class="print-img">
-        <img src={urlFor(slide.asset).quality(90).width(1200).url()} />
-        {#if slide.caption}
-          <div class="caption">
-            {@html renderBlockText(get(slide, "caption.content", []))}
-          </div>
-        {/if}
-      </div>
-    {/each}
+    {#if post.slideshow && post.slideshow.length > 0}
+      {#each post.slideshow as slide}
+        <div class="print-img">
+          <img src={urlFor(slide.asset).quality(90).width(1200).url()} />
+          {#if slide.caption}
+            <div class="caption">
+              {@html renderBlockText(get(slide, "caption.content", []))}
+            </div>
+          {/if}
+        </div>
+      {/each}
+    {/if}
   </div>
 </div>
 
