@@ -106,7 +106,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../../variables.scss";
+  @import "../variables.scss";
 
   @page {
     @bottom-center {

@@ -20,7 +20,7 @@
 
   const extractFootnotes = mainContent => {
     let a = flatMap(
-      mainContent.filter(c => c._type == "block").map(x => x.markDefs)
+      mainContent.filter(c => c._type == "block").map(x => x.markDefs),
     )
     let footnotes = a.filter(x => x._type === "footnote")
     // console.log(footnotes.length)
@@ -91,7 +91,7 @@
 </div>
 
 <style lang="scss">
-  @import "../../variables.scss";
+  @import "../variables.scss";
 
   .print-acticle {
     @media print {

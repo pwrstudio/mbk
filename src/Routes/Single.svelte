@@ -129,7 +129,7 @@
             "/" +
               $currentIssueSlug +
               "/" +
-              result.tableOfContents[0].slug.current
+              result.tableOfContents[0].slug.current,
           )
         }
       } catch (error) {
@@ -163,7 +163,7 @@
 {/await}
 
 <style lang="scss">
-  @import "../../variables.scss";
+  @import "../variables.scss";
 
   :global(.pointer-none) {
     pointer-events: none;
