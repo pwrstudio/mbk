@@ -6,9 +6,12 @@
   // # # # # # # # # # # # # #
   import { fade } from "svelte/transition"
   import { renderBlockText, toPlainText } from "../sanity.js"
+  import get from "lodash/get"
+  import flatMap from "lodash/flatMap"
 
   // *** COMPONENTS
   import Share from "./Share.svelte"
+  import { onMount } from "svelte"
 
   // *** PROPS
   export let title = ""
@@ -17,6 +20,8 @@
   export let issueSlug = ""
   export let articleSlug = ""
   export let mainText = ""
+
+  console.log("mainText", mainText)
 
   let readMoreActive = false
 
@@ -27,35 +32,86 @@
   const TEXT_LIMIT = 400
   let mainTextLength = toPlainText(mainText).length
 
+  // function splitTextBlocks(text) {
+  //   let array1 = []
+  //   let array2 = []
+  //   let currentLength = 0
+
+  //   console.log("text", text)
+
+  //   // Always take the first block and add it to array1
+  //   if (text.length > 0) {
+  //     array1.push(text[0])
+  //     currentLength += text[0].children[0].text.length
+  //   }
+
+  //   // Start the loop from the second block
+  //   for (let i = 1; i < text.length; i++) {
+  //     let block = text[i]
+  //     let blockLength = block.children[0].text.length
+
+  //     console.log("blockLength", blockLength)
+
+  //     if (currentLength + blockLength <= TEXT_LIMIT) {
+  //       array1.push(block)
+  //       currentLength += blockLength
+  //     } else {
+  //       array2.push(block)
+  //     }
+  //   }
+
+  //   return [array1, array2]
+  // }
+
   function splitTextBlocks(text) {
-    let array1 = []
-    let array2 = []
-    let currentLength = 0
+    let shortText = []
+    let extendedText = []
 
-    // Always take the first block and add it to array1
+    // Check if there is at least one block to add to shortText
     if (text.length > 0) {
-      array1.push(text[0])
-      currentLength += text[0].children[0].text.length
+      shortText.push(text[0]) // Add the first text block to shortText
     }
 
-    // Start the loop from the second block
+    // Add all remaining blocks to extendedText
     for (let i = 1; i < text.length; i++) {
-      let block = text[i]
-      let blockLength = block.children[0].text.length
-
-      if (currentLength + blockLength <= TEXT_LIMIT) {
-        array1.push(block)
-        currentLength += blockLength
-      } else {
-        array2.push(block)
-      }
+      extendedText.push(text[i])
     }
 
-    return [array1, array2]
+    return [shortText, extendedText]
   }
 
-  // Example usage:
   const [shortText, extendedText] = splitTextBlocks(mainText)
+
+  // Extract the footnotes from the currently active article, to list at bottom
+  const extractFootnotes = mainContent => {
+    let a = flatMap(
+      mainContent.filter(c => c._type == "block").map(x => x.markDefs),
+    )
+    let footnotes = a.filter(x => x._type === "footnote")
+    return footnotes
+  }
+
+  // Function to be called when the hash changes
+  function onHashChange() {
+    const newHash = window.location.hash.substring(1) // Remove the '#' from the hash
+    const targetElement = document.getElementById(newHash)
+
+    if (targetElement) {
+      // Smoothly scroll to the element
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    } else {
+      console.log("Element not found for hash: " + newHash)
+    }
+  }
+
+  onMount(() => {
+    // The hashchange
+    // Add an event listener for the hashchange event
+    window.addEventListener("hashchange", onHashChange)
+  })
 </script>
 
 <div class="zoom-header-container">
@@ -93,6 +149,33 @@
       {#if readMoreActive}
         <div class="extended-text" in:fade>
           {@html renderBlockText(extendedText)}
+
+          <!-- FOOTNOTES -->
+          <div
+            class:hidden={extractFootnotes(mainText).length === 0}
+            class="footnotes"
+          >
+            <div class="footnotes-header">NOTER</div>
+            <ol>
+              {#each extractFootnotes(mainText) as footnote}
+                <li id={"note-" + footnote._key}>
+                  {@html renderBlockText(get(footnote, "content.content", []))}
+                  <span
+                    class="back-link"
+                    on:click={e => {
+                      let backLinkTarget = document.querySelector(
+                        "#" + "link-" + footnote._key,
+                      )
+                      // console.log('backLinkTarget', backLinkTarget)
+                      if (backLinkTarget) {
+                        backLinkTarget.scrollIntoView({ behavior: "smooth" })
+                      }
+                    }}>↩</span
+                  >
+                </li>
+              {/each}
+            </ol>
+          </div>
         </div>
       {/if}
     {/if}

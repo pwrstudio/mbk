@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # #
 
   // *** IMPORTS
+  import { onMount } from "svelte"
   import { navigate } from "svelte-routing"
   import { calculateArticleReadingTime, renderBlockText } from "../sanity.js"
   import ArrowDown from "./Graphics/ArrowDown.svelte"
@@ -34,7 +35,7 @@
   // Extract the footnotes from the currently active article, to list at bottom
   const extractFootnotes = mainContent => {
     let a = flatMap(
-      mainContent.filter(c => c._type == "block").map(x => x.markDefs)
+      mainContent.filter(c => c._type == "block").map(x => x.markDefs),
     )
     let footnotes = a.filter(x => x._type === "footnote")
     // console.log(footnotes.length)
@@ -44,6 +45,27 @@
   const closeMenu = () => {
     menuActive.set(false)
   }
+  // Function to be called when the hash changes
+  function onHashChange() {
+    const newHash = window.location.hash.substring(1) // Remove the '#' from the hash
+    const targetElement = document.getElementById(newHash)
+
+    if (targetElement) {
+      // Smoothly scroll to the element
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    } else {
+      console.log("Element not found for hash: " + newHash)
+    }
+  }
+
+  onMount(() => {
+    // The hashchange
+    // Add an event listener for the hashchange event
+    window.addEventListener("hashchange", onHashChange)
+  })
 </script>
 
 <!-- METADATA
@@ -56,7 +78,7 @@
       class:zoomableSlideshowLayout={get(
         article,
         "zoomableSlideshowLayout",
-        false
+        false,
       )}
     >
       {#if get(article, "zoomableSlideshowLayout", false)}
@@ -126,7 +148,7 @@
                     class="back-link"
                     on:click={e => {
                       let backLinkTarget = document.querySelector(
-                        "#" + "link-" + footnote._key
+                        "#" + "link-" + footnote._key,
                       )
                       // console.log('backLinkTarget', backLinkTarget)
                       if (backLinkTarget) {
@@ -151,7 +173,7 @@
               "/" +
                 $currentIssueSlug +
                 "/" +
-                get($currentArticles[index + 1], "slug.current", null)
+                get($currentArticles[index + 1], "slug.current", null),
             )
           }}
         >
