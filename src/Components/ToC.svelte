@@ -42,7 +42,7 @@
 
   $: {
     if (!!$tableOfContents) {
-      console.log($tableOfContents)
+      // console.log($tableOfContents)
       const max = 5
       // const max = Math.min(5, $tableOfContents.length)
       let placed = 0
@@ -81,7 +81,7 @@
 
   $: {
     if ((!$tableOfContentsActive && scrollParent) || (scrollParent && peek)) {
-      console.log("reset")
+      // console.log("reset")
       // scrollParent.scrollTop = 0
     }
   }
@@ -131,7 +131,7 @@
       <li
         class="bar-menu-item title-item link"
         on:click={e => {
-          console.log("nav")
+          // console.log("nav")
           navigate("/")
         }}
       >
@@ -180,9 +180,12 @@
             class="title articleNumber"
             class:active={$hash === get(article, "slug.current", "")}
             on:click={e => {
-              console.log("nav")
+              // console.log("nav")
               navigate(
-                "/" + $currentIssueSlug + "/" + get(article, "slug.current", "")
+                "/" +
+                  $currentIssueSlug +
+                  "/" +
+                  get(article, "slug.current", ""),
               )
             }}
           >
@@ -199,7 +202,7 @@
           <li
             class="bullet"
             on:click={e => {
-              console.log("nav")
+              // console.log("nav")
               navigate("/")
             }}
           >
@@ -220,7 +223,7 @@
                   "/" +
                     $currentIssueSlug +
                     "/" +
-                    get(article, "slug.current", "")
+                    get(article, "slug.current", ""),
                 )
               }}
             >

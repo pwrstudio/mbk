@@ -13,9 +13,6 @@
   // PROPS
   export let block = {}
 
-  console.log("____ videoblock")
-  console.dir(block)
-
   const videoUrl =
     "https://cdn.sanity.io/files/yesqrmft/production/" +
     get(block, "videoFile.asset._ref", "")
@@ -40,7 +37,7 @@
     clearTimeout(showControlsTimeout)
     showControlsTimeout = setTimeout(
       () => (showControls = false),
-      controlsTimeoutDuration
+      controlsTimeoutDuration,
     )
     showControls = true
 
@@ -92,6 +89,64 @@
     }
   })
 </script>
+
+<figure
+  class="video"
+  class:fullwidth={block.fullWidth}
+  class:padded={has(block, "backgroundColor.hex")}
+  style={"background: " + get(block, "backgroundColor.hex", "transparent")}
+>
+  <video
+    class="video-player"
+    preload="metadata"
+    loop={true}
+    muted={block.autoPlay}
+    src={videoUrl}
+    on:mousemove={handleMousemove}
+    on:mousedown={handleMousedown}
+    bind:currentTime={time}
+    bind:duration
+    bind:paused
+    bind:this={videoEl}
+  />
+
+  {#if !block.autoPlay}
+    <div class="controls" style="opacity: {duration && showControls ? 1 : 0}">
+      <!-- <progress value={time / duration || 0} /> -->
+
+      <div class="buttons">
+        {#if paused}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="0.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-play play"
+          >
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+        {:else}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="0.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-pause pause"
+          >
+            <rect x="6" y="4" width="4" height="16" />
+            <rect x="14" y="4" width="4" height="16" />
+          </svg>
+        {/if}
+      </div>
+    </div>
+  {/if}
+</figure>
 
 <style lang="scss">
   @import "../../variables.scss";
@@ -201,57 +256,3 @@
     }
   }
 </style>
-
-<figure
-  class="video"
-  class:fullwidth={block.fullWidth}
-  class:padded={has(block, 'backgroundColor.hex')}
-  style={'background: ' + get(block, 'backgroundColor.hex', 'transparent')}>
-  <video
-    class="video-player"
-    preload="metadata"
-    loop={true}
-    muted={block.autoPlay}
-    src={videoUrl}
-    on:mousemove={handleMousemove}
-    on:mousedown={handleMousedown}
-    bind:currentTime={time}
-    bind:duration
-    bind:paused
-    bind:this={videoEl} />
-
-  {#if !block.autoPlay}
-    <div class="controls" style="opacity: {duration && showControls ? 1 : 0}">
-      <!-- <progress value={time / duration || 0} /> -->
-
-      <div class="buttons">
-        {#if paused}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="0.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-play play">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-        {:else}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="0.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-pause pause">
-            <rect x="6" y="4" width="4" height="16" />
-            <rect x="14" y="4" width="4" height="16" />
-          </svg>
-        {/if}
-      </div>
-    </div>
-  {/if}
-</figure>

@@ -48,12 +48,12 @@
     // __ first part is issue...
     issue = args[0]
     currentIssueSlug.set(issue)
-    console.log("$currentIssueSlug", $currentIssueSlug)
+    // console.log("$currentIssueSlug", $currentIssueSlug)
     // ... second part is article
     article = args[1]
     currentArticleSlug.set(article)
 
-    console.log(article)
+    // console.log(article)
     // Scroll to article on change
     let targetEl = document.querySelector("#" + article)
 
@@ -98,7 +98,7 @@
     // console.log('windowHash', windowHash)
 
     if (windowHash) {
-      console.log("HASH")
+      // console.log("HASH")
       try {
         const el = await elementReady(windowHash)
         // check if the hash is within the articles before
@@ -108,10 +108,10 @@
         const isArticle = hashes.includes(windowHash.replace("#", ""))
 
         if (isArticle) {
-          console.log("is article", el.offsetTop)
+          // console.log("is article", el.offsetTop)
           await tick()
           let targetEl = document.querySelector("#" + article)
-          console.log("targetEl", targetEl)
+          // console.log("targetEl", targetEl)
           if (targetEl) {
             targetEl.scrollIntoView()
           }
@@ -120,11 +120,9 @@
         console.error(error)
       }
     } else {
-      console.log("doing thissss")
       try {
         const result = await articlesData
         if (get(result, "tableOfContents[0].slug.current", false)) {
-          console.log("nav")
           navigate(
             "/" +
               $currentIssueSlug +

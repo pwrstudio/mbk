@@ -21,7 +21,7 @@
   export let articleSlug = ""
   export let mainText = ""
 
-  console.log("mainText", mainText)
+  // console.log("mainText", mainText)
 
   let readMoreActive = false
 

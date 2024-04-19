@@ -38,7 +38,8 @@
       mainContent.filter(c => c._type == "block").map(x => x.markDefs),
     )
     let footnotes = a.filter(x => x._type === "footnote")
-    // console.log(footnotes.length)
+    console.log("extractFootnotes", $currentPost)
+    console.log(footnotes)
     return footnotes
   }
 
@@ -168,7 +169,6 @@
           class="block link next"
           class:full={get(article, "zoomableSlideshowLayout", false)}
           on:click|preventDefault={e => {
-            console.log("nav")
             navigate(
               "/" +
                 $currentIssueSlug +

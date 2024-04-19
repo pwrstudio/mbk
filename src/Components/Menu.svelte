@@ -69,7 +69,6 @@
   }
 
   const toggleMenu = () => {
-    console.log("TOGGLE")
     menuActive.set(!$menuActive)
     newsExtended.set(false)
 
@@ -89,13 +88,15 @@
   }
 
   news.then(news => {
+    console.log("news", news)
     data.news = news
-    $menuContent = data.news
+    menuContent.set(data.news)
+    console.log($menuContent)
     if (singleNews) {
       // console.log("singleNews slug:", singleNews)
       // console.log("news", news)
       const currentNewsItem = news.find(
-        newsItem => get(newsItem, "slug.current", "") === singleNews
+        newsItem => get(newsItem, "slug.current", "") === singleNews,
       )
       // console.log("currentNewsItem", currentNewsItem)
       if (currentNewsItem) {

@@ -23,6 +23,8 @@
     newsExtended,
     extendedPost,
     tableOfContentsActive,
+    menuItemActive,
+    menuContent,
   } from "../stores.js"
 
   // *** PROPS
@@ -36,6 +38,15 @@
   afterUpdate(() => {
     el.scrollTo(0, 0)
   })
+
+  // !!!!! HACK
+  menuItemActive.set("news")
+
+  // $: console.log("menu-content", name, $menuItemActive, content)
+
+  // $: console.log($extendedPost)
+
+  // $: console.log($newsExtended)
 
   const closeExtendedNews = () => {
     let targetNewsItem = $extendedPost.slug.current
@@ -62,7 +73,7 @@
   <!--      -->
   <!-- NEWS -->
   <!--      -->
-  {#if name === "news" && isArray(content)}
+  {#if $menuItemActive === "news" && isArray($menuContent)}
     <!-- LOGO -->
     {#if $newsExtended}
       <div class="news-item">
@@ -73,6 +84,7 @@
           {#if has($extendedPost, "mainImage.asset")}
             <img
               class="image"
+              alt={$extendedPost.title}
               src={urlFor($extendedPost.mainImage.asset)
                 .width(400)
                 .quality(90)
@@ -117,7 +129,7 @@
       </div>
     {:else}
       <div class="kadk-logo">
-        <img src="/img/logo.svg" />
+        <img alt="logo" src="/img/logo.svg" />
       </div>
       {#each content as block, index}
         <div class="news-item" id={block.slug.current}>
@@ -128,6 +140,7 @@
             {#if has(block, "mainImage.asset")}
               <img
                 class="image"
+                alt={block.title}
                 src={urlFor(block.mainImage.asset)
                   .width(400)
                   .quality(90)
@@ -187,7 +200,7 @@
     <!--       -->
     <!-- ABOUT -->
     <!--       -->
-  {:else if name === "about"}
+  {:else if $menuItemActive === "about"}
     {#if has(content, "content.content") && isArray(content.content.content)}
       <div class="paragraph">
         {@html renderBlockText(content.content.content)}
@@ -196,7 +209,7 @@
     <!--          -->
     <!-- COLOPHON -->
     <!--          -->
-  {:else if name === "colophon"}
+  {:else if $menuItemActive === "colophon"}
     <div id="colophon-bottom" class="news-item">
       <div class="content">
         {#if has(content, "wideColumn.content") && isArray(content.wideColumn.content)}

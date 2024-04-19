@@ -199,6 +199,6 @@ export const calculateArticleReadingTime = article => {
     const words = text.split(/\s/g).length // split by spaces
     const minutes = words / wordsPerMinute
     const readTime = Math.ceil(minutes)
-    console.log(article.title, words, readTime)
+    // console.log(article.title, words, readTime)
     return readTime
 }
